@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:core/core/model/model.dart';
 import 'package:core/core/repository/i_forecast_repository.dart';
@@ -19,7 +21,13 @@ class CurrentWeatherBloc
       emit(CurrentWeatherLoading());
       final state =
           await _fetchCurrentWeatherBasedOnCoord(isRefresh: event.isRefresh);
-      emit(state.fold((l) => l, (r) => r));
+      emit(state.fold((l) {
+        log("$l");
+        return l;
+      }, (r) {
+        log("$r");
+        return r;
+      }));
     });
     
     on<OnChangeCurrentWeatherLocation>((event, emit) {

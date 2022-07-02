@@ -32,10 +32,6 @@ dependencies:
   # Network
   dio: 4.0.4
   connectivity_plus: 2.2.0
-  dio_firebase_performance: 0.3.1-dev.3
-  dio_cache_interceptor: 3.2.2
-  dio_cache_interceptor_hive_store: 3.1.0
-
 
   # ServiceLocator
   get_it: 7.2.0
@@ -50,8 +46,6 @@ dependencies:
   # Dart data class
   json_annotation: 4.4.0
   equatable: 2.0.3
-  hive: 2.0.5
-  hive_flutter: 1.1.0
   flutter_secure_storage: 5.0.2
   path_provider: 2.0.8
   freezed: ^2.0.3+1
@@ -68,12 +62,14 @@ dependencies:
   url_launcher: 6.0.18
   smooth_page_indicator: 1.0.0+2
   webview_flutter: 3.0.0
-  flutter_svg: 1.0.3
+  flutter_svg: ^1.1.0
   permission_handler: 8.3.0
   carousel_slider: 4.0.0
   shimmer: 2.0.0
   enum_to_string: 2.0.1
   platform: 3.1.0
+  auto_route: ^4.2.0
+  
 
   system_info: 1.0.1
   mockito: ^5.0.17
@@ -93,6 +89,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  auto_route_generator: ^4.2.0
+  build_runner:
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:core/core/commons/error/exceptions.dart';
@@ -7,6 +8,7 @@ import 'package:dio/dio.dart';
 
 mixin ApiClientExceptionHandler {
   Exception apiExceptionHandler(Exception exception, {Error? error}) {
+    log("$exception $error");
     if (exception is SocketException) {
       return ServerException(exception);
     } else if (exception is DioError) {

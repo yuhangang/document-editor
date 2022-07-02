@@ -86,7 +86,7 @@ Map<String, dynamic> _$CloudsToJson(Clouds instance) => <String, dynamic>{
 Sys _$SysFromJson(Map<String, dynamic> json) => Sys(
       type: json['type'] as int,
       id: json['id'] as int,
-      message: (json['message'] as num).toDouble(),
+      message: (json['message'] as num?)?.toDouble(),
       country: json['country'] as String,
       sunrise: json['sunrise'] as int,
       sunset: json['sunset'] as int,
@@ -133,7 +133,7 @@ WeatherForecast _$WeatherForecastFromJson(Map<String, dynamic> json) =>
       clouds: Clouds.fromJson(json['clouds'] as Map<String, dynamic>),
       wind: Wind.fromJson(json['wind'] as Map<String, dynamic>),
       visibility: json['visibility'] as int,
-      pop: json['pop'] as int,
+      pop: (json['pop'] as num).toDouble(),
       sys: ForecastSys.fromJson(json['sys'] as Map<String, dynamic>),
       dtTxt: json['dt_txt'] as String,
     );

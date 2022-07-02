@@ -11,10 +11,10 @@ abstract class ILogger {
 
 
 
-class AstroLogger implements ILogger {
+class AppLogger implements ILogger {
   final Logger _logger;
 
-  AstroLogger(this._logger);
+  AppLogger(this._logger);
 
   /// Log a message at level [Level.verbose].
   @override

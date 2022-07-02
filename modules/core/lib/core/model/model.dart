@@ -90,7 +90,7 @@ class Clouds {
 class Sys {
   final int type;
   final int id;
-  final double message;
+  final double? message;
   final String country;
   final int sunrise;
   final int sunset;
@@ -129,7 +129,7 @@ class WeatherForecast {
   final Clouds clouds;
   final Wind wind;
   final int visibility;
-  final int pop;
+  final double pop;
   final ForecastSys sys;
   final String dtTxt;
 
