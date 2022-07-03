@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:core/core/api/i_open_weather_api_provider.dart';
 import 'package:core/core/commons/error/exceptions.dart';
 import 'package:core/core/model/model.dart';

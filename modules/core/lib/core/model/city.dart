@@ -46,7 +46,6 @@ class MalaysianCity extends Equatable{
   Coord get coord=>Coord(lon: double.tryParse(lng)?? 0, lat: double.tryParse(lat) ?? 0);
   
   @override
-  // TODO: implement props
   List<Object?> get props => [city];
   
 }

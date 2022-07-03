@@ -95,7 +95,7 @@ void main() {
         return currentWeatherBloc;
       },
       act: (_) => _.add(
-       OnChangeWeatherForecastLocation(coord: mockCoordToBeSwitch)
+       const OnChangeWeatherForecastLocation(coord: mockCoordToBeSwitch)
       ),
       expect: () => [
         WeatherForecastLoading(),
