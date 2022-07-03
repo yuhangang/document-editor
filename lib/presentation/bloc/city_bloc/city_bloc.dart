@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 
 import 'package:bloc/bloc.dart';
 import 'package:core/core/model/city.dart';
@@ -18,11 +18,8 @@ class CityBloc extends Bloc<CityEvent, CityState> {
     on<OnLoadCity>((event, emit) async {
       emit(CityLoading());
       final newState = await _loadCityData(shouldRefresh: event.isRefresh);
-      log("$newState");
-      emit(newState.fold((l) {
-          log("${l.exception}");
-        return l;
-      }, (r) => r));
+     
+      emit(newState.fold((l) => l, (r) => r));
     });
 
     on<OnRemoveSelectedCity>((event, emit) async {

@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:weatherapp/presentation/bloc/weather_forecast_bloc/weather_forecast_bloc.dart';
+import 'package:weatherapp/presentation/widget/home/widgets/current_weather_card.dart';
 import 'package:weatherapp/presentation/widget/home/widgets/weather_card_temp_item.dart';
 import 'package:weatherapp/presentation/widget/home/widgets/weather_card_utils.dart';
 
@@ -21,7 +22,7 @@ class WeatherForecastCard extends StatefulWidget {
   State<WeatherForecastCard> createState() => _WeatherForecastCardState();
 }
 
-class _WeatherForecastCardState extends State<WeatherForecastCard> {
+class _WeatherForecastCardState extends State<WeatherForecastCard> with AutomaticKeepAliveClientMixin{
   late final WeatherForecastBloc _weatherForecastBloc;
 
   @override
@@ -34,7 +35,9 @@ class _WeatherForecastCardState extends State<WeatherForecastCard> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocBuilder<WeatherForecastBloc, WeatherForecastState>(
+      bloc: _weatherForecastBloc,
       builder: (context, state) {
         return GestureDetector(
           behavior: HitTestBehavior.translucent,
@@ -42,6 +45,10 @@ class _WeatherForecastCardState extends State<WeatherForecastCard> {
             if (state is WeatherForecastFailed) {
               _weatherForecastBloc.add(OnRefreshWeatherForecast());
             }
+          },
+            onDoubleTap: (){
+               _weatherForecastBloc
+                  .add(OnRefreshWeatherForecast());
           },
           child: AnimatedContainer(
               margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
@@ -53,9 +60,8 @@ class _WeatherForecastCardState extends State<WeatherForecastCard> {
                   borderRadius: const BorderRadius.all(Radius.circular(20))),
               duration: const Duration(milliseconds: 500),
               curve: Curves.easeInOut,
-              child: BlocBuilder<WeatherForecastBloc, WeatherForecastState>(
-                bloc: _weatherForecastBloc,
-                builder: (context, state) {
+              child: Builder(
+                builder: (context) {
                   if (state is WeatherForecastLoading ||
                       state is WeatherForecastInitial) {
                     return const Center(
@@ -84,24 +90,81 @@ class _WeatherForecastCardState extends State<WeatherForecastCard> {
                     children: [
                       _buildForecastCardTopSession(
                           state, context, weatherForecast),
-                      if (weatherForecast != null)
-                        Wrap(
-                            spacing: 10,
-                            children: weatherForecast.list
-                                .map((e) => Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 2.0),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(e.weather.firstOrNull?.getIcon),
-                                          Text("${e.main.tempMin.round()}"),
-                                          Text("${e.main.tempMax.round()}")
-                                        ],
-                                      ),
-                                    ))
-                                .toList()),
+                      Expanded(
+                          child: (weatherForecast != null)
+                              ? LayoutBuilder(builder: (context, constraints) {
+                                  final itemWidth = constraints.maxWidth / 10;
+                                  return SingleChildScrollView(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 20),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          "Weather of incoming 5 days",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelLarge,
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Wrap(
+                                            children: weatherForecast.list
+                                                .map((e) => GestureDetector(
+                                                      onTap: () {
+                                                        showBottomSheet(
+                                                            context: context,
+                                                            enableDrag: true,
+                                                            builder: (context) {
+                                                              
+                                                              return CurrentWeatherCard
+                                                                  .withForecastResult(
+                                                                weatherForecast:
+                                                                    e,
+                                                                    city: widget.city,
+                                                              );
+                                                            });
+                                                      },
+                                                      child: Container(
+                                                        width: itemWidth,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                bottom: 2.0),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Icon(
+                                                              e
+                                                                  .weather
+                                                                  .firstOrNull
+                                                                  ?.getIcon,
+                                                              color:
+                                                                  Colors.brown,
+                                                            ),
+                                                            Text(
+                                                                "${e.main.tempMax.round()}",
+                                                                style: const TextStyle(
+                                                                    color: Colors
+                                                                        .black87)),
+                                                            Text(
+                                                              "${e.main.tempMin.round()}",
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .black45),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ))
+                                                .toList()),
+                                      ],
+                                    ),
+                                  );
+                                })
+                              : const SizedBox()),
                       _buildForecastCardBottomSession(weatherForecast, context)
                     ],
                   );
@@ -117,7 +180,6 @@ class _WeatherForecastCardState extends State<WeatherForecastCard> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        
         Row(
           children: [
             Expanded(
@@ -134,8 +196,6 @@ class _WeatherForecastCardState extends State<WeatherForecastCard> {
                 ),
               ),
             ),
-            
-          
           ],
         ),
         Text(
@@ -189,4 +249,7 @@ class _WeatherForecastCardState extends State<WeatherForecastCard> {
       ],
     );
   }
+  
+  @override
+  bool get wantKeepAlive => true;
 }

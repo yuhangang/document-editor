@@ -38,6 +38,7 @@ class _HomePageForecastTabState extends State<HomePageForecastTab> {
                       onPageChanged: (index, reason) {
                         carousselIndex.value = index;
                       },
+                      scrollPhysics: const BouncingScrollPhysics(),
                       aspectRatio: 2 / 3,
                       viewportFraction: 0.85,
                       enableInfiniteScroll: false),

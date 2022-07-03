@@ -1,11 +1,10 @@
-import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:core/core/di/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weatherapp/presentation/bloc/city_bloc/city_bloc.dart';
+import 'package:weatherapp/presentation/widget/home/current_weather_tab/widgets/city_list_error_view.dart';
 import 'package:weatherapp/presentation/widget/home/current_weather_tab/widgets/malaysian_city_list_tile.dart';
 
 class ForecastCitySelectionPage extends StatefulWidget
@@ -51,6 +50,7 @@ class _ForecastCitySelectionPageState extends State<ForecastCitySelectionPage> {
           builder: (context, cityState) {
             if (cityState is CityDoneLoad) {
               return ListView.separated(
+                   physics: const BouncingScrollPhysics(),
                 padding: const EdgeInsets.only(
                     left: 12, right: 12, top: 12, bottom: 100),
                 itemCount: cityState.cities.length,
@@ -60,10 +60,8 @@ class _ForecastCitySelectionPageState extends State<ForecastCitySelectionPage> {
                   return MalaysianCityListTile(
                     onTap: () {
                       if (cityState.selectedCities.contains(city)) {
-                         log("remove");
                         sl.get<CityBloc>().add(OnRemoveSelectedCity(city: city));
                       } else {
-                        log("add");
                    sl.get<CityBloc>().add(OnAddSelectedCity(city: city));
                       }
                     },
@@ -83,12 +81,7 @@ class _ForecastCitySelectionPageState extends State<ForecastCitySelectionPage> {
               );
             }
 
-            return const Center(
-              child: Padding(
-                padding: EdgeInsets.all(12.0),
-                child: Text("Failed to Fetch City List"),
-              ),
-            );
+            return  const CityListErrorView();
           },
         ),
       ),

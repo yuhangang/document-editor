@@ -1,3 +1,4 @@
+
 import 'package:core/core/model/city.dart';
 import 'package:core/core/model/model.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,9 +12,10 @@ abstract class WeatherCardHelper {
     return "${city.adminName}, ${city.country}";
   }
 
-  static String get getTodayDescription {
-    final time = DateTime.now();
-    return DateFormat('EEEE ,yyyy-MM-dd').format(time);
+  static String  getTodayDescription({DateTime? dateTime}) {
+    final time = dateTime??DateTime.now();
+
+    return DateFormat(dateTime==null?'EEEE ,yyyy-MM-dd':'EEEE ,yyyy-MM-dd hh:00a').format(time);
   }
 }
 
@@ -33,6 +35,8 @@ extension WeatherExtension on Weather {
       case "light rain":
         return CupertinoIcons.cloud_rain;
       case "shower rain":
+        return CupertinoIcons.cloud_rain;
+      case "moderate rain":
         return CupertinoIcons.cloud_rain;
       case "rain":
         return CupertinoIcons.cloud_rain_fill;

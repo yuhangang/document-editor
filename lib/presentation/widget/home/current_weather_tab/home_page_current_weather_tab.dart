@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weatherapp/presentation/bloc/city_bloc/city_bloc.dart';
 import 'package:weatherapp/presentation/bloc/current_weather_bloc/current_weather_bloc.dart';
+import 'package:weatherapp/presentation/widget/home/current_weather_tab/widgets/city_list_error_view.dart';
 import 'package:weatherapp/presentation/widget/home/current_weather_tab/widgets/malaysian_city_list_tile.dart';
 import 'package:weatherapp/presentation/widget/home/widgets/current_weather_card.dart';
 
@@ -46,17 +47,23 @@ class _HomePageCurrentWeatherTabState extends State<HomePageCurrentWeatherTab> {
                   return BlocBuilder<CurrentWeatherBloc, CurrentWeatherState>(
                     builder: (context, currentWeatherState) {
                       return ListView.separated(
+                        physics: const BouncingScrollPhysics(),
                         padding: const EdgeInsets.only(
                             left: 12, right: 12, top: 12, bottom: 100),
                         itemCount: cityState.cities.length,
                         itemBuilder: (context, index) {
                           final city = cityState.cities[index];
                           final bool isFocus = city ==
-                              currentWeatherState.location?.fold((l) => null, (r) => r);
-                          return MalaysianCityListTile(onTap: (){
-                                BlocProvider.of<CurrentWeatherBloc>(context)
-          .add(OnChangeCurrentWeatherCity(city: city));
-                          },city: city,isFocus: isFocus,);
+                              currentWeatherState.location
+                                  ?.fold((l) => null, (r) => r);
+                          return MalaysianCityListTile(
+                            onTap: () {
+                              BlocProvider.of<CurrentWeatherBloc>(context)
+                                  .add(OnChangeCurrentWeatherCity(city: city));
+                            },
+                            city: city,
+                            isFocus: isFocus,
+                          );
                         },
                         separatorBuilder: (context, index) => const SizedBox(
                           height: 10,
@@ -66,24 +73,13 @@ class _HomePageCurrentWeatherTabState extends State<HomePageCurrentWeatherTab> {
                   );
                 } else if (cityState is CityLoading) {
                   return const Center(
-                      child: CircularProgressIndicator(color: Color.fromARGB(255, 129, 92, 12),),
+                    child: CircularProgressIndicator(
+                      color: Color.fromARGB(255, 129, 92, 12),
+                    ),
                   );
                 }
 
-                return Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text("Failed to Fetch City List"),
-                        TextButton(onPressed: (){
-                          BlocProvider.of<CityBloc>(context).add(OnRefreshCity());
-                        },child:  Text("Tap to Refresh",style: TextStyle(color: Colors.brown[800]),),)
-                      ],
-                    ),
-                  ),
-                );
+                return const CityListErrorView();
               },
             ),
           ),
