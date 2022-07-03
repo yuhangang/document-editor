@@ -63,7 +63,7 @@ dependencies:
   #smooth_page_indicator: 1.0.0+2
   #webview_flutter: 3.0.0
   #flutter_svg: ^1.1.0
-  #carousel_slider: 4.0.0
+  carousel_slider: 4.0.0
   #shimmer: 2.0.0
   #enum_to_string: 2.0.1
   platform: 3.1.0

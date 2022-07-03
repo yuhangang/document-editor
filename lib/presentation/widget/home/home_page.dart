@@ -1,5 +1,3 @@
-
-
 import 'package:auto_route/auto_route.dart';
 import 'package:core/core/commons/app_env.dart';
 import 'package:core/core/di/service_locator.dart';
@@ -12,7 +10,7 @@ import 'package:weatherapp/presentation/bloc/city_bloc/city_bloc.dart';
 import 'package:weatherapp/presentation/bloc/current_weather_bloc/current_weather_bloc.dart';
 import 'package:weatherapp/presentation/bloc/weather_forecast_bloc/weather_forecast_bloc.dart';
 import 'package:weatherapp/presentation/widget/home/current_weather_tab/home_page_current_weather_tab.dart';
-import 'package:weatherapp/presentation/widget/home/current_weather_tab/widgets/malaysian_city_list_tile.dart';
+import 'package:weatherapp/presentation/widget/home/forecast_tab/home_page_forecast_tab.dart';
 
 class HomePage extends StatefulWidget implements AutoRouteWrapper {
   const HomePage({
@@ -53,11 +51,13 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         extendBody: true,
+        
         appBar: AppBar(
           title: Text(
             "Weather App",
             style: Theme.of(context).textTheme.headline6,
           ),
+          centerTitle: true,
             iconTheme: const IconThemeData(color: Color.fromARGB(255, 85, 76, 76)),
           systemOverlayStyle: SystemUiOverlayStyle.dark,
           elevation: 0,
@@ -126,57 +126,18 @@ class _HomePageState extends State<HomePage> {
                   label: "Forecast")
             ]),
         body: PageView(
+          physics: const NeverScrollableScrollPhysics(),
           controller: _pageController,
           onPageChanged: (index) {
             setState(() {
               pageIndex = index;
             });
           },
-          children: [
-            const HomePageCurrentWeatherTab(),
-            RefreshIndicator(
-              color: const Color.fromARGB(255, 129, 92, 12),
-              onRefresh: () async {
-                BlocProvider.of<CityBloc>(context).add(OnLoadCity());
-              },
-              child: BlocBuilder<CityBloc, CityState>(
-                builder: (context, cityState) {
-                  if (cityState is CityDoneLoad) {
-                    return ListView.separated(
-                      padding: const EdgeInsets.only(
-                          left: 12, right: 12, top: 12, bottom: 100),
-                      itemCount: cityState.cities.length,
-                      itemBuilder: (context, index) {
-                        final city = cityState.cities[index];
-
-                        return MalaysianCityListTile(
-                          onTap: () {},
-                          city: city,
-                          isFocus: cityState.selectedCities.contains(city),
-                        );
-                      },
-                      separatorBuilder: (context, index) => const SizedBox(
-                        height: 10,
-                      ),
-                    );
-                  } else if (cityState is CityLoading) {
-                    return const Center(
-                      child: CircularProgressIndicator(
-                        color: Color.fromARGB(255, 129, 92, 12),
-                      ),
-                    );
-                  }
-
-                  return const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(12.0),
-                      child: Text("Failed to Fetch City List"),
-                    ),
-                  );
-                },
-              ),
-            )
+          children: const [
+            HomePageCurrentWeatherTab(),
+            HomePageForecastTab()
           ],
         ));
   }
 }
+

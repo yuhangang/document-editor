@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:core/core/api/i_open_weather_api_provider.dart';
 import 'package:core/core/commons/error/exceptions.dart';
 import 'package:core/core/model/model.dart';
@@ -23,6 +25,7 @@ class ForecastRepository implements IForecastRepository {
   @override
   Future<Either<Exception, WeatherForecastFiveDay>> getFiveDayWeatherForecastByCoordinate({required Coord coord}) async{
       try {
+        log("yolo forecast $coord");
       final data = await apiProvider.getFiveDayWeatherForecastByCoordinate(coord: coord);
       return Right(data);
     }

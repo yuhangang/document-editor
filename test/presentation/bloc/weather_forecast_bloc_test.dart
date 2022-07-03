@@ -9,8 +9,8 @@ import '../../../modules/core/test/presentation/shared_mocks.mocks.dart';
 void main() {
   late WeatherForecastBloc currentWeatherBloc;
   final MockIForecastRepository iForecastRepository = MockIForecastRepository();
-  final Coord mockCoord = Coord(lat: 20, lon: 40.5);
-  final Coord mockCoordToBeSwitch = Coord(lat: 10, lon: 20);
+  const Coord mockCoord = Coord(lat: 20, lon: 40.5);
+  const Coord mockCoordToBeSwitch = Coord(lat: 10, lon: 20);
   final MockWeatherForecastFiveDay mockWeatherForecast = MockWeatherForecastFiveDay();
   final MockException mockException = MockException();
 

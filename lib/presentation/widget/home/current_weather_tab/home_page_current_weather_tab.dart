@@ -1,7 +1,5 @@
 // ignore_for_file: depend_on_referenced_packages
 
-import 'package:collection/collection.dart';
-import 'package:core/core/model/city.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weatherapp/presentation/bloc/city_bloc/city_bloc.dart';

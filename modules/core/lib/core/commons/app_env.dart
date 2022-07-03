@@ -25,11 +25,11 @@ class AppEnvDev extends AppEnv {
   AppEnvDev()
       : super(
             appName: "Weather App",
-            openWeatherApiBaseUrl: "https://api.openweathermap.org/data/2.5/",
+            openWeatherApiBaseUrl: "https://api.openweathermap.org/data/2.5",
             openWeatherApiKey: "0ac2d1064821d2cdaf995d110e685263",
             cityListJsonApiRoute:
                 "https://simplemaps.com/static/data/country-cities/my/my.json",
-            defaultLocation: Coord(lon: 101.6953, lat: 3.1478),
+            defaultLocation: const Coord(lon: 101.6953, lat: 3.1478),
             defaultSelectedForecastCity: [
               'kuala lumpur',
               'johor bahru',

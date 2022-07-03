@@ -39,7 +39,7 @@ class OpenWeatherApiProvider
       {required Coord coord}) async {
     try {
       final String path =
-          '${appEnv.openWeatherApiBaseUrl}/forecast?lat=${coord.lat}&lon=${coord.lon}&appid=${appEnv.openWeatherApiKey}';
+      _getLocationWeatherUrl("forecast", coord: coord, units: SystemOfUnit.metric);
       final HttpResponse<Map<String, dynamic>> res =
           await client.get<Map<String, dynamic>>(path);
       

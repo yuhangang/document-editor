@@ -32,6 +32,7 @@ class _ForecastCitySelectionPageState extends State<ForecastCitySelectionPage> {
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Color.fromARGB(255, 85, 76, 76)),
         systemOverlayStyle: SystemUiOverlayStyle.dark,
+           centerTitle: true,
         title: Text(
           "Managing Selected Cities",
           style: Theme.of(context).textTheme.headline6,

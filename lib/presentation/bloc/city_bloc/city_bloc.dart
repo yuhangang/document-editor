@@ -40,7 +40,7 @@ class CityBloc extends Bloc<CityEvent, CityState> {
     final selectedCityResponse = await _cityRepository.getSelectedCityList();
 
     return response.fold(
-        (exception) => left(CityLoadFailed(exception: exception)),
+        (exception) => left(CityLoadFailed(selectedCities: selectedCityResponse,exception: exception)),
         (cityList) => right(CityDoneLoad(
             cities: cityList, selectedCities: selectedCityResponse)));
   }
@@ -59,12 +59,14 @@ class CityBloc extends Bloc<CityEvent, CityState> {
       Future<Either<Exception, List<MalaysianCity>>> Function()
           fetchSelectedCityFunction) async {
     final selectedCityListResponse = await fetchSelectedCityFunction();
+
+    final selectedCities =  (selectedCityListResponse.isLeft())? await _cityRepository.getSelectedCityList(): <MalaysianCity>[];
     return selectedCityListResponse
-        .fold((exception) => left(CityLoadFailed(exception: exception)),
+        .fold((exception) => left(CityLoadFailed(selectedCities: selectedCityListResponse.fold((l)=> selectedCities, (r) => r),exception: exception)),
             (selectedCities) async {
       final cityListResponse = await _cityRepository.getCityList();
       return cityListResponse.fold(
-          (exception) => left(CityLoadFailed(exception: exception)),
+          (exception) => left(CityLoadFailed(selectedCities: selectedCities,exception: exception)),
           (cities) => right(
               CityDoneLoad(cities: cities, selectedCities: selectedCities)));
     });

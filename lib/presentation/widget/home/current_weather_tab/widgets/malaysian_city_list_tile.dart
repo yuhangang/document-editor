@@ -1,6 +1,6 @@
 import 'package:core/core/model/city.dart';
 import 'package:flutter/material.dart';
-import 'package:weatherapp/presentation/widget/home/widgets/current_weather_card.dart';
+import 'package:weatherapp/presentation/widget/home/widgets/weather_card_utils.dart';
 
 class MalaysianCityListTile extends StatelessWidget {
 
@@ -46,7 +46,7 @@ class MalaysianCityListTile extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        MalaysianCityDescriptionHelper
+                        WeatherCardHelper
                             .getStateCountryDescription(city),
                         textAlign: TextAlign.right,
                         style: Theme.of(context)

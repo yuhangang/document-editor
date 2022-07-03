@@ -8,6 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:collection/collection.dart';
 import 'package:weatherapp/presentation/bloc/current_weather_bloc/current_weather_bloc.dart';
+import 'package:weatherapp/presentation/widget/home/widgets/weather_card_temp_item.dart';
+import 'package:weatherapp/presentation/widget/home/widgets/weather_card_utils.dart';
 
 class CurrentWeatherCard extends StatefulWidget {
   const CurrentWeatherCard({
@@ -83,7 +85,7 @@ class _CurrentWeatherCardState extends State<CurrentWeatherCard> {
                                 child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(_getTodayDescription),
+                                Text(WeatherCardHelper.getTodayDescription),
                                 FittedBox(
                                   child: Text(
                                     selectedCity?.city ?? 'My Current Location',
@@ -100,7 +102,7 @@ class _CurrentWeatherCardState extends State<CurrentWeatherCard> {
                              
                                 Text(
                                   selectedCity != null
-                                      ? MalaysianCityDescriptionHelper
+                                      ? WeatherCardHelper
                                           .getStateCountryDescription(
                                               selectedCity)
                                       : "",
@@ -179,7 +181,7 @@ class _CurrentWeatherCardState extends State<CurrentWeatherCard> {
                             else if (state is CurrentWeatherDoneLoad && state.weather.weather.firstOrNull?.getIcon !=null)
 Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Icon(state.weather.weather.first.getIcon, size: 35),
+                              child: Icon(state.weather.weather.first.getIcon, size: 35),
                               )
                           ],
                         ),
@@ -230,89 +232,7 @@ Padding(
     );
   }
 
-  String get _getTodayDescription {
-    final time = DateTime.now();
-    return DateFormat('EEEE ,yyyy-MM-dd').format(time);
-  }
 
-  String _getStateCountryDescription(MalaysianCity? city) {
-    if (city?.capital == 'primary') {
-      return "Capital of ${city?.country}";
-    }
-    return "${city?.adminName}, ${city?.country}";
-  }
 }
 
-class SmallDataItem extends StatelessWidget {
-  final String title;
-  final String data;
-  const SmallDataItem({
-    Key? key,
-    required this.title,
-    required this.data,
-  }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          title,
-          style: Theme.of(context)
-              .textTheme
-              .subtitle2
-              ?.copyWith(fontWeight: FontWeight.w600),
-        ),
-        const SizedBox(
-          width: 4,
-        ),
-        Text(
-          data,
-          style: Theme.of(context)
-              .textTheme
-              .subtitle2
-              ?.copyWith(fontWeight: FontWeight.w300),
-        ),
-      ],
-    );
-  }
-}
-
-abstract class MalaysianCityDescriptionHelper {
-  static String getStateCountryDescription(MalaysianCity city) {
-    if (city.capital == 'primary') {
-      return "Capital of ${city.country}";
-    }
-    return "${city.adminName}, ${city.country}";
-  }
-}
-
-extension on Weather {
-  IconData? get getIcon{
-    switch(description){
-      case "clear sky":
-         return CupertinoIcons.sun_max;
-      case "few clouds":
-        return CupertinoIcons.cloud_sun;
-      case "scattered clouds":
-       return CupertinoIcons.cloud_sun;
-      case "broken clouds":
-       return CupertinoIcons.cloud;
-      case "overcast clouds":
-       return CupertinoIcons.cloud;
-      case "shower rain":
-            return CupertinoIcons.cloud_rain;
-      case "rain":
-                return CupertinoIcons.cloud_rain_fill;
-      case "thunderstorm":
-         return CupertinoIcons.cloud_bolt_fill;
-      case "snow":
-         return CupertinoIcons.snow;
-      case "mist":
-             return CupertinoIcons.sun_dust;
-      default:
-       return null;
-    }
-  }
-}

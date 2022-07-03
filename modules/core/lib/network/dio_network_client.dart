@@ -1,4 +1,3 @@
-import 'package:core/core/commons/app_env.dart';
 import 'package:core/core/commons/error/exceptions.dart';
 import 'package:core/core/commons/utils/device/device_info_utils.dart';
 import 'package:core/core/commons/utils/logger/i_logger.dart';

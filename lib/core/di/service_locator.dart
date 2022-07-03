@@ -18,7 +18,7 @@ Future<void> configureAppServiceLocator(GetIt sl, AppEnv env) async {
   ));
   sl.registerSingleton<CurrentWeatherBloc>(
     CurrentWeatherBloc(
-         left(Coord(lon: 101.6953, lat: 3.1478)),
+         left(env.defaultLocation),
          sl.get<ILocationService>(),
         sl.get<IForecastRepository>(),sl.get<ICityRepository>(),sl.get<CityBloc>())
   );

@@ -46,16 +46,27 @@ class CityRepository implements ICityRepository {
     if (await localStorage.getData<bool>(PreferenceKeys.doneSetupCityBloc,
             defValue: false) !=
         true) {
-      final defaultSelectedCity = data
-          .where((element) => sl
+            final envDefaultSelectedForecastCity = sl
               .get<AppEnv>()
-              .defaultSelectedForecastCity.map((e)=>e.toLowerCase())
-              .contains(element.city.toLowerCase()))
+              .defaultSelectedForecastCity;
+      final defaultSelectedCity = data
+          .where((element) {
+          
+            return envDefaultSelectedForecastCity
+              .map((e) => e.toLowerCase())
+              .contains(element.city.toLowerCase());
+          })
           .toList();
+      if (defaultSelectedCity.length < envDefaultSelectedForecastCity.length) {
+        defaultSelectedCity.addAll(data
+            .where((element) => !defaultSelectedCity.contains(element))
+            .take(3 - envDefaultSelectedForecastCity.length));
+      }
       await localStorage.putData<List<MalaysianCity>>(
           StorageKey.selectedCities, defaultSelectedCity);
       final defaultForecastCity = data.firstWhereOrNull((element) =>
-          element.city.toLowerCase() == sl.get<AppEnv>().defaultCurrentWeatherCity.toLowerCase());
+          element.city.toLowerCase() ==
+          sl.get<AppEnv>().defaultCurrentWeatherCity.toLowerCase());
       if (defaultForecastCity != null) {
         await setCurrentWeatherCitySetting(defaultForecastCity);
       }
@@ -116,11 +127,11 @@ class CityRepository implements ICityRepository {
   @override
   Future<void> setCurrentWeatherCitySetting(MalaysianCity? city) async {
     try {
-      if (city!=null){
+      if (city != null) {
         await localStorage.putData<MalaysianCity>(
-          PreferenceKeys.currentWeatherCity, city);
-      }else{
-           await localStorage.deteleData(PreferenceKeys.currentWeatherCity);
+            PreferenceKeys.currentWeatherCity, city);
+      } else {
+        await localStorage.deteleData(PreferenceKeys.currentWeatherCity);
       }
       // ignore: empty_catches
     } catch (e) {}

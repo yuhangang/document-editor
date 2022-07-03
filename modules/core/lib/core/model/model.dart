@@ -45,7 +45,7 @@ class CurrentWeather{
 class Coord  extends Equatable{
   final double lon;
   final double lat;
-  Coord({
+  const Coord({
     required this.lon,
     required this.lat,
   });
