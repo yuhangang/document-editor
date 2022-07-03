@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 
 import 'package:core/core/api/i_city_api_provider.dart';
 import 'package:core/core/commons/app_env.dart';
@@ -28,13 +28,10 @@ class CityApiProvider
           .toList();
       return response;
     } on DioError catch (exception) {
-      log("errr $exception");
       throw apiExceptionHandler(exception);
     } on Error catch (error) {
-      log("er $error");
       throw apiExceptionHandler(Exception(error.toString()), error: error);
     } catch (e){
-      log("erx $e");
        throw apiExceptionHandler(Exception(''), error: Error());
     }
   }

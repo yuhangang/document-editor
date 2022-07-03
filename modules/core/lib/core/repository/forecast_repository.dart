@@ -25,7 +25,6 @@ class ForecastRepository implements IForecastRepository {
   @override
   Future<Either<Exception, WeatherForecastFiveDay>> getFiveDayWeatherForecastByCoordinate({required Coord coord}) async{
       try {
-        log("yolo forecast $coord");
       final data = await apiProvider.getFiveDayWeatherForecastByCoordinate(coord: coord);
       return Right(data);
     }

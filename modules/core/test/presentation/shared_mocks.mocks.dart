@@ -2,12 +2,18 @@
 // in core/test/presentation/shared_mocks.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i5;
+import 'dart:async' as _i7;
 
-import 'package:core/core/model/model.dart' as _i3;
-import 'package:core/core/repository/i_forecast_repository.dart' as _i4;
+import 'package:core/core/commons/utils/service/location/i_location_service.dart'
+    as _i10;
+import 'package:core/core/model/city.dart' as _i9;
+import 'package:core/core/model/model.dart' as _i5;
+import 'package:core/core/repository/i_city_repository.dart' as _i8;
+import 'package:core/core/repository/i_forecast_repository.dart' as _i6;
 import 'package:dartz/dartz.dart' as _i2;
+import 'package:location/location.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:storage/core/storage/i_local_storage.dart' as _i4;
 
 // ignore_for_file: avoid_redundant_argument_values
 // ignore_for_file: avoid_setters_without_getters
@@ -20,53 +26,162 @@ import 'package:mockito/mockito.dart' as _i1;
 
 class _FakeEither_0<L, R> extends _i1.Fake implements _i2.Either<L, R> {}
 
-class _FakeCity_1 extends _i1.Fake implements _i3.City {}
+class _FakeLocationData_1 extends _i1.Fake implements _i3.LocationData {}
 
-class _FakeCoord_2 extends _i1.Fake implements _i3.Coord {}
+class _FakeILocalStorage_2 extends _i1.Fake implements _i4.ILocalStorage {}
 
-class _FakeCurrentWeatherMainData_3 extends _i1.Fake
-    implements _i3.CurrentWeatherMainData {}
+class _FakeCity_3 extends _i1.Fake implements _i5.City {}
 
-class _FakeWind_4 extends _i1.Fake implements _i3.Wind {}
+class _FakeCoord_4 extends _i1.Fake implements _i5.Coord {}
 
-class _FakeClouds_5 extends _i1.Fake implements _i3.Clouds {}
+class _FakeCurrentWeatherMainData_5 extends _i1.Fake
+    implements _i5.CurrentWeatherMainData {}
 
-class _FakeSys_6 extends _i1.Fake implements _i3.Sys {}
+class _FakeWind_6 extends _i1.Fake implements _i5.Wind {}
+
+class _FakeClouds_7 extends _i1.Fake implements _i5.Clouds {}
+
+class _FakeSys_8 extends _i1.Fake implements _i5.Sys {}
 
 /// A class which mocks [IForecastRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockIForecastRepository extends _i1.Mock
-    implements _i4.IForecastRepository {
+    implements _i6.IForecastRepository {
   MockIForecastRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i5.Future<_i2.Either<Exception, _i3.CurrentWeather>>
-      getCurrentWeatherByCoordinate({_i3.Coord? coord}) => (super.noSuchMethod(
+  _i7.Future<_i2.Either<Exception, _i5.CurrentWeather>>
+      getCurrentWeatherByCoordinate({_i5.Coord? coord}) => (super.noSuchMethod(
           Invocation.method(
               #getCurrentWeatherByCoordinate, [], {#coord: coord}),
-          returnValue: Future<_i2.Either<Exception, _i3.CurrentWeather>>.value(
-              _FakeEither_0<Exception, _i3.CurrentWeather>())) as _i5
-          .Future<_i2.Either<Exception, _i3.CurrentWeather>>);
+          returnValue: Future<_i2.Either<Exception, _i5.CurrentWeather>>.value(
+              _FakeEither_0<Exception, _i5.CurrentWeather>())) as _i7
+          .Future<_i2.Either<Exception, _i5.CurrentWeather>>);
   @override
-  _i5.Future<_i2.Either<Exception, _i3.WeatherForecastFiveDay>>
-      getFiveDayWeatherForecastByCoordinate({_i3.Coord? coord}) =>
+  _i7.Future<_i2.Either<Exception, _i5.WeatherForecastFiveDay>>
+      getFiveDayWeatherForecastByCoordinate({_i5.Coord? coord}) =>
           (super.noSuchMethod(
               Invocation.method(
                   #getFiveDayWeatherForecastByCoordinate, [], {#coord: coord}),
               returnValue:
-                  Future<_i2.Either<Exception, _i3.WeatherForecastFiveDay>>.value(
-                      _FakeEither_0<Exception, _i3.WeatherForecastFiveDay>())) as _i5
-              .Future<_i2.Either<Exception, _i3.WeatherForecastFiveDay>>);
+                  Future<_i2.Either<Exception, _i5.WeatherForecastFiveDay>>.value(
+                      _FakeEither_0<Exception, _i5.WeatherForecastFiveDay>())) as _i7
+              .Future<_i2.Either<Exception, _i5.WeatherForecastFiveDay>>);
+}
+
+/// A class which mocks [ICityRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockICityRepository extends _i1.Mock implements _i8.ICityRepository {
+  MockICityRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i7.Future<_i2.Either<Exception, List<_i9.MalaysianCity>>> getCityList(
+          {bool? shouldRefresh = false}) =>
+      (super.noSuchMethod(
+          Invocation.method(#getCityList, [], {#shouldRefresh: shouldRefresh}),
+          returnValue:
+              Future<_i2.Either<Exception, List<_i9.MalaysianCity>>>.value(
+                  _FakeEither_0<Exception, List<_i9.MalaysianCity>>())) as _i7
+          .Future<_i2.Either<Exception, List<_i9.MalaysianCity>>>);
+  @override
+  _i7.Future<List<_i9.MalaysianCity>> getSelectedCityList() =>
+      (super.noSuchMethod(Invocation.method(#getSelectedCityList, []),
+              returnValue:
+                  Future<List<_i9.MalaysianCity>>.value(<_i9.MalaysianCity>[]))
+          as _i7.Future<List<_i9.MalaysianCity>>);
+  @override
+  _i7.Future<_i2.Either<Exception, List<_i9.MalaysianCity>>> removeSelectedCity(
+          _i9.MalaysianCity? city) =>
+      (super.noSuchMethod(Invocation.method(#removeSelectedCity, [city]),
+              returnValue:
+                  Future<_i2.Either<Exception, List<_i9.MalaysianCity>>>.value(
+                      _FakeEither_0<Exception, List<_i9.MalaysianCity>>()))
+          as _i7.Future<_i2.Either<Exception, List<_i9.MalaysianCity>>>);
+  @override
+  _i7.Future<_i2.Either<Exception, List<_i9.MalaysianCity>>> addSelectedCity(
+          _i9.MalaysianCity? city) =>
+      (super.noSuchMethod(Invocation.method(#addSelectedCity, [city]),
+              returnValue:
+                  Future<_i2.Either<Exception, List<_i9.MalaysianCity>>>.value(
+                      _FakeEither_0<Exception, List<_i9.MalaysianCity>>()))
+          as _i7.Future<_i2.Either<Exception, List<_i9.MalaysianCity>>>);
+  @override
+  _i7.Future<_i9.MalaysianCity?> getCurrentWeatherCitySetting() =>
+      (super.noSuchMethod(Invocation.method(#getCurrentWeatherCitySetting, []),
+              returnValue: Future<_i9.MalaysianCity?>.value())
+          as _i7.Future<_i9.MalaysianCity?>);
+  @override
+  _i7.Future<void> setCurrentWeatherCitySetting(_i9.MalaysianCity? city) =>
+      (super.noSuchMethod(
+          Invocation.method(#setCurrentWeatherCitySetting, [city]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
+}
+
+/// A class which mocks [ILocationService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockILocationService extends _i1.Mock implements _i10.ILocationService {
+  MockILocationService() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i7.Future<_i3.LocationData> getLocation() => (super.noSuchMethod(
+          Invocation.method(#getLocation, []),
+          returnValue: Future<_i3.LocationData>.value(_FakeLocationData_1()))
+      as _i7.Future<_i3.LocationData>);
+}
+
+/// A class which mocks [ILocalStorage].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockILocalStorage extends _i1.Mock implements _i4.ILocalStorage {
+  MockILocalStorage() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i7.Future<_i4.ILocalStorage> init() => (super.noSuchMethod(
+          Invocation.method(#init, []),
+          returnValue: Future<_i4.ILocalStorage>.value(_FakeILocalStorage_2()))
+      as _i7.Future<_i4.ILocalStorage>);
+  @override
+  void clearData() => super.noSuchMethod(Invocation.method(#clearData, []),
+      returnValueForMissingStub: null);
+  @override
+  _i7.Future<T?> getData<T>(String? param, {T? defValue}) => (super
+      .noSuchMethod(Invocation.method(#getData, [param], {#defValue: defValue}),
+          returnValue: Future<T?>.value()) as _i7.Future<T?>);
+  @override
+  _i7.Future<List<T>> getListData<T>(String? param,
+          {List<T>? defValue = const []}) =>
+      (super.noSuchMethod(
+          Invocation.method(#getListData, [param], {#defValue: defValue}),
+          returnValue: Future<List<T>>.value(<T>[])) as _i7.Future<List<T>>);
+  @override
+  _i7.Future<void> putData<T>(String? key, T? data) =>
+      (super.noSuchMethod(Invocation.method(#putData, [key, data]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
+  @override
+  _i7.Future<void> deteleData<T>(String? key) =>
+      (super.noSuchMethod(Invocation.method(#deteleData, [key]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
 }
 
 /// A class which mocks [WeatherForecastFiveDay].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockWeatherForecastFiveDay extends _i1.Mock
-    implements _i3.WeatherForecastFiveDay {
+    implements _i5.WeatherForecastFiveDay {
   MockWeatherForecastFiveDay() {
     _i1.throwOnMissingStub(this);
   }
@@ -81,13 +196,13 @@ class MockWeatherForecastFiveDay extends _i1.Mock
   int get cnt =>
       (super.noSuchMethod(Invocation.getter(#cnt), returnValue: 0) as int);
   @override
-  List<_i3.WeatherForecast> get list =>
+  List<_i5.WeatherForecast> get list =>
       (super.noSuchMethod(Invocation.getter(#list),
-          returnValue: <_i3.WeatherForecast>[]) as List<_i3.WeatherForecast>);
+          returnValue: <_i5.WeatherForecast>[]) as List<_i5.WeatherForecast>);
   @override
-  _i3.City get city =>
-      (super.noSuchMethod(Invocation.getter(#city), returnValue: _FakeCity_1())
-          as _i3.City);
+  _i5.City get city =>
+      (super.noSuchMethod(Invocation.getter(#city), returnValue: _FakeCity_3())
+          as _i5.City);
   @override
   Map<String, dynamic> toJson() =>
       (super.noSuchMethod(Invocation.method(#toJson, []),
@@ -97,44 +212,44 @@ class MockWeatherForecastFiveDay extends _i1.Mock
 /// A class which mocks [CurrentWeather].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockCurrentWeather extends _i1.Mock implements _i3.CurrentWeather {
+class MockCurrentWeather extends _i1.Mock implements _i5.CurrentWeather {
   MockCurrentWeather() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Coord get coord => (super.noSuchMethod(Invocation.getter(#coord),
-      returnValue: _FakeCoord_2()) as _i3.Coord);
+  _i5.Coord get coord => (super.noSuchMethod(Invocation.getter(#coord),
+      returnValue: _FakeCoord_4()) as _i5.Coord);
   @override
-  List<_i3.Weather> get weather =>
+  List<_i5.Weather> get weather =>
       (super.noSuchMethod(Invocation.getter(#weather),
-          returnValue: <_i3.Weather>[]) as List<_i3.Weather>);
+          returnValue: <_i5.Weather>[]) as List<_i5.Weather>);
   @override
   String get base =>
       (super.noSuchMethod(Invocation.getter(#base), returnValue: '') as String);
   @override
-  _i3.CurrentWeatherMainData get main =>
+  _i5.CurrentWeatherMainData get main =>
       (super.noSuchMethod(Invocation.getter(#main),
-              returnValue: _FakeCurrentWeatherMainData_3())
-          as _i3.CurrentWeatherMainData);
+              returnValue: _FakeCurrentWeatherMainData_5())
+          as _i5.CurrentWeatherMainData);
   @override
   int get visibility =>
       (super.noSuchMethod(Invocation.getter(#visibility), returnValue: 0)
           as int);
   @override
-  _i3.Wind get wind =>
-      (super.noSuchMethod(Invocation.getter(#wind), returnValue: _FakeWind_4())
-          as _i3.Wind);
+  _i5.Wind get wind =>
+      (super.noSuchMethod(Invocation.getter(#wind), returnValue: _FakeWind_6())
+          as _i5.Wind);
   @override
-  _i3.Clouds get clouds => (super.noSuchMethod(Invocation.getter(#clouds),
-      returnValue: _FakeClouds_5()) as _i3.Clouds);
+  _i5.Clouds get clouds => (super.noSuchMethod(Invocation.getter(#clouds),
+      returnValue: _FakeClouds_7()) as _i5.Clouds);
   @override
   int get dt =>
       (super.noSuchMethod(Invocation.getter(#dt), returnValue: 0) as int);
   @override
-  _i3.Sys get sys =>
-      (super.noSuchMethod(Invocation.getter(#sys), returnValue: _FakeSys_6())
-          as _i3.Sys);
+  _i5.Sys get sys =>
+      (super.noSuchMethod(Invocation.getter(#sys), returnValue: _FakeSys_8())
+          as _i5.Sys);
   @override
   int get timezone =>
       (super.noSuchMethod(Invocation.getter(#timezone), returnValue: 0) as int);
@@ -151,6 +266,68 @@ class MockCurrentWeather extends _i1.Mock implements _i3.CurrentWeather {
   Map<String, dynamic> toJson() =>
       (super.noSuchMethod(Invocation.method(#toJson, []),
           returnValue: <String, dynamic>{}) as Map<String, dynamic>);
+}
+
+/// A class which mocks [MalaysianCity].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockMalaysianCity extends _i1.Mock implements _i9.MalaysianCity {
+  MockMalaysianCity() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  String get city =>
+      (super.noSuchMethod(Invocation.getter(#city), returnValue: '') as String);
+  @override
+  String get lat =>
+      (super.noSuchMethod(Invocation.getter(#lat), returnValue: '') as String);
+  @override
+  String get lng =>
+      (super.noSuchMethod(Invocation.getter(#lng), returnValue: '') as String);
+  @override
+  String get country =>
+      (super.noSuchMethod(Invocation.getter(#country), returnValue: '')
+          as String);
+  @override
+  String get iso2 =>
+      (super.noSuchMethod(Invocation.getter(#iso2), returnValue: '') as String);
+  @override
+  String get adminName =>
+      (super.noSuchMethod(Invocation.getter(#adminName), returnValue: '')
+          as String);
+  @override
+  String get capital =>
+      (super.noSuchMethod(Invocation.getter(#capital), returnValue: '')
+          as String);
+  @override
+  String get population =>
+      (super.noSuchMethod(Invocation.getter(#population), returnValue: '')
+          as String);
+  @override
+  String get populationProper =>
+      (super.noSuchMethod(Invocation.getter(#populationProper), returnValue: '')
+          as String);
+  @override
+  _i5.Coord get coord => (super.noSuchMethod(Invocation.getter(#coord),
+      returnValue: _FakeCoord_4()) as _i5.Coord);
+  @override
+  List<Object?> get props =>
+      (super.noSuchMethod(Invocation.getter(#props), returnValue: <Object?>[])
+          as List<Object?>);
+  @override
+  Map<String, dynamic> toJson() =>
+      (super.noSuchMethod(Invocation.method(#toJson, []),
+          returnValue: <String, dynamic>{}) as Map<String, dynamic>);
+}
+
+/// A class which mocks [LocationData].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockLocationData extends _i1.Mock implements _i3.LocationData {
+  MockLocationData() {
+    _i1.throwOnMissingStub(this);
+  }
 }
 
 /// A class which mocks [Exception].

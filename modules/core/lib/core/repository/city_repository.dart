@@ -90,7 +90,6 @@ class CityRepository implements ICityRepository {
   @override
   Future<Either<Exception, List<MalaysianCity>>> removeSelectedCity(
       MalaysianCity city) async {
-    log("yolo here");
     try {
       final cityList = (await getSelectedCityList())
           .where((element) => element != city)

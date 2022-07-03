@@ -3,8 +3,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'model.g.dart';
 
-
-
 @JsonSerializable(fieldRename: FieldRename.snake)
 class CurrentWeather{
   final Coord coord;
@@ -42,7 +40,7 @@ class CurrentWeather{
 }
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class Coord  extends Equatable{
+class Coord extends Equatable {
   final double lon;
   final double lat;
   const Coord({
@@ -56,6 +54,9 @@ class Coord  extends Equatable{
   @override
   List<Object?> get props => [lon,lat];
 
+
+  @override
+  String toString() => 'Coord(lon: $lon, lat: $lat)';
 }
 
 @JsonSerializable(fieldRename: FieldRename.snake)
