@@ -17,10 +17,11 @@ class OnRefreshCurrentWeather extends OnLoadCurrentWeather {
   bool get isRefresh => true;
 }
 
-class OnChangeCurrentWeatherLocation extends CurrentWeatherEvent{
-  final Coord coord;
+class OnChangeCurrentWeatherCity extends CurrentWeatherEvent{
+  final MalaysianCity city;
 
-  const OnChangeCurrentWeatherLocation({
-    required this.coord,
+  const OnChangeCurrentWeatherCity({
+    required this.city,
   });
 }
+class OnChangeCurrentWeatherToUserCurrentLocation extends CurrentWeatherEvent{}

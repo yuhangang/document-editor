@@ -4,44 +4,32 @@ PODS:
     - ReachabilitySwift
   - device_info_plus (0.0.1):
     - Flutter
-  - DTTJailbreakDetection (0.4.0)
   - Flutter (1.0.0)
-  - flutter_jailbreak_detection (1.0.0):
-    - DTTJailbreakDetection
+  - fluttertoast (0.0.2):
     - Flutter
-  - flutter_secure_storage (3.3.1):
-    - Flutter
-  - package_info_plus (0.4.5):
+    - Toast
+  - location (0.0.1):
     - Flutter
   - path_provider_ios (0.0.1):
     - Flutter
   - "permission_handler (5.1.0+2)":
     - Flutter
   - ReachabilitySwift (5.0.0)
-  - share_plus (0.0.1):
-    - Flutter
-  - url_launcher_ios (0.0.1):
-    - Flutter
-  - webview_flutter_wkwebview (0.0.1):
-    - Flutter
+  - Toast (4.0.0)
 
 DEPENDENCIES:
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - Flutter (from `Flutter`)
-  - flutter_jailbreak_detection (from `.symlinks/plugins/flutter_jailbreak_detection/ios`)
-  - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
-  - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
+  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
+  - location (from `.symlinks/plugins/location/ios`)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
-  - share_plus (from `.symlinks/plugins/share_plus/ios`)
-  - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
-  - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
 
 SPEC REPOS:
   trunk:
-    - DTTJailbreakDetection
     - ReachabilitySwift
+    - Toast
 
 EXTERNAL SOURCES:
   connectivity_plus:
@@ -50,38 +38,26 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/device_info_plus/ios"
   Flutter:
     :path: Flutter
-  flutter_jailbreak_detection:
-    :path: ".symlinks/plugins/flutter_jailbreak_detection/ios"
-  flutter_secure_storage:
-    :path: ".symlinks/plugins/flutter_secure_storage/ios"
-  package_info_plus:
-    :path: ".symlinks/plugins/package_info_plus/ios"
+  fluttertoast:
+    :path: ".symlinks/plugins/fluttertoast/ios"
+  location:
+    :path: ".symlinks/plugins/location/ios"
   path_provider_ios:
     :path: ".symlinks/plugins/path_provider_ios/ios"
   permission_handler:
     :path: ".symlinks/plugins/permission_handler/ios"
-  share_plus:
-    :path: ".symlinks/plugins/share_plus/ios"
-  url_launcher_ios:
-    :path: ".symlinks/plugins/url_launcher_ios/ios"
-  webview_flutter_wkwebview:
-    :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
   connectivity_plus: 413a8857dd5d9f1c399a39130850d02fe0feaf7e
   device_info_plus: e5c5da33f982a436e103237c0c85f9031142abed
-  DTTJailbreakDetection: 5e356c5badc17995f65a83ed9483f787a0057b71
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
-  flutter_jailbreak_detection: f6c01e4bc73641c6b69c5112e50301240601abb4
-  flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
-  package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
+  fluttertoast: 16fbe6039d06a763f3533670197d01fc73459037
+  location: 3a2eed4dd2fab25e7b7baf2a9efefe82b512d740
   path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
-  share_plus: 056a1e8ac890df3e33cb503afffaf1e9b4fbae68
-  url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
-  webview_flutter_wkwebview: b7e70ef1ddded7e69c796c7390ee74180182971f
+  Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
 
-PODFILE CHECKSUM: a75497545d4391e2d394c3668e20cfb1c2bbd4aa
+PODFILE CHECKSUM: a56e299224f2c013fe5c81c4e9194a7968046192
 
 COCOAPODS: 1.11.2

@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'model.g.dart';
@@ -41,7 +42,7 @@ class CurrentWeather{
 }
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class Coord  {
+class Coord  extends Equatable{
   final double lon;
   final double lat;
   Coord({
@@ -51,6 +52,9 @@ class Coord  {
   factory Coord.fromJson(Map<String, dynamic> json) =>
       _$CoordFromJson(json);
   Map<String, dynamic> toJson() => _$CoordToJson(this);
+  
+  @override
+  List<Object?> get props => [lon,lat];
 
 }
 
@@ -88,12 +92,12 @@ class Clouds {
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class Sys {
-  final int type;
-  final int id;
+  final int? type;
+  final int? id;
   final double? message;
-  final String country;
-  final int sunrise;
-  final int sunset;
+  final String? country;
+  final int? sunrise;
+  final int? sunset;
 
   Sys(
       {required this.type,

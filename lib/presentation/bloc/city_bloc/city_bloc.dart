@@ -17,7 +17,6 @@ class CityBloc extends Bloc<CityEvent, CityState> {
   ) : super(CityInitial()) {
     on<OnLoadCity>((event, emit) async {
       emit(CityLoading());
-      await Future.delayed(Duration(seconds: 1));
       final newState = await _loadCityData(shouldRefresh: event.isRefresh);
       log("$newState");
       emit(newState.fold((l) {

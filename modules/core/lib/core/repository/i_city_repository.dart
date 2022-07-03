@@ -8,5 +8,8 @@ abstract class ICityRepository {
   Future<Either<Exception,List<MalaysianCity>>> removeSelectedCity(MalaysianCity city);
 
   Future<Either<Exception,List<MalaysianCity>>> addSelectedCity(MalaysianCity city);
+  
+  Future<MalaysianCity?> getCurrentWeatherCitySetting();
+  Future<void> setCurrentWeatherCitySetting(MalaysianCity? city);
 
 }

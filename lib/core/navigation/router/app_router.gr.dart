@@ -21,9 +21,9 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<Object?>(
           routeData: routeData, child: const HomePage());
     },
-    SettingPageRoute.name: (routeData) {
+    ForecastCitySelectionPageRoute.name: (routeData) {
       return MaterialPageX<Object?>(
-          routeData: routeData, child: const SettingPage());
+          routeData: routeData, child: const ForecastCitySelectionPage());
     }
   };
 
@@ -32,7 +32,8 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig('/#redirect',
             path: '/', redirectTo: 'home', fullMatch: true),
         RouteConfig(HomePageRoute.name, path: 'home'),
-        RouteConfig(SettingPageRoute.name, path: 'setting')
+        RouteConfig(ForecastCitySelectionPageRoute.name,
+            path: 'forecastCitySelection')
       ];
 }
 
@@ -45,9 +46,11 @@ class HomePageRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [SettingPage]
-class SettingPageRoute extends PageRouteInfo<void> {
-  const SettingPageRoute() : super(SettingPageRoute.name, path: 'setting');
+/// [ForecastCitySelectionPage]
+class ForecastCitySelectionPageRoute extends PageRouteInfo<void> {
+  const ForecastCitySelectionPageRoute()
+      : super(ForecastCitySelectionPageRoute.name,
+            path: 'forecastCitySelection');
 
-  static const String name = 'SettingPageRoute';
+  static const String name = 'ForecastCitySelectionPageRoute';
 }

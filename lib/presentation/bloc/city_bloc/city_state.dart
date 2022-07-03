@@ -26,4 +26,6 @@ class CityDoneLoad extends CityState {
     required this.cities,
     required this.selectedCities,
   });
+  @override
+  List<Object> get props => [selectedCities,cities];
 }

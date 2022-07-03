@@ -21,6 +21,9 @@ dependencies:
   ota_string: ^0.0.3
   intl: ^0.17.0
   mockito: ^5.0.17
+  location: ^4.4.0
+  permission_handler: ^8.3.0
+  fluttertoast: ^8.0.9
   
 
   storage: 

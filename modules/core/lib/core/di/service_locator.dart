@@ -4,6 +4,8 @@ import 'package:core/core/api/i_open_weather_api_provider.dart';
 import 'package:core/core/api/open_weather_api_provider.dart';
 import 'package:core/core/commons/app_env.dart';
 import 'package:core/core/commons/utils/logger/i_logger.dart';
+import 'package:core/core/commons/utils/service/location/i_location_service.dart';
+import 'package:core/core/commons/utils/service/location/location_service.dart';
 import 'package:core/core/model/city.dart';
 import 'package:core/core/repository/city_repository.dart';
 import 'package:core/core/repository/forecast_repository.dart';
@@ -27,9 +29,12 @@ Future<void> configureCoreServiceLocator(AppEnv env,
   sl.registerSingleton<ILocalStorage>(HiveLocalStorage((){
     Hive.registerAdapter(MalaysianCityAdapter());
   }));
+  
   await sl.get<ILocalStorage>().init();
   sl.registerSingleton<INetworkClient>(
       DioNetworkClient(BaseNetworkOptions(baseUrl: env.openWeatherApiBaseUrl)));
+  sl.registerSingleton<ILocationService>(LocationService());
+    
   sl.registerSingleton<IOpenWeatherApiProvider>(
       OpenWeatherApiProvider(client: sl.get<INetworkClient>(), appEnv: env));
   sl.registerSingleton<ICityApiProvider>(

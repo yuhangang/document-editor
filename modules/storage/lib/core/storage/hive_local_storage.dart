@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:storage/core/storage/i_local_storage.dart';
@@ -38,6 +40,11 @@ class HiveLocalStorage implements ILocalStorage {
   @override
   Future<void> putData<T>(String key, T? data) async {
     return await _hiveBox.put(key, data);
+  }
+  
+  @override
+  Future<void> deteleData<T>(String key) async{
+    return await _hiveBox.delete(key);
   }
 }
 

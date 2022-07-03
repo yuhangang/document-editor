@@ -121,3 +121,6 @@ class LeadTokenMissingException extends BaseException {
 }
 
 class InvalidUserRequestException extends BaseException {}
+
+class LocationException {}
+class LocationPermissionDeniedException extends LocationException {}

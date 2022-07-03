@@ -4,5 +4,5 @@ abstract class HiveTypeId {
 
 abstract class StorageKey {
   static const String selectedCities = "SelectedCity";
-  static const String allCities = "SelectedCity";
+  static const String allCities = "AllCity";
 }
