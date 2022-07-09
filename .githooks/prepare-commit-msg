@@ -1,0 +1,24 @@
+#!/bin/bash
+
+echo "Running git prepare-commit-msg hook"
+
+COMMIT_MSG_FILE=$1
+COMMIT_SOURCE=$2
+SHA1=$3
+
+# Add prefix "[JIRA_TICKET] " to every single commit message
+# Possible commit source: message, template,
+# merge, squash or commit. See https://git-scm.com/docs/githooks
+
+ref=$(git rev-parse --abbrev-ref HEAD)
+echo "Git Ref: $ref"
+if [[ $ref =~ ^.*((NJOIAPP|NJOI|MAAR|AVM|DEAPP|SYOK|MYAAR)-[0-9]+).* ]]
+
+then
+  hint=$(cat "$COMMIT_MSG_FILE")
+  echo "Original Commit Message: $hint"
+  ticket="${BASH_REMATCH[1]}"
+  echo "Ticket ID: $ticket"
+  echo -n "[${ticket}] " > "$COMMIT_MSG_FILE"
+  echo -n "$hint" >> "$COMMIT_MSG_FILE"
+fi

@@ -10,7 +10,7 @@ import 'package:storage/core/storage/i_local_storage.dart';
 @GenerateMocks([
   // Repository
   IForecastRepository,
-    ICityRepository,
+  ICityRepository,
 
   //Services
   ILocationService,
@@ -24,9 +24,5 @@ import 'package:storage/core/storage/i_local_storage.dart';
 
   // Exception
   Exception
-  
-  ])
-
-
-
+])
 void main() {}

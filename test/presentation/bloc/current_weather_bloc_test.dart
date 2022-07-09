@@ -8,7 +8,7 @@ import 'package:weatherapp/presentation/bloc/city_bloc/city_bloc.dart';
 import 'package:weatherapp/presentation/bloc/current_weather_bloc/current_weather_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:dartz/dartz.dart';
-import '../../../modules/core/test/presentation/shared_mocks.mocks.dart';
+import '../../../modules/core/test/mock/shared_mocks.mocks.dart';
 import '../../mock/shared_mocks.mocks.dart';
 
 void main() {

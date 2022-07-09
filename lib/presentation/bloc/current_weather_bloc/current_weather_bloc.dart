@@ -66,7 +66,6 @@ class CurrentWeatherBloc
 
   Future<Either<CurrentWeatherFailed, CurrentWeatherDoneLoad>>
       _fetchCurrentWeatherBasedOnCoord({required bool isRefresh}) async {
-        print(_location.coord.toString());
     final currentWeatherResponse = await _forecastRepository
         .getCurrentWeatherByCoordinate(coord: _location.coord);
     return currentWeatherResponse.fold(

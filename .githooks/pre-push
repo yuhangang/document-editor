@@ -1,0 +1,34 @@
+#!/bin/bash
+source ~/.zshrc
+printf "\e[33;1m%s\e[0m\n" '---Running git hook Pre-Push---'
+
+if [[ `git status --porcelain` ]]; then
+  printf "\e[31;1m%s\e[0m\n" 'This script needs to run against committed code only. Please commit or stash you changes.'
+  exit 1
+fi
+printf "\e[33;1m%s\e[0m\n" '>>>Running the Flutter analyzer' ""
+flutter analyze
+if [ $? -ne 0 ]; then
+  printf "\e[31;1m%s\e[0m\n" '!!!Flutter analyzer error'
+  exit 1
+fi
+printf "\e[33;1m%s\e[0m\n" '<<<Finished running the Flutter analyzer' ""
+#printf "\e[33;1m%s\e[0m\n" '>>>Running unit tests'
+#printf "\e[33;1m%s\e[0m\n" '>Running tests on main app'
+#flutter test
+#if [ $? -ne 0 ]; then
+#  printf "\e[31;1m%s\e[0m\n" '!!! Unit tests error on main app'
+#  exit 1
+#fi
+#printf "\e[33;1m%s\e[0m\n" '<Finished tests on main app' ""
+
+#printf "\e[33;1m%s\e[0m\n" '>Running tests on shared app'
+#cd ..
+#cd utility-app-shared-flutter/app_shared/
+#flutter test
+#if [ $? -ne 0 ]; then
+#  printf "\e[31;1m%s\e[0m\n" '!!! Unit tests error on shared app'
+#  exit 1
+#fi
+#printf "\e[33;1m%s\e[0m\n" '<Finished tests on shared app' ""
+#printf "\e[33;1m%s\e[0m\n" '<<<Finished running unit tests'

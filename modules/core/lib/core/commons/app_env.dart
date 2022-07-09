@@ -11,7 +11,7 @@ abstract class AppEnv {
   final List<String> defaultSelectedForecastCity;
   final String defaultCurrentWeatherCity;
 
-  AppEnv(
+  const AppEnv(
       {required this.appName,
       required this.openWeatherApiBaseUrl,
       required this.openWeatherApiKey,
@@ -22,7 +22,7 @@ abstract class AppEnv {
 }
 
 class AppEnvDev extends AppEnv {
-  AppEnvDev()
+  const AppEnvDev()
       : super(
             appName: "Weather App",
             openWeatherApiBaseUrl: "https://api.openweathermap.org/data/2.5",
@@ -30,7 +30,7 @@ class AppEnvDev extends AppEnv {
             cityListJsonApiRoute:
                 "https://simplemaps.com/static/data/country-cities/my/my.json",
             defaultLocation: const Coord(lon: 101.6953, lat: 3.1478),
-            defaultSelectedForecastCity: [
+            defaultSelectedForecastCity: const [
               'kuala lumpur',
               'johor bahru',
               'george town'

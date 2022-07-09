@@ -11,7 +11,7 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown
   ]);
-   await configureCoreServiceLocator(AppEnvDev(),
+   await configureCoreServiceLocator(const AppEnvDev(),
       initializeFunctions: [configureAppServiceLocator]);
   runApp(MyApp());
 }

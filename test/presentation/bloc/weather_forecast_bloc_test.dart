@@ -4,7 +4,7 @@ import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:weatherapp/presentation/bloc/weather_forecast_bloc/weather_forecast_bloc.dart';
-import '../../../modules/core/test/presentation/shared_mocks.mocks.dart';
+import '../../../modules/core/test/mock/shared_mocks.mocks.dart';
 
 void main() {
   late WeatherForecastBloc currentWeatherBloc;
