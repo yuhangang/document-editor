@@ -1,2 +1,2 @@
-const home = 'home';
-const forecastCitySelection = 'forecastCitySelection';
+const home = '/';
+const forecastCitySelection = '/forecastCitySelection';

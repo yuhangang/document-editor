@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:core/core/di/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,21 +6,12 @@ import 'package:weatherapp/presentation/bloc/city_bloc/city_bloc.dart';
 import 'package:weatherapp/presentation/widget/home/current_weather_tab/widgets/city_list_error_view.dart';
 import 'package:weatherapp/presentation/widget/home/current_weather_tab/widgets/malaysian_city_list_tile.dart';
 
-class ForecastCitySelectionPage extends StatefulWidget
-    implements AutoRouteWrapper {
+class ForecastCitySelectionPage extends StatefulWidget {
   const ForecastCitySelectionPage({Key? key}) : super(key: key);
 
   @override
   State<ForecastCitySelectionPage> createState() =>
       _ForecastCitySelectionPageState();
-
-  @override
-  Widget wrappedRoute(BuildContext context) {
-    return BlocProvider<CityBloc>(
-      create: (context) => sl.get<CityBloc>(),
-      child: this,
-    );
-  }
 }
 
 class _ForecastCitySelectionPageState extends State<ForecastCitySelectionPage> {
@@ -29,9 +19,10 @@ class _ForecastCitySelectionPageState extends State<ForecastCitySelectionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Color.fromARGB(255, 85, 76, 76)),
+        iconTheme:
+            const IconThemeData(color: Color.fromARGB(255, 85, 76, 76)),
         systemOverlayStyle: SystemUiOverlayStyle.dark,
-           centerTitle: true,
+        centerTitle: true,
         title: Text(
           "Managing Selected Cities",
           style: Theme.of(context).textTheme.headline6,
@@ -50,7 +41,7 @@ class _ForecastCitySelectionPageState extends State<ForecastCitySelectionPage> {
           builder: (context, cityState) {
             if (cityState is CityDoneLoad) {
               return ListView.separated(
-                   physics: const BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 padding: const EdgeInsets.only(
                     left: 12, right: 12, top: 12, bottom: 100),
                 itemCount: cityState.cities.length,
@@ -60,9 +51,11 @@ class _ForecastCitySelectionPageState extends State<ForecastCitySelectionPage> {
                   return MalaysianCityListTile(
                     onTap: () {
                       if (cityState.selectedCities.contains(city)) {
-                        sl.get<CityBloc>().add(OnRemoveSelectedCity(city: city));
+                        sl
+                            .get<CityBloc>()
+                            .add(OnRemoveSelectedCity(city: city));
                       } else {
-                   sl.get<CityBloc>().add(OnAddSelectedCity(city: city));
+                        sl.get<CityBloc>().add(OnAddSelectedCity(city: city));
                       }
                     },
                     city: city,
@@ -81,7 +74,7 @@ class _ForecastCitySelectionPageState extends State<ForecastCitySelectionPage> {
               );
             }
 
-            return  const CityListErrorView();
+            return const CityListErrorView();
           },
         ),
       ),
