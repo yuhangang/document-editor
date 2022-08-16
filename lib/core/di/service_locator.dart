@@ -7,21 +7,26 @@ import 'package:get_it/get_it.dart';
 import 'package:weatherapp/presentation/bloc/city_bloc/city_bloc.dart';
 import 'package:weatherapp/presentation/bloc/current_weather_bloc/current_weather_bloc.dart';
 import 'package:core/core/commons/app_env.dart';
+import 'package:weatherapp/presentation/bloc/location/location_bloc.dart';
 import 'package:weatherapp/presentation/bloc/weather_forecast_bloc/weather_forecast_bloc.dart';
 import 'package:dartz/dartz.dart';
 
 Future<void> configureAppServiceLocator(GetIt sl, AppEnv env) async {
-  sl.registerSingleton<CityBloc>(CityBloc(
-    sl.get<ICityRepository>(),
-  ));
-  sl.registerSingleton<CurrentWeatherBloc>(
-    CurrentWeatherBloc(
-         left(env.defaultLocation),
-         sl.get<ILocationService>(),
-        sl.get<IForecastRepository>(),sl.get<ICityRepository>(),sl.get<CityBloc>())
-  );
+   sl.registerFactory<LocationBloc>(() => LocationBloc(
+      left(env.defaultLocation),
+      sl.get<ILocationService>(),
+      sl.get<IForecastRepository>(),));
+    
+  sl.registerFactory<CityBloc>(() => CityBloc(
+        sl.get<ICityRepository>(),
+      ));
+  sl.registerFactory<CurrentWeatherBloc>(() => CurrentWeatherBloc(
+      left(env.defaultLocation),
+      sl.get<ILocationService>(),
+      sl.get<IForecastRepository>(),
+      sl.get<ICityRepository>(),
+      sl.get<CityBloc>()));
   sl.registerFactoryParam<WeatherForecastBloc, Coord, void>(
     (coord, _) => WeatherForecastBloc(coord, sl.get<IForecastRepository>()),
   );
-
 }

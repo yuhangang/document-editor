@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:weatherapp/core/navigation/path/app_path.dart' as app_path;
+import 'package:weatherapp/app/path/app_path.dart' as app_path;
 import 'package:weatherapp/presentation/bloc/city_bloc/city_bloc.dart';
 import 'package:weatherapp/presentation/bloc/current_weather_bloc/current_weather_bloc.dart';
 import 'package:weatherapp/presentation/bloc/weather_forecast_bloc/weather_forecast_bloc.dart';

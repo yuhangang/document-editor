@@ -20,21 +20,23 @@ import 'package:storage/core/storage/hive_local_storage.dart';
 import 'package:storage/core/storage/i_local_storage.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
+
 final sl = GetIt.instance;
 
 Future<void> configureCoreServiceLocator(AppEnv env,
-    {List<Future<void> Function(GetIt, AppEnv)> initializeFunctions = const []}) async{
+    {List<Future<void> Function(GetIt, AppEnv)> initializeFunctions =
+        const []}) async {
   sl.registerSingleton<AppEnv>(env);
   sl.registerSingleton<AppLogger>(AppLogger(Logger()));
-  sl.registerSingleton<ILocalStorage>(HiveLocalStorage((){
+  sl.registerSingleton<ILocalStorage>(HiveLocalStorage(() {
     Hive.registerAdapter(MalaysianCityAdapter());
   }));
-  
+
   await sl.get<ILocalStorage>().init();
   sl.registerSingleton<INetworkClient>(
       DioNetworkClient(BaseNetworkOptions(baseUrl: env.openWeatherApiBaseUrl)));
   sl.registerSingleton<ILocationService>(LocationService());
-    
+
   sl.registerSingleton<IOpenWeatherApiProvider>(
       OpenWeatherApiProvider(client: sl.get<INetworkClient>(), appEnv: env));
   sl.registerSingleton<ICityApiProvider>(
@@ -44,9 +46,9 @@ Future<void> configureCoreServiceLocator(AppEnv env,
   sl.registerSingleton<ICityRepository>(CityRepository(
       cityApiProvider: sl.get<ICityApiProvider>(),
       localStorage: sl.get<ILocalStorage>()));
-  
-  await Future.forEach<Future<void> Function(GetIt, AppEnv)>(initializeFunctions, (initFunction) async{
-     await initFunction.call(sl, env);
-  });
 
+  await Future.forEach<Future<void> Function(GetIt, AppEnv)>(
+      initializeFunctions, (initFunction) async {
+    await initFunction.call(sl, env);
+  });
 }

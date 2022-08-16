@@ -20,6 +20,7 @@ class CurrentWeatherBloc
   final IForecastRepository _forecastRepository;
   final ICityRepository _cityRepository;
   final CityBloc _cityBloc;
+  
   CurrentWeatherBloc(this._location, this._locationService,
       this._forecastRepository, this._cityRepository, this._cityBloc)
       : super(const CurrentWeatherInitial(null)) {

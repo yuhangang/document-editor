@@ -1,5 +1,5 @@
+import 'package:core/core/model/location.dart';
 import 'package:core/core/model/model.dart';
-import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:hive/hive.dart';
 import 'package:storage/config/storage_config.dart';
@@ -8,7 +8,7 @@ part 'city.g.dart';
 
 @HiveType(typeId: HiveTypeId.malaysianCity)
 @JsonSerializable(fieldRename: FieldRename.snake)
-class MalaysianCity extends Equatable{
+class MalaysianCity extends WeatherLocation{
   @HiveField(0)
   final String city;
   @HiveField(1)
@@ -43,9 +43,10 @@ class MalaysianCity extends Equatable{
       _$MalaysianCityFromJson(json);
   Map<String, dynamic> toJson() => _$MalaysianCityToJson(this);
 
+  @override
   Coord get coord=>Coord(lon: double.tryParse(lng)?? 0, lat: double.tryParse(lat) ?? 0);
   
   @override
-  List<Object?> get props => [city];
+  List<Object?> get props => [city,coord];
   
 }
