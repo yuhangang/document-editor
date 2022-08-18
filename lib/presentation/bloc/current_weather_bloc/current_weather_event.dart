@@ -7,21 +7,18 @@ abstract class CurrentWeatherEvent extends Equatable {
 }
 
 class OnLoadCurrentWeather extends CurrentWeatherEvent {
-
   bool get isRefresh => false;
 }
 
 class OnRefreshCurrentWeather extends OnLoadCurrentWeather {
-
   @override
   bool get isRefresh => true;
 }
 
-class OnChangeCurrentWeatherCity extends CurrentWeatherEvent{
+class OnChangeCurrentWeatherCity extends CurrentWeatherEvent {
   final MalaysianCity city;
 
   const OnChangeCurrentWeatherCity({
     required this.city,
   });
 }
-class OnChangeCurrentWeatherToUserCurrentLocation extends CurrentWeatherEvent{}

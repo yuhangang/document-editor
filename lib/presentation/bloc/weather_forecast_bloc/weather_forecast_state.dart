@@ -2,7 +2,7 @@ part of 'weather_forecast_bloc.dart';
 
 abstract class WeatherForecastState extends Equatable {
   const WeatherForecastState();
-  
+
   @override
   List<Object> get props => [];
 }
@@ -26,7 +26,7 @@ class WeatherForecastDoneLoad extends WeatherForecastState {
 }
 
 class WeatherForecastDoneRefresh extends WeatherForecastDoneLoad {
-   const WeatherForecastDoneRefresh({
+  const WeatherForecastDoneRefresh({
     required super.forecast,
   });
 }

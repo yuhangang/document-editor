@@ -13,5 +13,3 @@ void main() async {
       initializeFunctions: [configureAppServiceLocator]);
   runApp(const WeatherApp());
 }
-
-

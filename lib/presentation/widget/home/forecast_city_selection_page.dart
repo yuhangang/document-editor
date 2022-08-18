@@ -19,8 +19,7 @@ class _ForecastCitySelectionPageState extends State<ForecastCitySelectionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme:
-            const IconThemeData(color: Color.fromARGB(255, 85, 76, 76)),
+        iconTheme: const IconThemeData(color: Color.fromARGB(255, 85, 76, 76)),
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         centerTitle: true,
         title: Text(

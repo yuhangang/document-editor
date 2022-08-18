@@ -10,12 +10,10 @@ class DioNetworkClient implements INetworkClient {
   late Dio _dio;
   late final IDeviceInfoUtils? deviceInfoUtils;
 
-
   final int connectionTimeout =
       30 * 1000; //30 seconds, default is never timeout
 
-  DioNetworkClient(BaseNetworkOptions networkOptions,
-      {this.deviceInfoUtils}) {
+  DioNetworkClient(BaseNetworkOptions networkOptions, {this.deviceInfoUtils}) {
     var options = BaseOptions(
       baseUrl: networkOptions.baseUrl,
       headers: networkOptions.headers,
@@ -47,12 +45,11 @@ class DioNetworkClient implements INetworkClient {
   }
 
   @override
-  Future<HttpResponse<T>> get<T>(String path,
-      {Map<String, dynamic>? queryParameters,
-}) {
+  Future<HttpResponse<T>> get<T>(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+  }) {
     Options? buildCache;
-
-  
 
     return _dio
         .get<T>(path, queryParameters: queryParameters, options: buildCache)
@@ -69,9 +66,7 @@ class DioNetworkClient implements INetworkClient {
 
   @override
   Future<HttpResponse<T>> getUri<T>(String url) {
-    return _dio
-        .getUri<T>(Uri.parse(url))
-        .then((Response<T> res) {
+    return _dio.getUri<T>(Uri.parse(url)).then((Response<T> res) {
       _throwIfNoSuccess(res);
       var response = HttpResponse<T>(
           data: res.data!,
@@ -98,6 +93,4 @@ class DioNetworkClient implements INetworkClient {
       throw HttpException.serverException(res.statusMessage ?? '', response);
     }
   }
-
-  
 }

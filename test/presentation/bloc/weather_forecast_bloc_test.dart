@@ -11,12 +11,13 @@ void main() {
   final MockIForecastRepository iForecastRepository = MockIForecastRepository();
   const Coord mockCoord = Coord(lat: 20, lon: 40.5);
   const Coord mockCoordToBeSwitch = Coord(lat: 10, lon: 20);
-  final MockWeatherForecastFiveDay mockWeatherForecast = MockWeatherForecastFiveDay();
+  final MockWeatherForecastFiveDay mockWeatherForecast =
+      MockWeatherForecastFiveDay();
   final MockException mockException = MockException();
 
   group('test WeatherForecastBloc', () {
     setUp(() {
-      currentWeatherBloc = WeatherForecastBloc(mockCoord,iForecastRepository);
+      currentWeatherBloc = WeatherForecastBloc(mockCoord, iForecastRepository);
     });
 
     blocTest<WeatherForecastBloc, WeatherForecastState>(
@@ -91,12 +92,11 @@ void main() {
       build: () {
         when(iForecastRepository.getFiveDayWeatherForecastByCoordinate(
                 coord: mockCoordToBeSwitch))
-     .thenAnswer((_) => Future.value(right(mockWeatherForecast)));
+            .thenAnswer((_) => Future.value(right(mockWeatherForecast)));
         return currentWeatherBloc;
       },
       act: (_) => _.add(
-       const OnChangeWeatherForecastLocation(coord: mockCoordToBeSwitch)
-      ),
+          const OnChangeWeatherForecastLocation(coord: mockCoordToBeSwitch)),
       expect: () => [
         WeatherForecastLoading(),
         WeatherForecastDoneRefresh(forecast: mockWeatherForecast)

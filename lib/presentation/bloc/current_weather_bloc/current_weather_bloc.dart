@@ -1,7 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
-import 'package:core/core/commons/error/exceptions.dart';
-import 'package:core/core/commons/utils/service/location/i_location_service.dart';
 import 'package:core/core/model/city.dart';
 import 'package:core/core/model/model.dart';
 import 'package:core/core/repository/i_city_repository.dart';
@@ -16,15 +14,14 @@ part 'current_weather_state.dart';
 class CurrentWeatherBloc
     extends Bloc<CurrentWeatherEvent, CurrentWeatherState> {
   Either<Coord, MalaysianCity> _location;
-  final ILocationService _locationService;
+
   final IForecastRepository _forecastRepository;
   final ICityRepository _cityRepository;
   final CityBloc _cityBloc;
-  
-  CurrentWeatherBloc(this._location, this._locationService,
-      this._forecastRepository, this._cityRepository, this._cityBloc)
-      : super(const CurrentWeatherInitial(null)) {
 
+  CurrentWeatherBloc(this._location, this._forecastRepository,
+      this._cityRepository, this._cityBloc)
+      : super(const CurrentWeatherInitial(null)) {
     on<OnLoadCurrentWeather>((event, emit) async {
       if ((state is CurrentWeatherInitial)) {
         emit(CurrentWeatherLoading(_location));
@@ -46,14 +43,6 @@ class CurrentWeatherBloc
       await _cityRepository.setCurrentWeatherCitySetting(event.city);
       add(OnRefreshCurrentWeather());
     }, transformer: droppable());
-
-    on<OnChangeCurrentWeatherToUserCurrentLocation>((event, emit) async {
-      final coordReponse = await _getUserCurrentLocation();
-      coordReponse.fold((exception) {}, (coord) {
-        _location = left(coord);
-        add(OnRefreshCurrentWeather());
-      });
-    }, transformer: droppable());
   }
 
   Future<void> _initCityConfig() async {
@@ -61,7 +50,7 @@ class CurrentWeatherBloc
     if (data != null) {
       _location = right(data);
     } else {
-      add(OnChangeCurrentWeatherToUserCurrentLocation());
+      //add(OnChangeCurrentWeatherToUserCurrentLocation());
     }
   }
 
@@ -75,11 +64,5 @@ class CurrentWeatherBloc
         (response) => right(isRefresh
             ? CurrentWeatherDoneRefresh(_location, weather: response)
             : CurrentWeatherDoneLoad(_location, weather: response)));
-  }
-
-  Future<Either<LocationException, Coord>> _getUserCurrentLocation() async {
-    final location = await _locationService.getLocation();
-    await _cityRepository.setCurrentWeatherCitySetting(null);
-    return right(Coord(lon: location.longitude!, lat: location.latitude!));
   }
 }

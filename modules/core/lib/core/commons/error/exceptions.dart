@@ -1,4 +1,3 @@
-
 import 'package:core/network/exception/api_exception.dart';
 import 'package:equatable/equatable.dart';
 
@@ -123,4 +122,5 @@ class LeadTokenMissingException extends BaseException {
 class InvalidUserRequestException extends BaseException {}
 
 class LocationException {}
+
 class LocationPermissionDeniedException extends LocationException {}

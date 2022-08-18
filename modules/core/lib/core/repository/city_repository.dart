@@ -44,17 +44,13 @@ class CityRepository implements ICityRepository {
     if (await localStorage.getData<bool>(PreferenceKeys.doneSetupCityBloc,
             defValue: false) !=
         true) {
-            final envDefaultSelectedForecastCity = sl
-              .get<AppEnv>()
-              .defaultSelectedForecastCity;
-      final defaultSelectedCity = data
-          .where((element) {
-          
-            return envDefaultSelectedForecastCity
-              .map((e) => e.toLowerCase())
-              .contains(element.city.toLowerCase());
-          })
-          .toList();
+      final envDefaultSelectedForecastCity =
+          sl.get<AppEnv>().defaultSelectedForecastCity;
+      final defaultSelectedCity = data.where((element) {
+        return envDefaultSelectedForecastCity
+            .map((e) => e.toLowerCase())
+            .contains(element.city.toLowerCase());
+      }).toList();
       if (defaultSelectedCity.length < envDefaultSelectedForecastCity.length) {
         defaultSelectedCity.addAll(data
             .where((element) => !defaultSelectedCity.contains(element))

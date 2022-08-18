@@ -8,7 +8,7 @@ part 'city.g.dart';
 
 @HiveType(typeId: HiveTypeId.malaysianCity)
 @JsonSerializable(fieldRename: FieldRename.snake)
-class MalaysianCity extends WeatherLocation{
+class MalaysianCity extends WeatherLocation {
   @HiveField(0)
   final String city;
   @HiveField(1)
@@ -29,7 +29,7 @@ class MalaysianCity extends WeatherLocation{
   final String populationProper;
 
   const MalaysianCity(
-    { required this.city,
+      {required this.city,
       required this.lat,
       required this.lng,
       required this.country,
@@ -39,14 +39,14 @@ class MalaysianCity extends WeatherLocation{
       required this.population,
       required this.populationProper});
 
-     factory MalaysianCity.fromJson(Map<String, dynamic> json) =>
+  factory MalaysianCity.fromJson(Map<String, dynamic> json) =>
       _$MalaysianCityFromJson(json);
   Map<String, dynamic> toJson() => _$MalaysianCityToJson(this);
 
   @override
-  Coord get coord=>Coord(lon: double.tryParse(lng)?? 0, lat: double.tryParse(lat) ?? 0);
-  
+  Coord get coord =>
+      Coord(lon: double.tryParse(lng) ?? 0, lat: double.tryParse(lat) ?? 0);
+
   @override
-  List<Object?> get props => [city,coord];
-  
+  List<Object?> get props => [city, coord];
 }

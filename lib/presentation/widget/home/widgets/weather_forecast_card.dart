@@ -22,7 +22,8 @@ class WeatherForecastCard extends StatefulWidget {
   State<WeatherForecastCard> createState() => _WeatherForecastCardState();
 }
 
-class _WeatherForecastCardState extends State<WeatherForecastCard> with AutomaticKeepAliveClientMixin{
+class _WeatherForecastCardState extends State<WeatherForecastCard>
+    with AutomaticKeepAliveClientMixin {
   late final WeatherForecastBloc _weatherForecastBloc;
 
   @override
@@ -46,9 +47,8 @@ class _WeatherForecastCardState extends State<WeatherForecastCard> with Automati
               _weatherForecastBloc.add(OnRefreshWeatherForecast());
             }
           },
-            onDoubleTap: (){
-               _weatherForecastBloc
-                  .add(OnRefreshWeatherForecast());
+          onDoubleTap: () {
+            _weatherForecastBloc.add(OnRefreshWeatherForecast());
           },
           child: AnimatedContainer(
               margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
@@ -116,12 +116,12 @@ class _WeatherForecastCardState extends State<WeatherForecastCard> with Automati
                                                             context: context,
                                                             enableDrag: true,
                                                             builder: (context) {
-                                                              
                                                               return CurrentWeatherCard
                                                                   .withForecastResult(
                                                                 weatherForecast:
                                                                     e,
-                                                                    city: widget.city,
+                                                                city:
+                                                                    widget.city,
                                                               );
                                                             });
                                                       },
@@ -249,7 +249,7 @@ class _WeatherForecastCardState extends State<WeatherForecastCard> with Automati
       ],
     );
   }
-  
+
   @override
   bool get wantKeepAlive => true;
 }

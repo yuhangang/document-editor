@@ -9,8 +9,6 @@ abstract class ILogger {
   void wtf(dynamic message, [dynamic error, StackTrace? stackTrace]);
 }
 
-
-
 class AppLogger implements ILogger {
   final Logger _logger;
 

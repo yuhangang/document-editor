@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:weatherapp/presentation/widget/home/widgets/weather_card_utils.dart';
 
 class MalaysianCityListTile extends StatelessWidget {
-
   const MalaysianCityListTile({
     Key? key,
     required this.city,
@@ -12,13 +11,12 @@ class MalaysianCityListTile extends StatelessWidget {
   }) : super(key: key);
 
   final MalaysianCity city;
-    final bool isFocus;
-    final VoidCallback onTap;
+  final bool isFocus;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -46,8 +44,7 @@ class MalaysianCityListTile extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        WeatherCardHelper
-                            .getStateCountryDescription(city),
+                        WeatherCardHelper.getStateCountryDescription(city),
                         textAlign: TextAlign.right,
                         style: Theme.of(context)
                             .textTheme
@@ -61,18 +58,17 @@ class MalaysianCityListTile extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
-                            height: 10,
-                            width: 10,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: isFocus
-                                    ? Colors.red[700]
-                                    : Colors.transparent,
-                                border: Border.all(
-                                    color: !isFocus
-                                        ? Colors.brown
-                                        : Colors.transparent)),
-                          ),
+                        height: 10,
+                        width: 10,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color:
+                                isFocus ? Colors.red[700] : Colors.transparent,
+                            border: Border.all(
+                                color: !isFocus
+                                    ? Colors.brown
+                                    : Colors.transparent)),
+                      ),
                     )
                   ],
                 ),

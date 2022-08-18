@@ -18,7 +18,7 @@ mixin ApiClientExceptionHandler {
           return ParsingException();
         }
       }
-   
+
       return UnknownException();
     }
   }

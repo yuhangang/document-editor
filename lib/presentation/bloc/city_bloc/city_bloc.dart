@@ -1,5 +1,3 @@
-
-
 import 'package:bloc/bloc.dart';
 import 'package:core/core/model/city.dart';
 import 'package:core/core/repository/i_city_repository.dart';
@@ -10,7 +8,7 @@ part 'city_event.dart';
 part 'city_state.dart';
 
 class CityBloc extends Bloc<CityEvent, CityState> {
- final ICityRepository _cityRepository;
+  final ICityRepository _cityRepository;
 
   CityBloc(
     this._cityRepository,
@@ -18,7 +16,7 @@ class CityBloc extends Bloc<CityEvent, CityState> {
     on<OnLoadCity>((event, emit) async {
       emit(CityLoading());
       final newState = await _loadCityData(shouldRefresh: event.isRefresh);
-     
+
       emit(newState.fold((l) => l, (r) => r));
     });
 
@@ -32,12 +30,15 @@ class CityBloc extends Bloc<CityEvent, CityState> {
     });
   }
 
-  Future<Either<CityLoadFailed, CityDoneLoad>> _loadCityData({bool shouldRefresh = false}) async {
-    final response = await _cityRepository.getCityList(shouldRefresh: shouldRefresh);
+  Future<Either<CityLoadFailed, CityDoneLoad>> _loadCityData(
+      {bool shouldRefresh = false}) async {
+    final response =
+        await _cityRepository.getCityList(shouldRefresh: shouldRefresh);
     final selectedCityResponse = await _cityRepository.getSelectedCityList();
 
     return response.fold(
-        (exception) => left(CityLoadFailed(selectedCities: selectedCityResponse,exception: exception)),
+        (exception) => left(CityLoadFailed(
+            selectedCities: selectedCityResponse, exception: exception)),
         (cityList) => right(CityDoneLoad(
             cities: cityList, selectedCities: selectedCityResponse)));
   }
@@ -57,13 +58,18 @@ class CityBloc extends Bloc<CityEvent, CityState> {
           fetchSelectedCityFunction) async {
     final selectedCityListResponse = await fetchSelectedCityFunction();
 
-    final selectedCities =  (selectedCityListResponse.isLeft())? await _cityRepository.getSelectedCityList(): <MalaysianCity>[];
-    return selectedCityListResponse
-        .fold((exception) => left(CityLoadFailed(selectedCities: selectedCityListResponse.fold((l)=> selectedCities, (r) => r),exception: exception)),
-            (selectedCities) async {
+    final selectedCities = (selectedCityListResponse.isLeft())
+        ? await _cityRepository.getSelectedCityList()
+        : <MalaysianCity>[];
+    return selectedCityListResponse.fold(
+        (exception) => left(CityLoadFailed(
+            selectedCities:
+                selectedCityListResponse.fold((l) => selectedCities, (r) => r),
+            exception: exception)), (selectedCities) async {
       final cityListResponse = await _cityRepository.getCityList();
       return cityListResponse.fold(
-          (exception) => left(CityLoadFailed(selectedCities: selectedCities,exception: exception)),
+          (exception) => left(CityLoadFailed(
+              selectedCities: selectedCities, exception: exception)),
           (cities) => right(
               CityDoneLoad(cities: cities, selectedCities: selectedCities)));
     });

@@ -7,17 +7,15 @@ abstract class CityEvent extends Equatable {
 }
 
 class OnLoadCity extends CityEvent {
-
   bool get isRefresh => false;
 }
 
 class OnRefreshCity extends OnLoadCity {
-
   @override
   bool get isRefresh => true;
 }
 
-class OnAddSelectedCity extends CityEvent{
+class OnAddSelectedCity extends CityEvent {
   final MalaysianCity city;
 
   const OnAddSelectedCity({
@@ -25,7 +23,7 @@ class OnAddSelectedCity extends CityEvent{
   });
 }
 
-class OnRemoveSelectedCity extends CityEvent{
+class OnRemoveSelectedCity extends CityEvent {
   final MalaysianCity city;
 
   const OnRemoveSelectedCity({

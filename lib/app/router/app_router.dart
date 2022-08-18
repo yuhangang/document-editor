@@ -5,8 +5,7 @@ import 'package:weatherapp/presentation/widget/home/home_page.dart';
 
 GoRouter getRouter() => GoRouter(routes: [
       GoRoute(
-          path: app_path.home,
-          builder: (context, state) => const HomePage()),
+          path: app_path.home, builder: (context, state) => const HomePage()),
       GoRoute(
           path: app_path.forecastCitySelection,
           builder: (context, state) => const ForecastCitySelectionPage())

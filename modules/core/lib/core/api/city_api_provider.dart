@@ -1,5 +1,3 @@
-
-
 import 'package:core/core/api/i_city_api_provider.dart';
 import 'package:core/core/commons/app_env.dart';
 import 'package:core/core/commons/error/api_exception_handler.dart';
@@ -23,16 +21,15 @@ class CityApiProvider
       final HttpResponse<List<dynamic>> res =
           await client.get<List<dynamic>>(appEnv.cityListJsonApiRoute);
 
-      final response = (res.data!)
-          .map((json) => MalaysianCity.fromJson(json))
-          .toList();
+      final response =
+          (res.data!).map((json) => MalaysianCity.fromJson(json)).toList();
       return response;
     } on DioError catch (exception) {
       throw apiExceptionHandler(exception);
     } on Error catch (error) {
       throw apiExceptionHandler(Exception(error.toString()), error: error);
-    } catch (e){
-       throw apiExceptionHandler(Exception(''), error: Error());
+    } catch (e) {
+      throw apiExceptionHandler(Exception(''), error: Error());
     }
   }
 }

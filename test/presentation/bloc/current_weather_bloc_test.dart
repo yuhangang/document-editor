@@ -20,11 +20,9 @@ void main() {
   final mockMalaysianCity = MockMalaysianCity();
   final Either<Coord, MalaysianCity> mockLocationToBeSwitch =
       right(mockMalaysianCity);
-  final MockLocationData mockLocationData = MockLocationData();
   final MockCurrentWeather mockCurrentWeather = MockCurrentWeather();
   final MockException mockException = MockException();
   final MockCityBloc mockCityBloc = MockCityBloc();
-  final MockILocationService mockILocationService = MockILocationService();
   final MockICityRepository mockICityRepository = MockICityRepository();
   final StreamController<CityState> cityStateStreamController =
       StreamController<CityState>();
@@ -32,11 +30,7 @@ void main() {
   group('test CurrentWeatherBloc', () {
     setUp(() {
       currentWeatherBloc = CurrentWeatherBloc(
-          mockLocation,
-          mockILocationService,
-          iForecastRepository,
-          mockICityRepository,
-          mockCityBloc);
+          mockLocation, iForecastRepository, mockICityRepository, mockCityBloc);
       when(mockMalaysianCity.coord).thenReturn(mockMalaysianCityCoord);
       when(mockCityBloc.stream)
           .thenAnswer((_) => cityStateStreamController.stream);
@@ -58,7 +52,7 @@ void main() {
                 coord: mockMalaysianCity.coord))
             .thenAnswer(
                 (realInvocation) => Future.value(right(mockCurrentWeather)));
-            when(mockMalaysianCity.coord).thenReturn(mockMalaysianCityCoord);
+        when(mockMalaysianCity.coord).thenReturn(mockMalaysianCityCoord);
         return currentWeatherBloc;
       },
       act: (_) async {
@@ -134,36 +128,6 @@ void main() {
       expect: () => [
         isA<CurrentWeatherLoading>(),
         CurrentWeatherDoneRefresh(mockLocationToBeSwitch,
-            weather: mockCurrentWeather)
-      ],
-    );
-
-    blocTest<CurrentWeatherBloc, CurrentWeatherState>(
-      """
-    testing CurrentWeatherBloc emit OnChangeCurrentWeatherToUserCurrentLocation,
-    when add OnLoadCurrentWeather event,
-    getCurrentWeatherByCoordinate() is Success
-    """,
-      build: () {
-        currentWeatherBloc = CurrentWeatherBloc(
-            mockLocationToBeSwitch,
-            mockILocationService,
-            iForecastRepository,
-            mockICityRepository,
-            mockCityBloc);
-        when(iForecastRepository.getCurrentWeatherByCoordinate(
-                coord: mockCoord))
-            .thenAnswer((_) => Future.value(right(mockCurrentWeather)));
-        when(mockLocationData.latitude).thenReturn(1);
-        when(mockLocationData.longitude).thenReturn(2);
-        when(mockILocationService.getLocation())
-            .thenAnswer((realInvocation) => Future.value(mockLocationData));
-        return currentWeatherBloc;
-      },
-      act: (_) => _.add(OnChangeCurrentWeatherToUserCurrentLocation()),
-      expect: () => [
-        isA<CurrentWeatherLoading>(),
-        CurrentWeatherDoneRefresh(left(const Coord(lat: 1, lon: 2)),
             weather: mockCurrentWeather)
       ],
     );

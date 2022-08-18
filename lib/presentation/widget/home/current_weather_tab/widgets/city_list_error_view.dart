@@ -16,9 +16,15 @@ class CityListErrorView extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text("Failed to Fetch City List"),
-            TextButton(onPressed: (){
-              BlocProvider.of<CityBloc>(context).add(OnRefreshCity());
-            },child:  Text("Tap to Refresh",style: TextStyle(color: Colors.brown[800]),),)
+            TextButton(
+              onPressed: () {
+                BlocProvider.of<CityBloc>(context).add(OnRefreshCity());
+              },
+              child: Text(
+                "Tap to Refresh",
+                style: TextStyle(color: Colors.brown[800]),
+              ),
+            )
           ],
         ),
       ),

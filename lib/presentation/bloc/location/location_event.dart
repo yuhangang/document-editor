@@ -6,3 +6,5 @@ abstract class LocationEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class OnSetUserCurrentLocation extends LocationEvent {}

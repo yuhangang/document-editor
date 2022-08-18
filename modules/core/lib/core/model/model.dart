@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class CurrentWeather{
+class CurrentWeather {
   final Coord coord;
   final List<Weather> weather;
   final String base;
@@ -34,7 +34,7 @@ class CurrentWeather{
       required this.name,
       required this.cod});
 
-    factory CurrentWeather.fromJson(Map<String, dynamic> json) =>
+  factory CurrentWeather.fromJson(Map<String, dynamic> json) =>
       _$CurrentWeatherFromJson(json);
   Map<String, dynamic> toJson() => _$CurrentWeatherToJson(this);
 }
@@ -47,13 +47,11 @@ class Coord extends Equatable {
     required this.lon,
     required this.lat,
   });
-  factory Coord.fromJson(Map<String, dynamic> json) =>
-      _$CoordFromJson(json);
+  factory Coord.fromJson(Map<String, dynamic> json) => _$CoordFromJson(json);
   Map<String, dynamic> toJson() => _$CoordToJson(this);
-  
-  @override
-  List<Object?> get props => [lon,lat];
 
+  @override
+  List<Object?> get props => [lon, lat];
 
   @override
   String toString() => 'Coord(lon: $lon, lat: $lat)';
@@ -75,19 +73,17 @@ class CurrentWeatherMainData {
       required this.tempMax,
       required this.pressure,
       required this.humidity});
-    factory CurrentWeatherMainData.fromJson(Map<String, dynamic> json) =>
+  factory CurrentWeatherMainData.fromJson(Map<String, dynamic> json) =>
       _$CurrentWeatherMainDataFromJson(json);
   Map<String, dynamic> toJson() => _$CurrentWeatherMainDataToJson(this);
 }
-
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class Clouds {
   final int all;
 
   Clouds({required this.all});
-    factory Clouds.fromJson(Map<String, dynamic> json) =>
-      _$CloudsFromJson(json);
+  factory Clouds.fromJson(Map<String, dynamic> json) => _$CloudsFromJson(json);
   Map<String, dynamic> toJson() => _$CloudsToJson(this);
 }
 
@@ -107,8 +103,7 @@ class Sys {
       required this.country,
       required this.sunrise,
       required this.sunset});
-      factory Sys.fromJson(Map<String, dynamic> json) =>
-      _$SysFromJson(json);
+  factory Sys.fromJson(Map<String, dynamic> json) => _$SysFromJson(json);
   Map<String, dynamic> toJson() => _$SysToJson(this);
 }
 
@@ -120,8 +115,13 @@ class WeatherForecastFiveDay {
   final List<WeatherForecast> list;
   final City city;
 
-  WeatherForecastFiveDay({required this.cod, required this.message,required this.cnt,required this.list,required this.city});
-    factory WeatherForecastFiveDay.fromJson(Map<String, dynamic> json) =>
+  WeatherForecastFiveDay(
+      {required this.cod,
+      required this.message,
+      required this.cnt,
+      required this.list,
+      required this.city});
+  factory WeatherForecastFiveDay.fromJson(Map<String, dynamic> json) =>
       _$WeatherForecastFiveDayFromJson(json);
   Map<String, dynamic> toJson() => _$WeatherForecastFiveDayToJson(this);
 }
@@ -139,7 +139,7 @@ class WeatherForecast {
   final String dtTxt;
 
   WeatherForecast(
-    { required this.dt,
+      {required this.dt,
       required this.main,
       required this.weather,
       required this.clouds,
@@ -149,7 +149,7 @@ class WeatherForecast {
       required this.sys,
       required this.dtTxt});
 
-    factory WeatherForecast.fromJson(Map<String, dynamic> json) =>
+  factory WeatherForecast.fromJson(Map<String, dynamic> json) =>
       _$WeatherForecastFromJson(json);
   Map<String, dynamic> toJson() => _$WeatherForecastToJson(this);
 }
@@ -167,7 +167,7 @@ class ForecastMainData {
   final double tempKf;
 
   ForecastMainData(
-     {required this.temp,
+      {required this.temp,
       required this.feelsLike,
       required this.tempMin,
       required this.tempMax,
@@ -176,7 +176,7 @@ class ForecastMainData {
       required this.grndLevel,
       required this.humidity,
       required this.tempKf});
-        factory ForecastMainData.fromJson(Map<String, dynamic> json) =>
+  factory ForecastMainData.fromJson(Map<String, dynamic> json) =>
       _$ForecastMainDataFromJson(json);
   Map<String, dynamic> toJson() => _$ForecastMainDataToJson(this);
 }
@@ -188,8 +188,12 @@ class Weather {
   final String description;
   final String icon;
 
-  Weather({required this.id, required this.main,required this.description,required this.icon});
-    factory Weather.fromJson(Map<String, dynamic> json) =>
+  Weather(
+      {required this.id,
+      required this.main,
+      required this.description,
+      required this.icon});
+  factory Weather.fromJson(Map<String, dynamic> json) =>
       _$WeatherFromJson(json);
   Map<String, dynamic> toJson() => _$WeatherToJson(this);
 }
@@ -205,11 +209,8 @@ class Wind {
     required this.gust,
   });
 
-    factory Wind.fromJson(Map<String, dynamic> json) =>
-      _$WindFromJson(json);
+  factory Wind.fromJson(Map<String, dynamic> json) => _$WindFromJson(json);
   Map<String, dynamic> toJson() => _$WindToJson(this);
-
-
 }
 
 @JsonSerializable(fieldRename: FieldRename.snake)
@@ -218,10 +219,9 @@ class ForecastSys {
 
   ForecastSys({required this.pod});
 
-    factory ForecastSys.fromJson(Map<String, dynamic> json) =>
+  factory ForecastSys.fromJson(Map<String, dynamic> json) =>
       _$ForecastSysFromJson(json);
   Map<String, dynamic> toJson() => _$ForecastSysToJson(this);
-
 }
 
 @JsonSerializable(fieldRename: FieldRename.snake)
@@ -236,15 +236,14 @@ class City {
   final int sunset;
 
   City(
-    {required this.id,
-     required  this.name,
-     required  this.coord,
-     required  this.country,
-     required  this.population,
-     required  this.timezone,
-     required  this.sunrise,
-     required  this.sunset});
-  factory City.fromJson(Map<String, dynamic> json) =>
-      _$CityFromJson(json);
+      {required this.id,
+      required this.name,
+      required this.coord,
+      required this.country,
+      required this.population,
+      required this.timezone,
+      required this.sunrise,
+      required this.sunset});
+  factory City.fromJson(Map<String, dynamic> json) => _$CityFromJson(json);
   Map<String, dynamic> toJson() => _$CityToJson(this);
 }

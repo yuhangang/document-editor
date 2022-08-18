@@ -1,4 +1,3 @@
-
 import 'package:core/core/model/city.dart';
 import 'package:core/core/model/model.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,10 +11,12 @@ abstract class WeatherCardHelper {
     return "${city.adminName}, ${city.country}";
   }
 
-  static String  getTodayDescription({DateTime? dateTime}) {
-    final time = dateTime??DateTime.now();
+  static String getTodayDescription({DateTime? dateTime}) {
+    final time = dateTime ?? DateTime.now();
 
-    return DateFormat(dateTime==null?'EEEE ,yyyy-MM-dd':'EEEE ,yyyy-MM-dd hh:00a').format(time);
+    return DateFormat(
+            dateTime == null ? 'EEEE ,yyyy-MM-dd' : 'EEEE ,yyyy-MM-dd hh:00a')
+        .format(time);
   }
 }
 

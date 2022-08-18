@@ -10,25 +10,26 @@ class ForecastRepository implements IForecastRepository {
     required this.apiProvider,
   });
   @override
-  Future<Either<Exception, CurrentWeather>> getCurrentWeatherByCoordinate({required Coord coord}) async{
+  Future<Either<Exception, CurrentWeather>> getCurrentWeatherByCoordinate(
+      {required Coord coord}) async {
     try {
-      final data = await apiProvider.getCurrentWeatherByCoordinate(coord: coord);
+      final data =
+          await apiProvider.getCurrentWeatherByCoordinate(coord: coord);
       return Right(data);
-    }
-    catch (e){
-      return left(e is Exception? e : UnknownException());
+    } catch (e) {
+      return left(e is Exception ? e : UnknownException());
     }
   }
 
   @override
-  Future<Either<Exception, WeatherForecastFiveDay>> getFiveDayWeatherForecastByCoordinate({required Coord coord}) async{
-      try {
-      final data = await apiProvider.getFiveDayWeatherForecastByCoordinate(coord: coord);
+  Future<Either<Exception, WeatherForecastFiveDay>>
+      getFiveDayWeatherForecastByCoordinate({required Coord coord}) async {
+    try {
+      final data =
+          await apiProvider.getFiveDayWeatherForecastByCoordinate(coord: coord);
       return Right(data);
-    }
-    catch (e){
-      return left(e is Exception? e : UnknownException());
+    } catch (e) {
+      return left(e is Exception ? e : UnknownException());
     }
   }
-
 }

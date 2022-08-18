@@ -17,27 +17,25 @@ class WeatherForecastBloc
   ) : super(WeatherForecastInitial()) {
     on<OnLoadWeatherForecast>((event, emit) async {
       emit(WeatherForecastLoading());
-      final state = await _fetchWeatherForecastBasedOnCoord(
-          isRefresh: event.isRefresh);
+      final state =
+          await _fetchWeatherForecastBasedOnCoord(isRefresh: event.isRefresh);
       emit(state.fold((l) => l, (r) => r));
     });
 
-    on<OnChangeWeatherForecastLocation>((event,emit){
+    on<OnChangeWeatherForecastLocation>((event, emit) {
       _coord = event.coord;
       add(OnRefreshWeatherForecast());
     });
   }
 
   Future<Either<WeatherForecastFailed, WeatherForecastDoneLoad>>
-      _fetchWeatherForecastBasedOnCoord(
-          {required bool isRefresh}) async {
-    final currentWeatherResponse =
-        await _forecastRepository.getFiveDayWeatherForecastByCoordinate(coord: _coord);
+      _fetchWeatherForecastBasedOnCoord({required bool isRefresh}) async {
+    final currentWeatherResponse = await _forecastRepository
+        .getFiveDayWeatherForecastByCoordinate(coord: _coord);
     return currentWeatherResponse.fold(
         (exception) => left(WeatherForecastFailed(exception: exception)),
         (response) => right(isRefresh
             ? WeatherForecastDoneRefresh(forecast: response)
             : WeatherForecastDoneLoad(forecast: response)));
   }
-
 }

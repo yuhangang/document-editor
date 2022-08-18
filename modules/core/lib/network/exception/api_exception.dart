@@ -1,4 +1,3 @@
-
 class ApiException {
   final int responseCode;
   final String responseMessage;
@@ -8,18 +7,13 @@ class ApiException {
       {required this.responseCode,
       required this.responseMessage,
       required this.response});
-
- 
 }
 
 class Response {
   final List<Errors> errors;
 
   Response({required this.errors});
-
-  
 }
-
 
 class Errors {
   final String errorCode;
@@ -34,9 +28,7 @@ class Errors {
       required this.errorDescription,
       required this.errorDebugDescription,
       this.errorAttributes});
-
 }
-
 
 class ErrorAttributes {
   final String? integrationType;

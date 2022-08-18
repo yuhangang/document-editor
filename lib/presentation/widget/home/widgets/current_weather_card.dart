@@ -32,7 +32,8 @@ class CurrentWeatherCard extends StatefulWidget {
   State<CurrentWeatherCard> createState() => _CurrentWeatherCardState();
 }
 
-class _CurrentWeatherCardState extends State<CurrentWeatherCard> with AutomaticKeepAliveClientMixin{
+class _CurrentWeatherCardState extends State<CurrentWeatherCard>
+    with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     super.initState();
@@ -81,9 +82,9 @@ class _CurrentWeatherCardState extends State<CurrentWeatherCard> with AutomaticK
                   .add(OnRefreshCurrentWeather());
             }
           },
-          onDoubleTap: (){
-             BlocProvider.of<CurrentWeatherBloc>(context)
-                  .add(OnRefreshCurrentWeather());
+          onDoubleTap: () {
+            BlocProvider.of<CurrentWeatherBloc>(context)
+                .add(OnRefreshCurrentWeather());
           },
           child: AspectRatio(
             aspectRatio: 5 / 4,
@@ -288,7 +289,7 @@ class _CurrentWeatherCardState extends State<CurrentWeatherCard> with AutomaticK
       ],
     );
   }
-  
+
   @override
   bool get wantKeepAlive => true;
 }

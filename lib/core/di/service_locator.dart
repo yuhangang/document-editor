@@ -12,20 +12,18 @@ import 'package:weatherapp/presentation/bloc/weather_forecast_bloc/weather_forec
 import 'package:dartz/dartz.dart';
 
 Future<void> configureAppServiceLocator(GetIt sl, AppEnv env) async {
-   sl.registerFactory<LocationBloc>(() => LocationBloc(
-      left(env.defaultLocation),
-      sl.get<ILocationService>(),
-      sl.get<IForecastRepository>(),));
-    
+  sl.registerFactory<LocationBloc>(
+      () => LocationBloc(sl.get<ILocationService>()));
+
   sl.registerFactory<CityBloc>(() => CityBloc(
         sl.get<ICityRepository>(),
       ));
   sl.registerFactory<CurrentWeatherBloc>(() => CurrentWeatherBloc(
       left(env.defaultLocation),
-      sl.get<ILocationService>(),
       sl.get<IForecastRepository>(),
       sl.get<ICityRepository>(),
       sl.get<CityBloc>()));
+
   sl.registerFactoryParam<WeatherForecastBloc, Coord, void>(
     (coord, _) => WeatherForecastBloc(coord, sl.get<IForecastRepository>()),
   );

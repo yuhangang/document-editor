@@ -1,7 +1,5 @@
-
-
 import 'package:core/core/model/city.dart';
 
-abstract class ICityApiProvider{
+abstract class ICityApiProvider {
   Future<List<MalaysianCity>> getMalaysianCityList();
 }
