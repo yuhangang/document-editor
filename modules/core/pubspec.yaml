@@ -17,13 +17,13 @@ dependencies:
   device_info_plus: ^3.2.1
   logger: ^1.1.0
   equatable: ^2.0.3
-  json_annotation: ^4.4.0
+  json_annotation: 4.5.0
   ota_string: ^0.0.3
   intl: ^0.17.0
-  mockito: ^5.0.17
   location: ^4.4.0
   permission_handler: ^8.3.0
   fluttertoast: ^8.0.9
+  mockito: 5.0.17
   
 
   storage: 
@@ -34,7 +34,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^1.0.0
-  build_runner: ^2.1.11
+  build_runner: 
   json_serializable: ^6.1.4
   build_verify: ^3.0.0
   hive_generator:

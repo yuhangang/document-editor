@@ -43,7 +43,7 @@ dependencies:
   bloc_concurrency: 0.2.0
 
   # Dart data class
-  json_annotation: 4.4.0
+  json_annotation: 4.5.0
   equatable: 2.0.3
   
   #Misc
