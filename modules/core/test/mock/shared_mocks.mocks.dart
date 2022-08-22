@@ -2,6 +2,7 @@
 // in core/test/mock/shared_mocks.dart.
 // Do not manually edit this file.
 
+// ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i7;
 
 import 'package:core/core/commons/utils/service/location/i_location_service.dart'
