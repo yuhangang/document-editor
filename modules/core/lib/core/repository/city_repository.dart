@@ -4,6 +4,8 @@ import 'package:core/core/commons/app_env.dart';
 import 'package:core/core/commons/error/exceptions.dart';
 import 'package:core/core/di/service_locator.dart';
 import 'package:core/core/model/city.dart';
+import 'package:core/core/model/country/continent.dart';
+import 'package:core/core/model/db_tables/continent_table.dart';
 import 'package:core/core/repository/i_city_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:storage/config/pref_config.dart';
@@ -21,6 +23,7 @@ class CityRepository implements ICityRepository {
   @override
   Future<Either<Exception, List<MalaysianCity>>> getCityList(
       {bool shouldRefresh = false}) async {
+    await getContinentList();
     try {
       if (!shouldRefresh) {
         final cachedCityList = await localStorage
@@ -128,5 +131,16 @@ class CityRepository implements ICityRepository {
       }
       // ignore: empty_catches
     } catch (e) {}
+  }
+
+  Future<Either<Exception, List<Continent>>> getContinentList() async {
+    try {
+      final continentList = await cityApiProvider.getContinentList();
+      await sl.get<ContinentTable>().insertBulk(continentList);
+      //final data = await sl.get<ContinentTable>().readList();
+      return Right(continentList);
+    } catch (e) {
+      return Left(e is Exception ? e : UnknownException());
+    }
   }
 }
