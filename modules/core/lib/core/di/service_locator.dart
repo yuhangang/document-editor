@@ -8,6 +8,7 @@ import 'package:core/core/commons/utils/service/location/i_location_service.dart
 import 'package:core/core/commons/utils/service/location/location_service.dart';
 import 'package:core/core/model/city.dart';
 import 'package:core/core/model/db_tables/city_table.dart';
+import 'package:core/core/model/db_tables/country_table.dart';
 import 'package:core/core/repository/city_repository.dart';
 import 'package:core/core/repository/forecast_repository.dart';
 import 'package:core/core/repository/i_city_repository.dart';
@@ -36,8 +37,13 @@ Future<void> configureCoreServiceLocator(AppEnv env,
     Hive.registerAdapter(MalaysianCityAdapter());
   }));
   sl.registerLazySingleton<ContinentTable>(() => ContinentTable());
+  sl.registerLazySingleton<CountryTable>(() => CountryTable());
   sl.registerLazySingleton<CityTable>(() => CityTable());
-  final dbHelper = DatabaseHelper(tables: [sl.get<ContinentTable>()]);
+  final dbHelper = DatabaseHelper(tables: [
+    sl.get<ContinentTable>(),
+    sl.get<CountryTable>(),
+    sl.get<CityTable>()
+  ]);
   await dbHelper.init();
   sl.registerSingleton<DatabaseHelper>(dbHelper);
 

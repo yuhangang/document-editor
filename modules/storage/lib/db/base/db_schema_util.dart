@@ -14,20 +14,44 @@ enum SqliteFieldType {
   const SqliteFieldType(this.value);
 }
 
+class SqfFieldWithRelation extends SqfField {
+  final String foreignTableColumnName;
+  final String foreignTableName;
+  final SqlOnDeleteConstraint constraint;
+  const SqfFieldWithRelation(
+    super.name, {
+    required super.fieldType,
+    super.isPk = false,
+    super.isNotNull = true,
+    super.isUnique = false,
+    required this.foreignTableColumnName,
+    required this.foreignTableName,
+    this.constraint = SqlOnDeleteConstraint.cascade,
+  });
+
+  String get relationText => "FOREIGN KEY ($name) REFERENCES $foreignTableName "
+      "($foreignTableColumnName) "
+      "${constraint.value} ";
+}
+
 class SqfField {
   final String name;
   final SqliteFieldType fieldType;
   final bool isPk;
   final bool isNotNull;
   final bool isUnique;
-  final bool isEnd;
 
   const SqfField(this.name,
       {required this.fieldType,
       this.isPk = false,
       this.isNotNull = true,
-      this.isUnique = false,
-      this.isEnd = false});
+      this.isUnique = false});
+
+  @override
+  String toString() {
+    return "$name ${fieldType.value}${isPk ? ' PRIMARY KEY' : ''}"
+        "${isNotNull ? ' NOT NULL' : ''}";
+  }
 }
 
 abstract class DBHelper {
@@ -50,11 +74,9 @@ abstract class DBHelper {
       "${isEnd ? '' : ',\n'}";
 
   static String buildSqliteUniqueConstraints(
-      {required List<String> tableNames, bool isEnd = false}) {
+      {required List<String> tableNames}) {
     assert(tableNames.length >= 2);
-    return "UNIQUE(${List.generate(tableNames.length, (index) => "${tableNames[index]}"
-            " ${index < tableNames.length - 1 ? "," : ""}").join("")}) "
-        "${isEnd ? '' : ',\n'}";
+    return "UNIQUE(${tableNames.join(", ")})";
   }
 
   static String buildSqliteIntegerLine(String column,

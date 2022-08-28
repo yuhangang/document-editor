@@ -7,6 +7,7 @@ part of 'country.dart';
 // **************************************************************************
 
 Country _$CountryFromJson(Map<String, dynamic> json) => Country(
+      code: json['code'] as String,
       name: json['name'] as String,
       native: json['native'] as String,
       continent: json['continent'] as String,
@@ -14,6 +15,7 @@ Country _$CountryFromJson(Map<String, dynamic> json) => Country(
     );
 
 Map<String, dynamic> _$CountryToJson(Country instance) => <String, dynamic>{
+      'code': instance.code,
       'name': instance.name,
       'native': instance.native,
       'continent': instance.continent,

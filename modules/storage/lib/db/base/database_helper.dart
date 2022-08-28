@@ -16,6 +16,10 @@ class DatabaseHelper {
   Future<void> resetDB() async => deleteDatabase(await _getDBPath());
 
   Future<void> init({bool isReset = false}) async {
+    await Future.forEach<BaseObjectDBTable>(tables, (table) {
+      log(table.createTable);
+    });
+
     final String path = await _getDBPath();
     if (isReset) await deleteDatabase(path);
     _database = await openDatabase(path, version: 2,
@@ -23,6 +27,7 @@ class DatabaseHelper {
       final Batch batch = db.batch();
 
       await Future.forEach<BaseObjectDBTable>(tables, (table) {
+        log(table.createTable);
         batch.execute(table.createTable);
       });
 

@@ -5,12 +5,14 @@ part 'country.g.dart';
 //
 @JsonSerializable()
 class Country {
+  final String code;
   final String name;
   final String native;
   final String continent;
   final String capital;
 
   const Country({
+    required this.code,
     required this.name,
     required this.native,
     required this.continent,

@@ -11,6 +11,7 @@ abstract class BaseObjectDBTable<T> {
   Database get db => DatabaseHelper.database;
   String get id => "id";
   bool get isPKAutoIncrement => false;
+  List<SqfField> get fields;
 
   T toObject(Map<String, Object?> json);
 
@@ -20,7 +21,16 @@ abstract class BaseObjectDBTable<T> {
   ConflictAlgorithm get conflictAlgorithmInsert => ConflictAlgorithm.replace;
 
   /// put building script of columns of table, except "id" and "sync_status" which is handled by base class
-  String get createQuery;
+  String get createQuery {
+    final uniqueFieldsNames =
+        fields.where((element) => element.isUnique).map((e) => e.name).toList();
+    return [
+      ...fields.map((field) => field.toString()),
+      ...fields.whereType<SqfFieldWithRelation>().map((e) => e.relationText),
+      if (uniqueFieldsNames.isNotEmpty)
+        "UNIQUE(${uniqueFieldsNames.join(", ")})"
+    ].join(', ');
+  }
 
   /// unique indentifier of table
   final String tableName;

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:collection/collection.dart';
 import 'package:core/core/api/i_city_api_provider.dart';
 import 'package:core/core/commons/app_env.dart';
@@ -5,9 +7,14 @@ import 'package:core/core/commons/error/exceptions.dart';
 import 'package:core/core/di/service_locator.dart';
 import 'package:core/core/model/city.dart';
 import 'package:core/core/model/country/continent.dart';
+import 'package:core/core/model/country/country.dart';
+import 'package:core/core/model/country/world_city.dart';
+import 'package:core/core/model/db_tables/city_table.dart';
 import 'package:core/core/model/db_tables/continent_table.dart';
+import 'package:core/core/model/db_tables/country_table.dart';
 import 'package:core/core/repository/i_city_repository.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/services.dart';
 import 'package:storage/config/pref_config.dart';
 import 'package:storage/config/storage_config.dart';
 import 'package:storage/core/storage/i_local_storage.dart';
@@ -24,6 +31,8 @@ class CityRepository implements ICityRepository {
   Future<Either<Exception, List<MalaysianCity>>> getCityList(
       {bool shouldRefresh = false}) async {
     await getContinentList();
+    await getCountryList();
+    await getCityJsonList();
     try {
       if (!shouldRefresh) {
         final cachedCityList = await localStorage
@@ -135,10 +144,51 @@ class CityRepository implements ICityRepository {
 
   Future<Either<Exception, List<Continent>>> getContinentList() async {
     try {
-      final continentList = await cityApiProvider.getContinentList();
+      String data = await rootBundle
+          .loadString("modules/core/assets/json/continents.json");
+
+      final Map<String, dynamic> json = jsonDecode(data);
+      final continentList = json.entries
+          .map((e) => Continent.fromJson({'code': e.key, 'name': e.value}))
+          .toList();
       await sl.get<ContinentTable>().insertBulk(continentList);
       //final data = await sl.get<ContinentTable>().readList();
       return Right(continentList);
+    } catch (e) {
+      return Left(e is Exception ? e : UnknownException());
+    }
+  }
+
+  Future<Either<Exception, List<Country>>> getCountryList() async {
+    try {
+      String data = await rootBundle
+          .loadString("modules/core/assets/json/countries.json");
+
+      final Map<String, dynamic> json = jsonDecode(data);
+      final countryList = json.entries
+          .map((e) => Country.fromJson({'code': e.key, ...(e.value as Map)}))
+          .toList();
+      await sl.get<CountryTable>().insertBulk(countryList);
+      //final data = await sl.get<ContinentTable>().readList();
+      return Right(countryList);
+    } catch (e) {
+      return Left(e is Exception ? e : UnknownException());
+    }
+  }
+
+  Future<Either<Exception, List<WorldCity>>> getCityJsonList() async {
+    try {
+      String data =
+          await rootBundle.loadString("modules/core/assets/json/cities.json");
+
+      final List<dynamic> json = jsonDecode(data);
+      final cityList = json
+          .whereType<Map<String, dynamic>>()
+          .map((e) => WorldCity.fromJson(e))
+          .toList();
+      await sl.get<CityTable>().insertBulk(cityList);
+      //final data = await sl.get<ContinentTable>().readList();
+      return Right(cityList);
     } catch (e) {
       return Left(e is Exception ? e : UnknownException());
     }
