@@ -178,6 +178,8 @@ class CityRepository implements ICityRepository {
 
   Future<Either<Exception, List<WorldCity>>> getCityJsonList() async {
     try {
+      final continents = await cityApiProvider.getLocationData();
+      sl.get<ContinentTable>().insertBulk(continents);
       String data =
           await rootBundle.loadString("modules/core/assets/json/cities.json");
 
@@ -187,6 +189,7 @@ class CityRepository implements ICityRepository {
           .map((e) => WorldCity.fromJson(e))
           .toList();
       await sl.get<CityTable>().insertBulk(cityList);
+      // final city = sl.get<CityTable>().readList();
       //final data = await sl.get<ContinentTable>().readList();
       return Right(cityList);
     } catch (e) {

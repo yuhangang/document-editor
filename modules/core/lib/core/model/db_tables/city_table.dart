@@ -5,7 +5,9 @@ import 'package:storage/db/base/db_schema_util.dart';
 enum CityTableFields {
   name(SqfField('name',
       fieldType: SqliteFieldType.text, isPk: true, isUnique: true)),
-  country(SqfFieldWithRelation('country',
+  native(SqfField('native', fieldType: SqliteFieldType.text)),
+  capital(SqfField('native', fieldType: SqliteFieldType.text)),
+  country(SqfFieldWithRelation('countryID',
       fieldType: SqliteFieldType.text,
       isUnique: true,
       foreignTableName: 'country',

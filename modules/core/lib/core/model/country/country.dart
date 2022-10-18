@@ -1,3 +1,4 @@
+import 'package:core/core/model/country/world_city.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'country.g.dart';
@@ -8,16 +9,17 @@ class Country {
   final String code;
   final String name;
   final String native;
-  final String continent;
+  final String continentID;
   final String capital;
+  final List<WorldCity> cities;
 
-  const Country({
-    required this.code,
-    required this.name,
-    required this.native,
-    required this.continent,
-    required this.capital,
-  });
+  const Country(
+      {required this.code,
+      required this.name,
+      required this.native,
+      required this.continentID,
+      required this.capital,
+      required this.cities});
 
   factory Country.fromJson(Map<String, dynamic> json) =>
       _$CountryFromJson(json);

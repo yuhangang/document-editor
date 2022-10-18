@@ -5,14 +5,18 @@ part 'world_city.g.dart';
 //
 @JsonSerializable()
 class WorldCity {
+  final int id;
   final String name;
-  final String country;
-  final String lat;
-  final String lng;
+  final String countryID;
+  final String capital;
+  final double lat;
+  final double lng;
 
   const WorldCity({
+    required this.id,
     required this.name,
-    required this.country,
+    required this.countryID,
+    required this.capital,
     required this.lat,
     required this.lng,
   });

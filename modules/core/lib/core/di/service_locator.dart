@@ -32,7 +32,7 @@ Future<void> configureCoreServiceLocator(AppEnv env,
     {List<Future<void> Function(GetIt, AppEnv)> initializeFunctions =
         const []}) async {
   sl.registerSingleton<AppEnv>(env);
-  sl.registerSingleton<AppLogger>(AppLogger(Logger()));
+  sl.registerSingleton<ILogger>(AppLogger(Logger()));
   sl.registerSingleton<ILocalStorage>(HiveLocalStorage(() {
     Hive.registerAdapter(MalaysianCityAdapter());
   }));

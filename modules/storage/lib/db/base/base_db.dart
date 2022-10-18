@@ -6,6 +6,8 @@ import 'package:storage/db/base/database_helper.dart';
 import 'package:storage/db/base/db_schema_util.dart';
 import 'package:storage/db/helper/db_value_filter.dart';
 
+export 'package:sqflite/sqflite.dart' show ConflictAlgorithm;
+
 abstract class BaseObjectDBTable<T> {
   BaseObjectDBTable({required this.tableName});
   Database get db => DatabaseHelper.database;
