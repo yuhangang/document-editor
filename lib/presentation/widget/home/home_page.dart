@@ -38,6 +38,26 @@ class _HomePageState extends State<HomePage> {
             "Weather App",
             style: Theme.of(context).textTheme.headline6,
           ),
+          leading: Tooltip(
+            message: "Open Editor",
+            child: GestureDetector(
+              onTap: () {
+                GoRouter.of(context).push(app_path.editorPage);
+              },
+              behavior: HitTestBehavior.translucent,
+              child: Container(
+                margin: const EdgeInsets.only(right: 12),
+                padding: const EdgeInsets.all(5),
+                decoration: const BoxDecoration(
+                    color: Color.fromARGB(255, 238, 233, 233),
+                    shape: BoxShape.circle),
+                child: const Center(
+                    child: Icon(
+                  CupertinoIcons.pen,
+                )),
+              ),
+            ),
+          ),
           centerTitle: true,
           iconTheme:
               const IconThemeData(color: Color.fromARGB(255, 85, 76, 76)),

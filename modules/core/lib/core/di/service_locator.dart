@@ -36,9 +36,9 @@ Future<void> configureCoreServiceLocator(AppEnv env,
   sl.registerSingleton<ILocalStorage>(HiveLocalStorage(() {
     Hive.registerAdapter(MalaysianCityAdapter());
   }));
-  sl.registerLazySingleton<ContinentTable>(() => ContinentTable());
-  sl.registerLazySingleton<CountryTable>(() => CountryTable());
-  sl.registerLazySingleton<CityTable>(() => CityTable());
+  sl.registerSingleton<ContinentTable>(ContinentTable());
+  sl.registerSingleton<CountryTable>(CountryTable());
+  sl.registerSingleton<CityTable>(CityTable());
   final dbHelper = DatabaseHelper(tables: [
     sl.get<ContinentTable>(),
     sl.get<CountryTable>(),

@@ -7,21 +7,19 @@ import 'package:core/network/options.dart';
 import 'package:dio/dio.dart';
 
 class DioNetworkClient implements INetworkClient {
-  late Dio _dio;
-  late final IDeviceInfoUtils? deviceInfoUtils;
+  final Dio _dio;
+  final IDeviceInfoUtils? deviceInfoUtils;
 
-  final int connectionTimeout =
+  static const int connectionTimeout =
       30 * 1000; //30 seconds, default is never timeout
 
-  DioNetworkClient(BaseNetworkOptions networkOptions, {this.deviceInfoUtils}) {
-    var options = BaseOptions(
-      baseUrl: networkOptions.baseUrl,
-      headers: networkOptions.headers,
-      connectTimeout: connectionTimeout,
-      receiveTimeout: connectionTimeout,
-    );
-    _dio = Dio(options);
-  }
+  DioNetworkClient(BaseNetworkOptions networkOptions, {this.deviceInfoUtils})
+      : _dio = Dio(BaseOptions(
+          baseUrl: networkOptions.baseUrl,
+          headers: networkOptions.headers,
+          connectTimeout: connectionTimeout,
+          receiveTimeout: connectionTimeout,
+        ));
 
   @override
   void addLoggingInterceptor(ILogger logger) {

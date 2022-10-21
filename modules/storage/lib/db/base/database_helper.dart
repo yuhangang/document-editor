@@ -16,28 +16,33 @@ class DatabaseHelper {
   Future<void> resetDB() async => deleteDatabase(await _getDBPath());
 
   Future<void> init({bool isReset = false}) async {
-    await Future.forEach<BaseObjectDBTable>(tables, (table) {
-      log(table.createTable);
-    });
-
-    final String path = await _getDBPath();
-    if (isReset) await deleteDatabase(path);
-    _database = await openDatabase(path, version: 2,
-        onCreate: (Database db, int version) async {
-      final Batch batch = db.batch();
-
+    try {
+      log("init database ...");
       await Future.forEach<BaseObjectDBTable>(tables, (table) {
         log(table.createTable);
-        batch.execute(table.createTable);
       });
 
-      await batch.commit(noResult: true);
-    }, onUpgrade: (db, oldVer, newVer) {
-      if (newVer == 2) {
-        log('run');
-        //db.execute("ALTER TABLE ${WorkOrderDB.instance.tableName} ADD COLUMN ${WorkOrderDB.columnEngineerName} TEXT;");
-        //db.execute("ALTER TABLE ${WorkOrderDB.instance.tableName} ADD COLUMN ${WorkOrderDB.columnSOM} TEXT;");
-      }
-    });
+      final String path = await _getDBPath();
+      if (isReset) await deleteDatabase(path);
+      _database = await openDatabase(path, version: 2,
+          onCreate: (Database db, int version) async {
+        final Batch batch = db.batch();
+
+        await Future.forEach<BaseObjectDBTable>(tables, (table) {
+          log(table.createTable);
+          batch.execute(table.createTable);
+        });
+
+        await batch.commit(noResult: true);
+      }, onUpgrade: (db, oldVer, newVer) {
+        if (newVer == 2) {
+          log('run');
+          //db.execute("ALTER TABLE ${WorkOrderDB.instance.tableName} ADD COLUMN ${WorkOrderDB.columnEngineerName} TEXT;");
+          //db.execute("ALTER TABLE ${WorkOrderDB.instance.tableName} ADD COLUMN ${WorkOrderDB.columnSOM} TEXT;");
+        }
+      });
+    } catch (e) {
+      log("Error in init database $e");
+    }
   }
 }

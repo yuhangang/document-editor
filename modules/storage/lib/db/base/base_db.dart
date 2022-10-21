@@ -81,6 +81,7 @@ abstract class BaseObjectDBTable<T> {
   /// use this function when you need to insert large amount of data
   Future<void> insertBulk(List<T> items) async {
     await DatabaseHelper.database.transaction((txn) async {
+      log("yolo this 1");
       final batch = txn.batch();
       for (final e in items) {
         batch.insert(tableName, toJson(e),

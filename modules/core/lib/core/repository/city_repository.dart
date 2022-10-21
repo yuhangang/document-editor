@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:collection/collection.dart';
 import 'package:core/core/api/i_city_api_provider.dart';
@@ -9,7 +10,6 @@ import 'package:core/core/model/city.dart';
 import 'package:core/core/model/country/continent.dart';
 import 'package:core/core/model/country/country.dart';
 import 'package:core/core/model/country/world_city.dart';
-import 'package:core/core/model/db_tables/city_table.dart';
 import 'package:core/core/model/db_tables/continent_table.dart';
 import 'package:core/core/model/db_tables/country_table.dart';
 import 'package:core/core/repository/i_city_repository.dart';
@@ -30,9 +30,9 @@ class CityRepository implements ICityRepository {
   @override
   Future<Either<Exception, List<MalaysianCity>>> getCityList(
       {bool shouldRefresh = false}) async {
-    await getContinentList();
-    await getCountryList();
-    await getCityJsonList();
+    //await getContinentList();
+    //await getCountryList();
+    //await getCityJsonList();
     try {
       if (!shouldRefresh) {
         final cachedCityList = await localStorage
@@ -179,19 +179,20 @@ class CityRepository implements ICityRepository {
   Future<Either<Exception, List<WorldCity>>> getCityJsonList() async {
     try {
       final continents = await cityApiProvider.getLocationData();
-      sl.get<ContinentTable>().insertBulk(continents);
-      String data =
-          await rootBundle.loadString("modules/core/assets/json/cities.json");
+      await sl.get<ContinentTable>().insertBulk(continents);
+      log("yolo done!");
+      //String data =
+      //    await rootBundle.loadString("modules/core/assets/json/cities.json");
 
-      final List<dynamic> json = jsonDecode(data);
-      final cityList = json
-          .whereType<Map<String, dynamic>>()
-          .map((e) => WorldCity.fromJson(e))
-          .toList();
-      await sl.get<CityTable>().insertBulk(cityList);
+      // final List<dynamic> json = jsonDecode(data);
+      // final cityList = json
+      //     .whereType<Map<String, dynamic>>()
+      //     .map((e) => WorldCity.fromJson(e))
+      //     .toList();
+      //await sl.get<CityTable>().insertBulk(cityList);
       // final city = sl.get<CityTable>().readList();
       //final data = await sl.get<ContinentTable>().readList();
-      return Right(cityList);
+      return const Right([]);
     } catch (e) {
       return Left(e is Exception ? e : UnknownException());
     }

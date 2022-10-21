@@ -6,7 +6,7 @@ enum CityTableFields {
   name(SqfField('name',
       fieldType: SqliteFieldType.text, isPk: true, isUnique: true)),
   native(SqfField('native', fieldType: SqliteFieldType.text)),
-  capital(SqfField('native', fieldType: SqliteFieldType.text)),
+  capital(SqfField('capital', fieldType: SqliteFieldType.text)),
   country(SqfFieldWithRelation('countryID',
       fieldType: SqliteFieldType.text,
       isUnique: true,

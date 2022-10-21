@@ -42,6 +42,9 @@ class CountryTable extends BaseObjectDBTable<Country> {
         await sl.get<CityTable>().insertBulk(e.cities);
       }
       await batch.commit();
+      for (final e in items) {
+        await sl.get<CityTable>().insertBulk(e.cities);
+      }
     });
     //if (items is List<SignOffItem> && items.isNotEmpty) {
     //  log("${items.length} ${(items[0] as SignOffItem).workOrderId} item(s) inserted in bulk to $tableName");

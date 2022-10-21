@@ -37,7 +37,7 @@ class DeviceInfoUtils implements IDeviceInfoUtils {
             'Unknown iOS Device ${iosDeviceInfo.isPhysicalDevice}';
       } else {
         var androidDeviceInfo = await _deviceInfoPlugin.androidInfo;
-        return androidDeviceInfo.androidId ??
+        return androidDeviceInfo.id ??
             'Unknown Android Device ${androidDeviceInfo.isPhysicalDevice}';
       }
     }
