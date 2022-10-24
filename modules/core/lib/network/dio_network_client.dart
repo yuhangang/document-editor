@@ -63,6 +63,27 @@ class DioNetworkClient implements INetworkClient {
   }
 
   @override
+  Future<HttpResponse<T>> post<T>(String path,
+      {dynamic data,
+      Map<String, dynamic>? queryParameters,
+      String? contentType}) {
+    Options? buildCache;
+
+    return _dio
+        .post<T>(path,
+            data: data, queryParameters: queryParameters, options: buildCache)
+        .then((Response<T> res) {
+      _throwIfNoSuccess(res);
+      var response = HttpResponse<T>(
+          data: res.data!,
+          headers: res.headers.map,
+          statusCode: res.statusCode,
+          statusMessage: res.statusMessage);
+      return response;
+    });
+  }
+
+  @override
   Future<HttpResponse<T>> getUri<T>(String url) {
     return _dio.getUri<T>(Uri.parse(url)).then((Response<T> res) {
       _throwIfNoSuccess(res);

@@ -9,5 +9,8 @@ abstract class INetworkClient {
     Map<String, dynamic>? queryParameters,
   });
 
+  Future<HttpResponse<T>> post<T>(String path,
+      {dynamic data, Map<String, dynamic> queryParameters});
+
   Future<HttpResponse<T>> getUri<T>(String url);
 }
