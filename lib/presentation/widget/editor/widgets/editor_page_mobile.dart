@@ -1,6 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:weatherapp/presentation/bloc/editor/editor_bloc.dart';
 import 'package:weatherapp/presentation/widget/editor/widgets/rich_text_toolbar.dart';
 
 class EditorPageMobile extends StatelessWidget {
@@ -12,6 +13,9 @@ class EditorPageMobile extends StatelessWidget {
     required this.showFullToolBar,
     required this.isMobileLayout,
     required Animation<double> animation,
+    required this.onSaved,
+    required this.onChangedTitle,
+    required this.titleController,
   })  : _richTextController = richTextController,
         _focusNode = focusNode,
         _scrollController = scrollController,
@@ -24,6 +28,9 @@ class EditorPageMobile extends StatelessWidget {
   final ValueNotifier<bool> showFullToolBar;
   final bool isMobileLayout;
   final Animation<double> _animation;
+  final VoidCallback onSaved;
+  final void Function(String?) onChangedTitle;
+  final TextEditingController titleController;
 
   @override
   Widget build(BuildContext context) {
@@ -32,24 +39,54 @@ class EditorPageMobile extends StatelessWidget {
         Expanded(
           child: Scaffold(
             extendBodyBehindAppBar: true,
-            appBar: AppBar(backgroundColor: Colors.white70, actions: [
-              IconButton(
-                  onPressed: () {
-                    if (_richTextController.hasUndo) _richTextController.undo();
-                  },
-                  icon: const Icon(Icons.undo)),
-              IconButton(
-                  onPressed: () {
-                    if (_richTextController.hasRedo) _richTextController.redo();
-                  },
-                  icon: const Icon(Icons.redo)),
-            ]),
+            appBar: AppBar(
+              toolbarHeight: 55,
+              backgroundColor: Colors.blueAccent.withOpacity(0.1),
+              actions: [
+                IconButton(
+                    onPressed: () {
+                      if (_richTextController.hasUndo) {
+                        _richTextController.undo();
+                      }
+                    },
+                    icon: const Icon(Icons.undo)),
+                IconButton(
+                    onPressed: () {
+                      if (_richTextController.hasRedo) {
+                        _richTextController.redo();
+                      }
+                    },
+                    icon: const Icon(Icons.redo)),
+              ],
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(30.0),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  child: TextField(
+                    controller: titleController,
+                    onChanged: onChangedTitle,
+                    decoration: const InputDecoration.collapsed(
+                        hintText: "Title of Document"),
+                  ),
+                ),
+              ),
+            ),
             resizeToAvoidBottomInset: false,
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.endDocked,
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {},
-              child: const Icon(CupertinoIcons.pen),
+            floatingActionButton:
+                BlocBuilder<DocumentEditorBloc, DocumentEditorState>(
+              builder: (context, state) {
+                if (state is DocumentEditorChangeUnsaved) {
+                  return FloatingActionButton(
+                    onPressed: onSaved,
+                    child: const Icon(Icons.save),
+                  );
+                }
+
+                return const SizedBox.shrink();
+              },
             ),
             body: QuillEditor(
               autoFocus: true,
@@ -59,7 +96,7 @@ class EditorPageMobile extends StatelessWidget {
               scrollController: _scrollController,
               scrollable: true,
               padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).padding.top + 55,
+                  top: MediaQuery.of(context).padding.top + 100,
                   left: 16,
                   right: 16,
                   bottom: 50),

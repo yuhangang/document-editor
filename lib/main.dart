@@ -7,9 +7,12 @@ import 'package:core/core/di/service_locator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  await configureCoreServiceLocator(const AppEnvDev(),
-      initializeFunctions: [configureAppServiceLocator]);
+  await Future.wait([
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]),
+    configureCoreServiceLocator(const AppEnvDev(),
+        initializeFunctions: [configureAppServiceLocator])
+  ]);
+
   runApp(const WeatherApp());
 }

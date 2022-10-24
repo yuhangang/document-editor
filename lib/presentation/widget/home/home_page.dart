@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:weatherapp/app/path/app_path.dart' as app_path;
 import 'package:weatherapp/presentation/bloc/city_bloc/city_bloc.dart';
 import 'package:weatherapp/presentation/bloc/location/location_bloc.dart';
+import 'package:weatherapp/presentation/bloc/setting/setting_bloc.dart';
 import 'package:weatherapp/presentation/bloc/weather_forecast_bloc/weather_forecast_bloc.dart';
 import 'package:weatherapp/presentation/widget/home/current_weather_tab/home_page_current_weather_tab.dart';
 import 'package:weatherapp/presentation/widget/home/forecast_tab/home_page_forecast_tab.dart';
@@ -26,6 +27,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     BlocProvider.of<CityBloc>(context).add(OnRefreshCity());
     BlocProvider.of<WeatherForecastBloc>(context).add(OnLoadWeatherForecast());
+    BlocProvider.of<SettingBloc>(context).add(InitSettingEvent());
     super.initState();
   }
 

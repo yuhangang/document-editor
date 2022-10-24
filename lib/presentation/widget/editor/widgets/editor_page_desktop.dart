@@ -11,6 +11,7 @@ class EditorPageMobileTabletDesktop extends StatelessWidget {
     required this.showFullToolBar,
     required this.isMobileLayout,
     required Animation<double> animation,
+    required this.onSaved,
   })  : _richTextController = richTextController,
         _focusNode = focusNode,
         _scrollController = scrollController,
@@ -21,6 +22,7 @@ class EditorPageMobileTabletDesktop extends StatelessWidget {
   final ScrollController _scrollController;
   final ValueNotifier<bool> showFullToolBar;
   final bool isMobileLayout;
+  final VoidCallback onSaved;
 
   @override
   Widget build(BuildContext context) {
