@@ -32,7 +32,7 @@ class DocumentFile {
 
   DocumentFile clone() {
     return DocumentFile.create(
-      title: title + " Copy",
+      title: "$title Copy",
       data: data,
     );
   }

@@ -1,31 +1,19 @@
 import 'package:core/core/model/location.dart';
 import 'package:core/core/model/model.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:hive/hive.dart';
-import 'package:storage/config/storage_config.dart';
 
 part 'city.g.dart';
 
-@HiveType(typeId: HiveTypeId.malaysianCity)
 @JsonSerializable(fieldRename: FieldRename.snake)
 class MalaysianCity extends WeatherLocation {
-  @HiveField(0)
   final String city;
-  @HiveField(1)
   final String lat;
-  @HiveField(2)
   final String lng;
-  @HiveField(3)
   final String country;
-  @HiveField(4)
   final String iso2;
-  @HiveField(5)
   final String adminName;
-  @HiveField(6)
   final String capital;
-  @HiveField(7)
   final String population;
-  @HiveField(8)
   final String populationProper;
 
   const MalaysianCity(

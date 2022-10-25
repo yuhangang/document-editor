@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:weatherapp/presentation/widget/editor/widgets/rich_text_toolbar.dart';
+import 'package:documenteditor/presentation/widget/editor/widgets/rich_text_toolbar.dart';
 
 class EditorPageMobileTabletDesktop extends StatelessWidget {
   const EditorPageMobileTabletDesktop({

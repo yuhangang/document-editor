@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:weatherapp/app/bloc/global_scoped_bloc_providers.dart';
-import 'package:weatherapp/app/router/app_router.dart';
+import 'package:documenteditor/app/bloc/global_scoped_bloc_providers.dart';
+import 'package:documenteditor/app/router/app_router.dart';
 
 final GoRouter appRouter = getRouter();
 

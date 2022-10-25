@@ -7,10 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:go_router/go_router.dart';
 
-import 'package:weatherapp/presentation/bloc/document_list/document_list_bloc.dart';
-import 'package:weatherapp/presentation/bloc/editor/editor_bloc.dart';
-import 'package:weatherapp/presentation/widget/editor/widgets/editor_page_desktop.dart';
-import 'package:weatherapp/presentation/widget/editor/widgets/editor_page_mobile.dart';
+import 'package:documenteditor/presentation/bloc/document_list/document_list_bloc.dart';
+import 'package:documenteditor/presentation/bloc/editor/editor_bloc.dart';
+import 'package:documenteditor/presentation/widget/editor/widgets/editor_page_desktop.dart';
+import 'package:documenteditor/presentation/widget/editor/widgets/editor_page_mobile.dart';
 
 class EditorPage extends StatefulWidget {
   final DocumentFile? document;

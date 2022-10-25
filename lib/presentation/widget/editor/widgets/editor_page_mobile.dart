@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:weatherapp/presentation/bloc/editor/editor_bloc.dart';
-import 'package:weatherapp/presentation/widget/editor/widgets/rich_text_toolbar.dart';
+import 'package:documenteditor/presentation/bloc/editor/editor_bloc.dart';
+import 'package:documenteditor/presentation/widget/editor/widgets/rich_text_toolbar.dart';
 
 class EditorPageMobile extends StatelessWidget {
   const EditorPageMobile({

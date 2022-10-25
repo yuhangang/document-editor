@@ -2,8 +2,8 @@ import 'package:core/core/model/document.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:weatherapp/presentation/bloc/document_list/document_list_bloc.dart';
-import 'package:weatherapp/app/path/app_path.dart' as app_path;
+import 'package:documenteditor/presentation/bloc/document_list/document_list_bloc.dart';
+import 'package:documenteditor/app/path/app_path.dart' as app_path;
 
 class DocumentListPage extends StatefulWidget {
   const DocumentListPage({Key? key}) : super(key: key);

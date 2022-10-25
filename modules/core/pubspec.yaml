@@ -28,11 +28,6 @@ dependencies:
   flutter_datetime_picker: ^1.2.8  
   isar: *isar_version
   isar_flutter_libs: *isar_version
-  
-  
-
-  storage: 
-   path: ../storage
   http: ^0.13.5
 
 

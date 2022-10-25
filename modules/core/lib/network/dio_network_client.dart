@@ -54,7 +54,7 @@ class DioNetworkClient implements INetworkClient {
         .then((Response<T> res) {
       _throwIfNoSuccess(res);
       var response = HttpResponse<T>(
-          data: res.data!,
+          data: res.data,
           headers: res.headers.map,
           statusCode: res.statusCode ?? 0,
           statusMessage: res.statusMessage ?? '');
@@ -75,7 +75,7 @@ class DioNetworkClient implements INetworkClient {
         .then((Response<T> res) {
       _throwIfNoSuccess(res);
       var response = HttpResponse<T>(
-          data: res.data!,
+          data: res.data,
           headers: res.headers.map,
           statusCode: res.statusCode,
           statusMessage: res.statusMessage);
@@ -88,7 +88,7 @@ class DioNetworkClient implements INetworkClient {
     return _dio.getUri<T>(Uri.parse(url)).then((Response<T> res) {
       _throwIfNoSuccess(res);
       var response = HttpResponse<T>(
-          data: res.data!,
+          data: res.data,
           headers: res.headers.map,
           statusCode: res.statusCode,
           statusMessage: res.statusMessage);
