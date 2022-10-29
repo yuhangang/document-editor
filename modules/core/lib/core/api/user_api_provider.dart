@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 
 abstract class UserApiProvider {
   Future<DeviceInfo> submitDeviceInfo(DeviceInfo deviceInfo);
+  Future<String> login(String deviceId);
 }
 
 class UserApiProviderImpl
@@ -21,17 +22,36 @@ class UserApiProviderImpl
   @override
   Future<DeviceInfo> submitDeviceInfo(DeviceInfo deviceInfo) async {
     try {
-      final HttpResponse<List<dynamic>> res =
-          await client.post<List<dynamic>>('http://192.168.0.2:1323/devices');
-
-      final response = DeviceInfo.fromJson(res.data! as Map<String, dynamic>);
+      final HttpResponse<dynamic> res = await client.post<dynamic>(
+          '${appEnv.apiBaseUrl}/devices',
+          data: deviceInfo.toJson());
+      final response = DeviceInfo.fromJson((res.data! as Map<String, dynamic>));
       return response;
     } on DioError catch (exception) {
       throw apiExceptionHandler(exception);
     } on Error catch (error) {
       throw apiExceptionHandler(Exception(error.toString()), error: error);
     } catch (e) {
-      throw apiExceptionHandler(Exception(''), error: Error());
+      throw apiExceptionHandler(e is Exception ? e : Exception(e.toString()),
+          error: Error());
+    }
+  }
+
+  @override
+  Future<String> login(String deviceId) async {
+    try {
+      final HttpResponse<dynamic> res = await client.post<dynamic>(
+          '${appEnv.apiBaseUrl}/auth',
+          queryParameters: {"device_id": deviceId});
+      final token = res.data!["token"] as String;
+      return token;
+    } on DioError catch (exception) {
+      throw apiExceptionHandler(exception);
+    } on Error catch (error) {
+      throw apiExceptionHandler(Exception(error.toString()), error: error);
+    } catch (e) {
+      throw apiExceptionHandler(e is Exception ? e : Exception(e.toString()),
+          error: Error());
     }
   }
 }

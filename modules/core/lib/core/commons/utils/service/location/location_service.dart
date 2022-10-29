@@ -9,7 +9,7 @@ class LocationService implements ILocationService {
   LocationService({Location? location}) : _location = location ?? Location();
 
   @override
-  Future<LocationData> getLocation() async {
+  Future<LocationData?> getLocation({bool requirePermission = false}) async {
     try {
       await _handlePermission();
       final location = await _location.getLocation();
@@ -18,9 +18,13 @@ class LocationService implements ILocationService {
       }
       return location;
     } on LocationPermissionDeniedException {
-      Fluttertoast.showToast(
-          msg: 'Please enable location of this app in your phone settings');
-      rethrow;
+      if (requirePermission) {
+        Fluttertoast.showToast(
+            msg: 'Please enable location of this app in your phone settings');
+        rethrow;
+      } else {
+        return null;
+      }
     } on LocationException {
       Fluttertoast.showToast(msg: 'Failed to retrieve your location!');
       rethrow;

@@ -1,2 +1,3 @@
 const home = '/';
-const editorPage = '/edit';
+const documentList = '/documents';
+const editorPage = '/documents/edit';

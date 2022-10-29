@@ -4,7 +4,7 @@ enum SystemOfUnit { metric, imperial }
 
 abstract class AppEnv {
   final String appName;
-  final String openWeatherApiBaseUrl;
+  final String apiBaseUrl;
   final String openWeatherApiKey;
   final String cityListJsonApiRoute;
   final Coord defaultLocation;
@@ -13,7 +13,7 @@ abstract class AppEnv {
 
   const AppEnv(
       {required this.appName,
-      required this.openWeatherApiBaseUrl,
+      required this.apiBaseUrl,
       required this.openWeatherApiKey,
       required this.cityListJsonApiRoute,
       required this.defaultLocation,
@@ -25,7 +25,7 @@ class AppEnvDev extends AppEnv {
   const AppEnvDev()
       : super(
             appName: "Weather App",
-            openWeatherApiBaseUrl: "https://api.openweathermap.org/data/2.5",
+            apiBaseUrl: "http://10.0.2.2:1323",
             openWeatherApiKey: "0ac2d1064821d2cdaf995d110e685263",
             cityListJsonApiRoute:
                 "https://simplemaps.com/static/data/country-cities/my/my.json",

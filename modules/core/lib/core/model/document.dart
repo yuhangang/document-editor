@@ -32,7 +32,7 @@ class DocumentFile {
 
   DocumentFile clone() {
     return DocumentFile.create(
-      title: "$title Copy",
+      title: "$title-copy",
       data: data,
     );
   }
@@ -53,13 +53,8 @@ class DocumentFile {
       data: data ?? this.data,
     );
   }
-}
 
-/*
-@embedded
-class FileEditEvent {
-  final int id;
-  final DateTime time;
-  final DateTime? syncedAt;
+  factory DocumentFile.fromJson(Map<String, dynamic> json) =>
+      _$DocumentFileFromJson(json);
+  Map<String, dynamic> toJson() => _$DocumentFileToJson(this);
 }
-*/

@@ -1,4 +1,5 @@
-import 'package:core/core/model/document.dart';
+import 'package:documenteditor/presentation/bloc/setting/setting_bloc.dart';
+import 'package:documenteditor/presentation/widget/document_list/widgets/document_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -16,6 +17,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
   late final DocumentListBloc _documentListCubit;
   @override
   void initState() {
+    BlocProvider.of<SettingBloc>(context).add(InitSettingEvent());
     _documentListCubit = BlocProvider.of<DocumentListBloc>(context);
     _documentListCubit.add(OnDocumentListLoad());
     super.initState();
@@ -56,72 +58,22 @@ class _DocumentListPageState extends State<DocumentListPage> {
                         itemCount: state.documents.length,
                         itemBuilder: (context, index) {
                           final document = state.documents[index];
-                          return GestureDetector(
-                            onTap: () {
-                              GoRouter.of(context)
-                                  .push(app_path.editorPage, extra: document);
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(10)),
-                                color: Colors.grey[50],
-                              ),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          document.title,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline6,
-                                        ),
-                                        Text(getUpdateTimeDescription(
-                                            state.loadedAt, document))
-                                      ],
-                                    ),
-                                  ),
-                                  PopupMenuButton<String>(
-                                    onSelected: (value) {
-                                      if (value ==
-                                          DocumentMenuItemAction.delete.name) {
-                                        _documentListCubit.add(
-                                            OnDocumentListDelete(
-                                                documents: [document]));
-                                      } else if (value ==
-                                          DocumentMenuItemAction.clone.name) {
-                                        _documentListCubit.add(
-                                            OnDocumentListAdd(
-                                                documents: [document.clone()]));
-                                      }
-                                    },
-                                    padding: EdgeInsets.zero,
-                                    itemBuilder: (BuildContext context) {
-                                      return DocumentMenuItemAction.values
-                                          .map((e) => e.name)
-                                          .map((String choice) {
-                                        return PopupMenuItem<String>(
-                                          value: choice,
-                                          child: Text(choice),
-                                        );
-                                      }).toList();
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
+                          return DocumentItem(
+                              context: context,
+                              document: document,
+                              state: state,
+                              onClone: () {
+                                _documentListCubit.add(OnDocumentListAdd(
+                                    documents: [document.clone()]));
+                              },
+                              onDelete: () {
+                                _documentListCubit.add(OnDocumentListDelete(
+                                    documents: [document]));
+                              });
                         },
-                        separatorBuilder: (context, index) {
-                          return const SizedBox(
-                            height: 10,
-                          );
-                        }),
+                        separatorBuilder: (context, index) => const SizedBox(
+                              height: 8,
+                            )),
                   ),
                 ),
               ],
@@ -134,25 +86,4 @@ class _DocumentListPageState extends State<DocumentListPage> {
       ),
     );
   }
-
-  String getUpdateTimeDescription(
-      DateTime timeToCompare, DocumentFile document) {
-    final difference = timeToCompare.difference(document.updatedAt);
-    if (difference.inDays > 364) {
-      return "${(difference.inDays / 365).floor()} years ago";
-    } else if (difference.inDays > 27) {
-      return "${(difference.inDays / 28).floor()} months ago";
-    } else if (difference.inDays > 6) {
-      return "${(difference.inDays / 7).floor()} weeks ago";
-    } else if (difference.inDays > 0) {
-      return "${difference.inDays} days ago";
-    } else if (difference.inHours > 0) {
-      return "${difference.inHours} hours ago";
-    } else if (difference.inMinutes > 1) {
-      return "${difference.inMinutes} minutes ago";
-    }
-    return "just now";
-  }
 }
-
-enum DocumentMenuItemAction { delete, clone }

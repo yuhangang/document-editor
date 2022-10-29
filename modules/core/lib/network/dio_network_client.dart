@@ -46,11 +46,10 @@ class DioNetworkClient implements INetworkClient {
   Future<HttpResponse<T>> get<T>(
     String path, {
     Map<String, dynamic>? queryParameters,
+    Options? options,
   }) {
-    Options? buildCache;
-
     return _dio
-        .get<T>(path, queryParameters: queryParameters, options: buildCache)
+        .get<T>(path, queryParameters: queryParameters, options: options)
         .then((Response<T> res) {
       _throwIfNoSuccess(res);
       var response = HttpResponse<T>(
@@ -66,19 +65,19 @@ class DioNetworkClient implements INetworkClient {
   Future<HttpResponse<T>> post<T>(String path,
       {dynamic data,
       Map<String, dynamic>? queryParameters,
+      Options? options,
       String? contentType}) {
-    Options? buildCache;
-
     return _dio
         .post<T>(path,
-            data: data, queryParameters: queryParameters, options: buildCache)
+            data: data, queryParameters: queryParameters, options: options)
         .then((Response<T> res) {
       _throwIfNoSuccess(res);
       var response = HttpResponse<T>(
-          data: res.data,
-          headers: res.headers.map,
-          statusCode: res.statusCode,
-          statusMessage: res.statusMessage);
+        data: res.data,
+        headers: res.headers.map,
+        statusCode: res.statusCode,
+        statusMessage: res.statusMessage,
+      );
       return response;
     });
   }

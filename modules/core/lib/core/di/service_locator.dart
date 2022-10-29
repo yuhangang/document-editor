@@ -1,4 +1,5 @@
 import 'package:core/core/api/city_api_provider.dart';
+import 'package:core/core/api/document_api_provider.dart';
 import 'package:core/core/api/i_city_api_provider.dart';
 import 'package:core/core/api/user_api_provider.dart';
 import 'package:core/core/commons/app_env.dart';
@@ -28,9 +29,8 @@ Future<void> configureCoreServiceLocator(AppEnv env,
   sl.registerSingleton<AppEnv>(env);
   sl.registerSingleton<ILogger>(AppLogger(Logger()));
 
-  sl.registerSingleton<DocumentRepository>(DocumentRepositoryImpl(isar: isar));
   sl.registerSingleton<INetworkClient>(
-      DioNetworkClient(BaseNetworkOptions(baseUrl: env.openWeatherApiBaseUrl)));
+      DioNetworkClient(BaseNetworkOptions(baseUrl: env.apiBaseUrl)));
   sl.registerSingleton<ILocationService>(LocationService());
 
   sl.registerSingleton<ICityApiProvider>(
@@ -39,7 +39,10 @@ Future<void> configureCoreServiceLocator(AppEnv env,
       () => DeviceInfoUtils(DeviceInfoPlugin(), DeviceScreenHelper()));
   sl.registerSingleton<UserApiProvider>(
       UserApiProviderImpl(client: sl.get<INetworkClient>(), appEnv: env));
-
+  sl.registerSingleton<DocumentApiProvider>(
+      DocumentApiProviderImpl(client: sl.get<INetworkClient>(), appEnv: env));
+  sl.registerSingleton<DocumentRepository>(DocumentRepositoryImpl(
+      isar: isar, documentApiProvider: sl.get<DocumentApiProvider>()));
   sl.registerSingleton<SettingRepository>(SettingRepositoryImpl(
       userApiProvider: sl.get<UserApiProvider>(),
       locationService: sl.get<ILocationService>(),
