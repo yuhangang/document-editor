@@ -5,10 +5,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
-import 'package:go_router/go_router.dart';
 
 import 'package:documenteditor/presentation/bloc/document_list/document_list_bloc.dart';
-import 'package:documenteditor/presentation/bloc/editor/editor_bloc.dart';
+import 'package:documenteditor/presentation/bloc/document_editor/document_editor_bloc.dart';
 import 'package:documenteditor/presentation/widget/editor/widgets/editor_page_desktop.dart';
 import 'package:documenteditor/presentation/widget/editor/widgets/editor_page_mobile.dart';
 
@@ -84,89 +83,102 @@ class _EditorPageState extends State<EditorPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final isMobileLayout = MediaQuery.of(context).size.width < 800;
-    return WillPopScope(
-      onWillPop: () async {
-        if (_editorBloc.state is DocumentEditorChangeUnsaved) {
-          bool shouldQuit = false;
-          await showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (context) {
-                return AlertDialog(
-                  content: const Text(
-                      "You save unsaved changes, still want to leave?"),
-                  actions: [
-                    TextButton(
-                      child: const Text("Yes"),
-                      onPressed: () {
-                        shouldQuit = true;
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    TextButton(
-                      child: const Text("No"),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              });
-          return shouldQuit;
+    return BlocListener<DocumentEditorBloc, DocumentEditorState>(
+      listener: (context, state) {
+        if (state is DocumentEditorChangeUpdated) {
+          _documentListBloc
+              .add(OnDocumentListUpdate(document: state.updatedDocument));
+        } else if (state is DocumentEditorChangeCreated) {
+          _documentListBloc
+              .add(OnDocumentListAdd(documents: [state.createdDocument]));
         }
-        return true;
       },
-      child: RawGestureDetector(
-        gestures: <Type, GestureRecognizerFactory>{
-          ImmediateMultiDragGestureRecognizer:
-              GestureRecognizerFactoryWithHandlers<
-                      ImmediateMultiDragGestureRecognizer>(
-                  () => ImmediateMultiDragGestureRecognizer(),
-                  (ImmediateMultiDragGestureRecognizer instance) {}),
+      listenWhen: (p, c) => c is DocumentEditorChangeCreated,
+      child: WillPopScope(
+        onWillPop: () async {
+          if (_editorBloc.state is DocumentEditorChangeUnsaved) {
+            bool shouldQuit = false;
+            await showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) {
+                  return AlertDialog(
+                    content: const Text(
+                        "You save unsaved changes, still want to leave?"),
+                    actions: [
+                      TextButton(
+                        child: const Text("Yes"),
+                        onPressed: () {
+                          shouldQuit = true;
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: const Text("No"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                });
+            return shouldQuit;
+          }
+          return true;
         },
-        child: isMobileLayout
-            ? EditorPageMobile(
-                richTextController: _richTextController,
-                focusNode: _focusNode,
-                scrollController: _scrollController,
-                showFullToolBar: showFullToolBar,
-                isMobileLayout: isMobileLayout,
-                animation: _animation,
-                titleController: _titleController,
-                onSaved: () {
-                  if (widget.document != null) {
-                    _documentListBloc.add(OnDocumentListUpdate(
-                        document: widget.document!.copyWith(
-                            title: _titleController.text,
-                            data: jsonEncode(document.toDelta().toJson()))));
-                  } else {
+        child: RawGestureDetector(
+          gestures: <Type, GestureRecognizerFactory>{
+            ImmediateMultiDragGestureRecognizer:
+                GestureRecognizerFactoryWithHandlers<
+                        ImmediateMultiDragGestureRecognizer>(
+                    () => ImmediateMultiDragGestureRecognizer(),
+                    (ImmediateMultiDragGestureRecognizer instance) {}),
+          },
+          child: isMobileLayout
+              ? EditorPageMobile(
+                  richTextController: _richTextController,
+                  focusNode: _focusNode,
+                  scrollController: _scrollController,
+                  showFullToolBar: showFullToolBar,
+                  isMobileLayout: isMobileLayout,
+                  animation: _animation,
+                  titleController: _titleController,
+                  onSaved: () {
+                    if (widget.document != null &&
+                        widget.document!.fromServer) {
+                      _editorBloc.add(DocumentEditorUpdateEvent(
+                          documentFile: widget.document!,
+                          title: _titleController.text,
+                          data: jsonEncode(document.toDelta().toJson())));
+                    } else {
+                      _editorBloc.add(DocumentEditorCreateEvent(
+                          title: _titleController.text,
+                          data: jsonEncode(document.toDelta().toJson())));
+                    }
+                  },
+                  onChangedTitle: (text) {
+                    if (text != null) {
+                      _editorBloc
+                          .add(DocumentEditorChangeTitleEvent(title: text));
+                    }
+                  },
+                )
+              : EditorPageMobileTabletDesktop(
+                  richTextController: _richTextController,
+                  focusNode: _focusNode,
+                  scrollController: _scrollController,
+                  showFullToolBar: showFullToolBar,
+                  isMobileLayout: isMobileLayout,
+                  animation: _animation,
+                  onSaved: () {
                     _documentListBloc.add(OnDocumentListAdd(documents: [
                       DocumentFile.create(
-                          title: _titleController.text,
+                          title: "",
                           data: jsonEncode(document.toDelta().toJson()))
                     ]));
-                  }
-                  GoRouter.of(context).pop();
-                },
-                onChangedTitle: (_) {
-                  _editorBloc.add(const DocumentEditorChangeEvent());
-                },
-              )
-            : EditorPageMobileTabletDesktop(
-                richTextController: _richTextController,
-                focusNode: _focusNode,
-                scrollController: _scrollController,
-                showFullToolBar: showFullToolBar,
-                isMobileLayout: isMobileLayout,
-                animation: _animation,
-                onSaved: () {
-                  _documentListBloc.add(OnDocumentListAdd(documents: [
-                    DocumentFile.create(
-                        title: "",
-                        data: jsonEncode(document.toDelta().toJson()))
-                  ]));
-                },
-              ),
+                  },
+                ),
+        ),
       ),
     );
   }

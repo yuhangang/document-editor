@@ -11,20 +11,25 @@ class DocumentFile {
   final DateTime? syncedAt;
   final DateTime updatedAt;
   final DateTime createdAt;
+  @JsonKey(defaultValue: "[]")
   final String data;
-  DocumentFile({
-    required this.id,
-    required this.title,
-    this.syncedAt,
-    required this.updatedAt,
-    required this.createdAt,
-    required this.data,
-  });
+  @Index(unique: true)
+  final String? documentId;
 
-  DocumentFile.create({
-    required String title,
-    required this.data,
-  })  : id = Isar.autoIncrement,
+  DocumentFile(
+      {required this.id,
+      required this.title,
+      this.syncedAt,
+      required this.updatedAt,
+      required this.createdAt,
+      required this.data,
+      this.documentId});
+
+  bool get fromServer => documentId != null;
+
+  DocumentFile.create(
+      {required String title, required this.data, this.documentId})
+      : id = Isar.autoIncrement,
         title = title.trim().isNotEmpty ? title : "Untitled Document",
         createdAt = DateTime.now().toUtc(),
         updatedAt = DateTime.now().toUtc(),
@@ -54,7 +59,22 @@ class DocumentFile {
     );
   }
 
-  factory DocumentFile.fromJson(Map<String, dynamic> json) =>
-      _$DocumentFileFromJson(json);
+  factory DocumentFile.fromJson(Map<String, dynamic> json) {
+    return _$DocumentFileFromJson(json);
+  }
   Map<String, dynamic> toJson() => _$DocumentFileToJson(this);
+}
+
+extension GetUpdateJsonExtension on DocumentFile {
+  bool hasUpdate({required String title, required String data}) =>
+      (title != this.title) || (data != this.data);
+
+  Map<String, dynamic> getUpdateContent(
+      {required String title, required String data}) {
+    var map = {
+      if (title != this.title) ...{"title": title},
+      if (data != this.data) ...{"data": data}
+    };
+    return map;
+  }
 }

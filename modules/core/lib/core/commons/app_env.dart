@@ -25,7 +25,8 @@ class AppEnvDev extends AppEnv {
   const AppEnvDev()
       : super(
             appName: "Weather App",
-            apiBaseUrl: "http://10.0.2.2:1323",
+            apiBaseUrl: "http://localhost:1323",
+            // apiBaseUrl: "http://10.0.2.2:1323",
             openWeatherApiKey: "0ac2d1064821d2cdaf995d110e685263",
             cityListJsonApiRoute:
                 "https://simplemaps.com/static/data/country-cities/my/my.json",

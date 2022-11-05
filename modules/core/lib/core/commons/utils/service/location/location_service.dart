@@ -26,8 +26,11 @@ class LocationService implements ILocationService {
         return null;
       }
     } on LocationException {
-      Fluttertoast.showToast(msg: 'Failed to retrieve your location!');
-      rethrow;
+      if (requirePermission) {
+        rethrow;
+      } else {
+        return null;
+      }
     } catch (e) {
       Fluttertoast.showToast(msg: 'Failed to retrieve your location!');
       throw LocationException();

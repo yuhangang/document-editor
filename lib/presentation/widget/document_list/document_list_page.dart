@@ -80,8 +80,20 @@ class _DocumentListPageState extends State<DocumentListPage> {
             );
           }
 
-          return const Center(
-              child: Text("You currently didn't have any document."));
+          return LayoutBuilder(builder: (context, constraints) {
+            return RefreshIndicator(
+              onRefresh: () async =>
+                  _documentListCubit.add(OnDocumentListLoad()),
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: const Center(
+                      child: Text("You currently didn't have any document.")),
+                ),
+              ),
+            );
+          });
         },
       ),
     );

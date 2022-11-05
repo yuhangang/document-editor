@@ -16,31 +16,55 @@ class DocumentRepositoryImpl implements DocumentRepository {
   });
 
   @override
-  Future<Either<Exception, List<DocumentFile>>> getDocuments() async {
+  Future<Either<Exception, List<DocumentFile>>> getCachedDocuments() async {
     try {
-      return Right(await isar.documentFiles.where().findAll());
+      final documentList = await isar.documentFiles.where().findAll();
+
+      return Right(documentList);
+      //return Right();
     } catch (e) {
       return Left(e is Exception ? e : UnknownException());
     }
   }
 
   @override
-  Future<Exception?> createDocuments(List<DocumentFile> documents) async {
+  Future<Either<Exception, List<DocumentFile>>> getDocuments() async {
+    try {
+      final documentList = await documentApiProvider.getDocumentList();
+      await isar.writeTxn(() async {
+        await isar.documentFiles.clear();
+        await isar.documentFiles.putAll(documentList);
+
+        // await isar.documentFiles.filter()
+        // .anyOf<String,Object>(
+        //   documentList.map((e) => e.deviceId).whereType<String>(), (q, element) => null)
+      });
+
+      return Right(documentList);
+      //return Right();
+    } catch (e) {
+      return Left(e is Exception ? e : UnknownException());
+    }
+  }
+
+  @override
+  Future<Either<Exception, List<DocumentFile>>> createDocuments(
+      List<DocumentFile> documents) async {
     try {
       final data = await documentApiProvider.addDocument(documents.first);
       await isar.writeTxn(() async {
         await isar.documentFiles.putAll([data]);
       });
 
-      return null;
+      return right([data]);
     } catch (e) {
       if (e is SocketException) {
         await isar.writeTxn(() async {
           await isar.documentFiles.putAll(documents);
         });
-        return null;
+        return right([]);
       }
-      return e is Exception ? e : UnknownException();
+      return Left(e is Exception ? e : UnknownException());
     }
   }
 
@@ -58,15 +82,37 @@ class DocumentRepositoryImpl implements DocumentRepository {
   }
 
   @override
-  Future<Either<Exception, DocumentFile?>> updateDocument(
+  Future<Either<Exception, DocumentFile>> getDocument(
       DocumentFile documentFile) async {
     try {
-      final item = await isar.writeTxn<DocumentFile?>(() async {
-        final id = await isar.documentFiles.put(documentFile);
+      final data =
+          await documentApiProvider.getDocumentByid(documentFile.documentId!);
+      await isar.writeTxn<DocumentFile?>(() async {
+        final id = await isar.documentFiles.put(data);
         return await isar.documentFiles.get(id);
       });
 
-      return Right(item);
+      return Right(data);
+    } catch (e) {
+      return Left(e is Exception ? e : UnknownException());
+    }
+  }
+
+  @override
+  Future<Either<Exception, DocumentFile>> updateDocument(
+      DocumentFile documentFile,
+      {required String title,
+      required String data}) async {
+    try {
+      final updatedDocument = await documentApiProvider.updateDocument(
+          documentFile.documentId!,
+          documentFile.getUpdateContent(title: title, data: data));
+      await isar.writeTxn<DocumentFile?>(() async {
+        final id = await isar.documentFiles.put(updatedDocument);
+        return await isar.documentFiles.get(id);
+      });
+
+      return Right(updatedDocument);
     } catch (e) {
       return Left(e is Exception ? e : UnknownException());
     }

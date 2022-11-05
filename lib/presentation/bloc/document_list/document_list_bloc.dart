@@ -13,31 +13,31 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
     this._documentRepository,
   ) : super(DocumentListInitial()) {
     on<OnDocumentListAdd>((event, emit) async {
-      final exception =
-          await _documentRepository.createDocuments(event.documents);
-      if (exception == null) {
-        add(OnDocumentListLoad());
-      }
+      add(OnDocumentListLoadCached());
     });
 
     on<OnDocumentListUpdate>((event, emit) async {
-      final exception =
-          await _documentRepository.updateDocument(event.document);
-      if (exception.isRight()) {
-        add(OnDocumentListLoad());
-      }
+      add(OnDocumentListLoadCached());
     });
 
     on<OnDocumentListDelete>((event, emit) async {
       final exception =
           await _documentRepository.deleteDocuments(event.documents);
       if (exception == null) {
-        add(OnDocumentListLoad());
+        add(OnDocumentListLoadCached());
       }
     });
 
     on<OnDocumentListLoad>((event, emit) async {
       final documentListResponse = await _documentRepository.getDocuments();
+      emit(documentListResponse.fold(
+          (exception) => DocumentListFailed(exception: exception),
+          (documentList) => DocumentListLoaded(documents: documentList)));
+    });
+
+    on<OnDocumentListLoadCached>((event, emit) async {
+      final documentListResponse =
+          await _documentRepository.getCachedDocuments();
       emit(documentListResponse.fold(
           (exception) => DocumentListFailed(exception: exception),
           (documentList) => DocumentListLoaded(documents: documentList)));

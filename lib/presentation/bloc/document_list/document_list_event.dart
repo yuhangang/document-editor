@@ -9,6 +9,8 @@ abstract class DocumentListEvent extends Equatable {
 
 class OnDocumentListLoad extends DocumentListEvent {}
 
+class OnDocumentListLoadCached extends DocumentListEvent {}
+
 class OnDocumentListAdd extends DocumentListEvent {
   final List<DocumentFile> documents;
   const OnDocumentListAdd({

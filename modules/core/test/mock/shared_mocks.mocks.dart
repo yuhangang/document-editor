@@ -3,13 +3,13 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i5;
+import 'dart:async' as _i4;
 
 import 'package:core/core/commons/utils/service/location/i_location_service.dart'
-    as _i4;
+    as _i3;
 import 'package:core/core/model/city.dart' as _i6;
-import 'package:core/core/model/model.dart' as _i3;
-import 'package:location/location.dart' as _i2;
+import 'package:core/core/model/model.dart' as _i2;
+import 'package:location/location.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -23,63 +23,60 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeLocationData_0 extends _i1.SmartFake implements _i2.LocationData {
-  _FakeLocationData_0(Object parent, Invocation parentInvocation)
+class _FakeCity_0 extends _i1.SmartFake implements _i2.City {
+  _FakeCity_0(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeCity_1 extends _i1.SmartFake implements _i3.City {
-  _FakeCity_1(Object parent, Invocation parentInvocation)
+class _FakeCoord_1 extends _i1.SmartFake implements _i2.Coord {
+  _FakeCoord_1(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeCoord_2 extends _i1.SmartFake implements _i3.Coord {
-  _FakeCoord_2(Object parent, Invocation parentInvocation)
+class _FakeCurrentWeatherMainData_2 extends _i1.SmartFake
+    implements _i2.CurrentWeatherMainData {
+  _FakeCurrentWeatherMainData_2(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeCurrentWeatherMainData_3 extends _i1.SmartFake
-    implements _i3.CurrentWeatherMainData {
-  _FakeCurrentWeatherMainData_3(Object parent, Invocation parentInvocation)
+class _FakeWind_3 extends _i1.SmartFake implements _i2.Wind {
+  _FakeWind_3(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeWind_4 extends _i1.SmartFake implements _i3.Wind {
-  _FakeWind_4(Object parent, Invocation parentInvocation)
+class _FakeClouds_4 extends _i1.SmartFake implements _i2.Clouds {
+  _FakeClouds_4(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeClouds_5 extends _i1.SmartFake implements _i3.Clouds {
-  _FakeClouds_5(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
-}
-
-class _FakeSys_6 extends _i1.SmartFake implements _i3.Sys {
-  _FakeSys_6(Object parent, Invocation parentInvocation)
+class _FakeSys_5 extends _i1.SmartFake implements _i2.Sys {
+  _FakeSys_5(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
 /// A class which mocks [ILocationService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockILocationService extends _i1.Mock implements _i4.ILocationService {
+class MockILocationService extends _i1.Mock implements _i3.ILocationService {
   MockILocationService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i5.Future<_i2.LocationData> getLocation() => (super.noSuchMethod(
-          Invocation.method(#getLocation, []),
-          returnValue: _i5.Future<_i2.LocationData>.value(
-              _FakeLocationData_0(this, Invocation.method(#getLocation, []))))
-      as _i5.Future<_i2.LocationData>);
+  _i4.Future<_i5.LocationData?> getLocation(
+          {bool? requirePermission = false}) =>
+      (super.noSuchMethod(
+              Invocation.method(
+                  #getLocation, [], {#requirePermission: requirePermission}),
+              returnValue: _i4.Future<_i5.LocationData?>.value())
+          as _i4.Future<_i5.LocationData?>);
 }
 
 /// A class which mocks [WeatherForecastFiveDay].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockWeatherForecastFiveDay extends _i1.Mock
-    implements _i3.WeatherForecastFiveDay {
+    implements _i2.WeatherForecastFiveDay {
   MockWeatherForecastFiveDay() {
     _i1.throwOnMissingStub(this);
   }
@@ -94,12 +91,12 @@ class MockWeatherForecastFiveDay extends _i1.Mock
   int get cnt =>
       (super.noSuchMethod(Invocation.getter(#cnt), returnValue: 0) as int);
   @override
-  List<_i3.WeatherForecast> get list =>
+  List<_i2.WeatherForecast> get list =>
       (super.noSuchMethod(Invocation.getter(#list),
-          returnValue: <_i3.WeatherForecast>[]) as List<_i3.WeatherForecast>);
+          returnValue: <_i2.WeatherForecast>[]) as List<_i2.WeatherForecast>);
   @override
-  _i3.City get city => (super.noSuchMethod(Invocation.getter(#city),
-      returnValue: _FakeCity_1(this, Invocation.getter(#city))) as _i3.City);
+  _i2.City get city => (super.noSuchMethod(Invocation.getter(#city),
+      returnValue: _FakeCity_0(this, Invocation.getter(#city))) as _i2.City);
   @override
   Map<String, dynamic> toJson() =>
       (super.noSuchMethod(Invocation.method(#toJson, []),
@@ -109,44 +106,44 @@ class MockWeatherForecastFiveDay extends _i1.Mock
 /// A class which mocks [CurrentWeather].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockCurrentWeather extends _i1.Mock implements _i3.CurrentWeather {
+class MockCurrentWeather extends _i1.Mock implements _i2.CurrentWeather {
   MockCurrentWeather() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Coord get coord => (super.noSuchMethod(Invocation.getter(#coord),
-      returnValue: _FakeCoord_2(this, Invocation.getter(#coord))) as _i3.Coord);
+  _i2.Coord get coord => (super.noSuchMethod(Invocation.getter(#coord),
+      returnValue: _FakeCoord_1(this, Invocation.getter(#coord))) as _i2.Coord);
   @override
-  List<_i3.Weather> get weather =>
+  List<_i2.Weather> get weather =>
       (super.noSuchMethod(Invocation.getter(#weather),
-          returnValue: <_i3.Weather>[]) as List<_i3.Weather>);
+          returnValue: <_i2.Weather>[]) as List<_i2.Weather>);
   @override
   String get base =>
       (super.noSuchMethod(Invocation.getter(#base), returnValue: '') as String);
   @override
-  _i3.CurrentWeatherMainData get main =>
+  _i2.CurrentWeatherMainData get main =>
       (super.noSuchMethod(Invocation.getter(#main),
               returnValue:
-                  _FakeCurrentWeatherMainData_3(this, Invocation.getter(#main)))
-          as _i3.CurrentWeatherMainData);
+                  _FakeCurrentWeatherMainData_2(this, Invocation.getter(#main)))
+          as _i2.CurrentWeatherMainData);
   @override
   int get visibility =>
       (super.noSuchMethod(Invocation.getter(#visibility), returnValue: 0)
           as int);
   @override
-  _i3.Wind get wind => (super.noSuchMethod(Invocation.getter(#wind),
-      returnValue: _FakeWind_4(this, Invocation.getter(#wind))) as _i3.Wind);
+  _i2.Wind get wind => (super.noSuchMethod(Invocation.getter(#wind),
+      returnValue: _FakeWind_3(this, Invocation.getter(#wind))) as _i2.Wind);
   @override
-  _i3.Clouds get clouds => (super.noSuchMethod(Invocation.getter(#clouds),
-          returnValue: _FakeClouds_5(this, Invocation.getter(#clouds)))
-      as _i3.Clouds);
+  _i2.Clouds get clouds => (super.noSuchMethod(Invocation.getter(#clouds),
+          returnValue: _FakeClouds_4(this, Invocation.getter(#clouds)))
+      as _i2.Clouds);
   @override
   int get dt =>
       (super.noSuchMethod(Invocation.getter(#dt), returnValue: 0) as int);
   @override
-  _i3.Sys get sys => (super.noSuchMethod(Invocation.getter(#sys),
-      returnValue: _FakeSys_6(this, Invocation.getter(#sys))) as _i3.Sys);
+  _i2.Sys get sys => (super.noSuchMethod(Invocation.getter(#sys),
+      returnValue: _FakeSys_5(this, Invocation.getter(#sys))) as _i2.Sys);
   @override
   int get timezone =>
       (super.noSuchMethod(Invocation.getter(#timezone), returnValue: 0) as int);
@@ -206,8 +203,8 @@ class MockMalaysianCity extends _i1.Mock implements _i6.MalaysianCity {
       (super.noSuchMethod(Invocation.getter(#populationProper), returnValue: '')
           as String);
   @override
-  _i3.Coord get coord => (super.noSuchMethod(Invocation.getter(#coord),
-      returnValue: _FakeCoord_2(this, Invocation.getter(#coord))) as _i3.Coord);
+  _i2.Coord get coord => (super.noSuchMethod(Invocation.getter(#coord),
+      returnValue: _FakeCoord_1(this, Invocation.getter(#coord))) as _i2.Coord);
   @override
   List<Object?> get props =>
       (super.noSuchMethod(Invocation.getter(#props), returnValue: <Object?>[])
@@ -221,7 +218,7 @@ class MockMalaysianCity extends _i1.Mock implements _i6.MalaysianCity {
 /// A class which mocks [LocationData].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLocationData extends _i1.Mock implements _i2.LocationData {
+class MockLocationData extends _i1.Mock implements _i5.LocationData {
   MockLocationData() {
     _i1.throwOnMissingStub(this);
   }

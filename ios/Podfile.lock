@@ -21,6 +21,8 @@ PODS:
   - "permission_handler (5.1.0+2)":
     - Flutter
   - ReachabilitySwift (5.0.0)
+  - shared_preferences_ios (0.0.1):
+    - Flutter
   - Toast (4.0.0)
   - url_launcher_ios (0.0.1):
     - Flutter
@@ -36,6 +38,7 @@ DEPENDENCIES:
   - pasteboard (from `.symlinks/plugins/pasteboard/ios`)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
+  - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
 SPEC REPOS:
@@ -64,6 +67,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider_ios/ios"
   permission_handler:
     :path: ".symlinks/plugins/permission_handler/ios"
+  shared_preferences_ios:
+    :path: ".symlinks/plugins/shared_preferences_ios/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
@@ -72,13 +77,14 @@ SPEC CHECKSUMS:
   device_info_plus: e5c5da33f982a436e103237c0c85f9031142abed
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
-  fluttertoast: 16fbe6039d06a763f3533670197d01fc73459037
+  fluttertoast: 74526702fea2c060ea55dde75895b7e1bde1c86b
   isar_flutter_libs: bc88affa0adeeb8800ffd2ca0177669dc18cd201
   location: 3a2eed4dd2fab25e7b7baf2a9efefe82b512d740
   pasteboard: 982969ebaa7c78af3e6cc7761e8f5e77565d9ce0
   path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
+  shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
 

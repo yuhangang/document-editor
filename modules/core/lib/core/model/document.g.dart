@@ -27,18 +27,28 @@ const DocumentFileSchema = CollectionSchema(
       name: r'data',
       type: IsarType.string,
     ),
-    r'syncedAt': PropertySchema(
+    r'documentId': PropertySchema(
       id: 2,
+      name: r'documentId',
+      type: IsarType.string,
+    ),
+    r'fromServer': PropertySchema(
+      id: 3,
+      name: r'fromServer',
+      type: IsarType.bool,
+    ),
+    r'syncedAt': PropertySchema(
+      id: 4,
       name: r'syncedAt',
       type: IsarType.dateTime,
     ),
     r'title': PropertySchema(
-      id: 3,
+      id: 5,
       name: r'title',
       type: IsarType.string,
     ),
     r'updatedAt': PropertySchema(
-      id: 4,
+      id: 6,
       name: r'updatedAt',
       type: IsarType.dateTime,
     )
@@ -48,7 +58,21 @@ const DocumentFileSchema = CollectionSchema(
   deserialize: _documentFileDeserialize,
   deserializeProp: _documentFileDeserializeProp,
   idName: r'id',
-  indexes: {},
+  indexes: {
+    r'documentId': IndexSchema(
+      id: 4187168439921340405,
+      name: r'documentId',
+      unique: true,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'documentId',
+          type: IndexType.hash,
+          caseSensitive: true,
+        )
+      ],
+    )
+  },
   links: {},
   embeddedSchemas: {},
   getId: _documentFileGetId,
@@ -64,6 +88,12 @@ int _documentFileEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.data.length * 3;
+  {
+    final value = object.documentId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.title.length * 3;
   return bytesCount;
 }
@@ -76,9 +106,11 @@ void _documentFileSerialize(
 ) {
   writer.writeDateTime(offsets[0], object.createdAt);
   writer.writeString(offsets[1], object.data);
-  writer.writeDateTime(offsets[2], object.syncedAt);
-  writer.writeString(offsets[3], object.title);
-  writer.writeDateTime(offsets[4], object.updatedAt);
+  writer.writeString(offsets[2], object.documentId);
+  writer.writeBool(offsets[3], object.fromServer);
+  writer.writeDateTime(offsets[4], object.syncedAt);
+  writer.writeString(offsets[5], object.title);
+  writer.writeDateTime(offsets[6], object.updatedAt);
 }
 
 DocumentFile _documentFileDeserialize(
@@ -90,10 +122,11 @@ DocumentFile _documentFileDeserialize(
   final object = DocumentFile(
     createdAt: reader.readDateTime(offsets[0]),
     data: reader.readString(offsets[1]),
+    documentId: reader.readStringOrNull(offsets[2]),
     id: id,
-    syncedAt: reader.readDateTimeOrNull(offsets[2]),
-    title: reader.readString(offsets[3]),
-    updatedAt: reader.readDateTime(offsets[4]),
+    syncedAt: reader.readDateTimeOrNull(offsets[4]),
+    title: reader.readString(offsets[5]),
+    updatedAt: reader.readDateTime(offsets[6]),
   );
   return object;
 }
@@ -110,10 +143,14 @@ P _documentFileDeserializeProp<P>(
     case 1:
       return (reader.readString(offset)) as P;
     case 2:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 3:
-      return (reader.readString(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 4:
+      return (reader.readDateTimeOrNull(offset)) as P;
+    case 5:
+      return (reader.readString(offset)) as P;
+    case 6:
       return (reader.readDateTime(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -131,6 +168,62 @@ List<IsarLinkBase<dynamic>> _documentFileGetLinks(DocumentFile object) {
 void _documentFileAttach(
     IsarCollection<dynamic> col, Id id, DocumentFile object) {
   object.id = id;
+}
+
+extension DocumentFileByIndex on IsarCollection<DocumentFile> {
+  Future<DocumentFile?> getByDocumentId(String? documentId) {
+    return getByIndex(r'documentId', [documentId]);
+  }
+
+  DocumentFile? getByDocumentIdSync(String? documentId) {
+    return getByIndexSync(r'documentId', [documentId]);
+  }
+
+  Future<bool> deleteByDocumentId(String? documentId) {
+    return deleteByIndex(r'documentId', [documentId]);
+  }
+
+  bool deleteByDocumentIdSync(String? documentId) {
+    return deleteByIndexSync(r'documentId', [documentId]);
+  }
+
+  Future<List<DocumentFile?>> getAllByDocumentId(
+      List<String?> documentIdValues) {
+    final values = documentIdValues.map((e) => [e]).toList();
+    return getAllByIndex(r'documentId', values);
+  }
+
+  List<DocumentFile?> getAllByDocumentIdSync(List<String?> documentIdValues) {
+    final values = documentIdValues.map((e) => [e]).toList();
+    return getAllByIndexSync(r'documentId', values);
+  }
+
+  Future<int> deleteAllByDocumentId(List<String?> documentIdValues) {
+    final values = documentIdValues.map((e) => [e]).toList();
+    return deleteAllByIndex(r'documentId', values);
+  }
+
+  int deleteAllByDocumentIdSync(List<String?> documentIdValues) {
+    final values = documentIdValues.map((e) => [e]).toList();
+    return deleteAllByIndexSync(r'documentId', values);
+  }
+
+  Future<Id> putByDocumentId(DocumentFile object) {
+    return putByIndex(r'documentId', object);
+  }
+
+  Id putByDocumentIdSync(DocumentFile object, {bool saveLinks = true}) {
+    return putByIndexSync(r'documentId', object, saveLinks: saveLinks);
+  }
+
+  Future<List<Id>> putAllByDocumentId(List<DocumentFile> objects) {
+    return putAllByIndex(r'documentId', objects);
+  }
+
+  List<Id> putAllByDocumentIdSync(List<DocumentFile> objects,
+      {bool saveLinks = true}) {
+    return putAllByIndexSync(r'documentId', objects, saveLinks: saveLinks);
+  }
 }
 
 extension DocumentFileQueryWhereSort
@@ -208,6 +301,73 @@ extension DocumentFileQueryWhere
         upper: upperId,
         includeUpper: includeUpper,
       ));
+    });
+  }
+
+  QueryBuilder<DocumentFile, DocumentFile, QAfterWhereClause>
+      documentIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'documentId',
+        value: [null],
+      ));
+    });
+  }
+
+  QueryBuilder<DocumentFile, DocumentFile, QAfterWhereClause>
+      documentIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'documentId',
+        lower: [null],
+        includeLower: false,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<DocumentFile, DocumentFile, QAfterWhereClause> documentIdEqualTo(
+      String? documentId) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'documentId',
+        value: [documentId],
+      ));
+    });
+  }
+
+  QueryBuilder<DocumentFile, DocumentFile, QAfterWhereClause>
+      documentIdNotEqualTo(String? documentId) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'documentId',
+              lower: [],
+              upper: [documentId],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'documentId',
+              lower: [documentId],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'documentId',
+              lower: [documentId],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'documentId',
+              lower: [],
+              upper: [documentId],
+              includeUpper: false,
+            ));
+      }
     });
   }
 }
@@ -400,6 +560,170 @@ extension DocumentFileQueryFilter
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'data',
         value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<DocumentFile, DocumentFile, QAfterFilterCondition>
+      documentIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'documentId',
+      ));
+    });
+  }
+
+  QueryBuilder<DocumentFile, DocumentFile, QAfterFilterCondition>
+      documentIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'documentId',
+      ));
+    });
+  }
+
+  QueryBuilder<DocumentFile, DocumentFile, QAfterFilterCondition>
+      documentIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'documentId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DocumentFile, DocumentFile, QAfterFilterCondition>
+      documentIdGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'documentId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DocumentFile, DocumentFile, QAfterFilterCondition>
+      documentIdLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'documentId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DocumentFile, DocumentFile, QAfterFilterCondition>
+      documentIdBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'documentId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DocumentFile, DocumentFile, QAfterFilterCondition>
+      documentIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'documentId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DocumentFile, DocumentFile, QAfterFilterCondition>
+      documentIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'documentId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DocumentFile, DocumentFile, QAfterFilterCondition>
+      documentIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'documentId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DocumentFile, DocumentFile, QAfterFilterCondition>
+      documentIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'documentId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DocumentFile, DocumentFile, QAfterFilterCondition>
+      documentIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'documentId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<DocumentFile, DocumentFile, QAfterFilterCondition>
+      documentIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'documentId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<DocumentFile, DocumentFile, QAfterFilterCondition>
+      fromServerEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'fromServer',
+        value: value,
       ));
     });
   }
@@ -754,6 +1078,32 @@ extension DocumentFileQuerySortBy
     });
   }
 
+  QueryBuilder<DocumentFile, DocumentFile, QAfterSortBy> sortByDocumentId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'documentId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<DocumentFile, DocumentFile, QAfterSortBy>
+      sortByDocumentIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'documentId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<DocumentFile, DocumentFile, QAfterSortBy> sortByFromServer() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fromServer', Sort.asc);
+    });
+  }
+
+  QueryBuilder<DocumentFile, DocumentFile, QAfterSortBy>
+      sortByFromServerDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fromServer', Sort.desc);
+    });
+  }
+
   QueryBuilder<DocumentFile, DocumentFile, QAfterSortBy> sortBySyncedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'syncedAt', Sort.asc);
@@ -814,6 +1164,32 @@ extension DocumentFileQuerySortThenBy
   QueryBuilder<DocumentFile, DocumentFile, QAfterSortBy> thenByDataDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'data', Sort.desc);
+    });
+  }
+
+  QueryBuilder<DocumentFile, DocumentFile, QAfterSortBy> thenByDocumentId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'documentId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<DocumentFile, DocumentFile, QAfterSortBy>
+      thenByDocumentIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'documentId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<DocumentFile, DocumentFile, QAfterSortBy> thenByFromServer() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fromServer', Sort.asc);
+    });
+  }
+
+  QueryBuilder<DocumentFile, DocumentFile, QAfterSortBy>
+      thenByFromServerDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fromServer', Sort.desc);
     });
   }
 
@@ -881,6 +1257,19 @@ extension DocumentFileQueryWhereDistinct
     });
   }
 
+  QueryBuilder<DocumentFile, DocumentFile, QDistinct> distinctByDocumentId(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'documentId', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<DocumentFile, DocumentFile, QDistinct> distinctByFromServer() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'fromServer');
+    });
+  }
+
   QueryBuilder<DocumentFile, DocumentFile, QDistinct> distinctBySyncedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'syncedAt');
@@ -921,6 +1310,18 @@ extension DocumentFileQueryProperty
     });
   }
 
+  QueryBuilder<DocumentFile, String?, QQueryOperations> documentIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'documentId');
+    });
+  }
+
+  QueryBuilder<DocumentFile, bool, QQueryOperations> fromServerProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'fromServer');
+    });
+  }
+
   QueryBuilder<DocumentFile, DateTime?, QQueryOperations> syncedAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'syncedAt');
@@ -952,7 +1353,8 @@ DocumentFile _$DocumentFileFromJson(Map<String, dynamic> json) => DocumentFile(
           : DateTime.parse(json['synced_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
       createdAt: DateTime.parse(json['created_at'] as String),
-      data: json['data'] as String,
+      data: json['data'] as String? ?? '[]',
+      documentId: json['document_id'] as String?,
     );
 
 Map<String, dynamic> _$DocumentFileToJson(DocumentFile instance) =>
@@ -963,4 +1365,5 @@ Map<String, dynamic> _$DocumentFileToJson(DocumentFile instance) =>
       'updated_at': instance.updatedAt.toIso8601String(),
       'created_at': instance.createdAt.toIso8601String(),
       'data': instance.data,
+      'document_id': instance.documentId,
     };
