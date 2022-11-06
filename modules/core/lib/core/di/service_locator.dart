@@ -1,6 +1,4 @@
-import 'package:core/core/api/city_api_provider.dart';
 import 'package:core/core/api/document_api_provider.dart';
-import 'package:core/core/api/i_city_api_provider.dart';
 import 'package:core/core/api/user_api_provider.dart';
 import 'package:core/core/commons/app_env.dart';
 import 'package:core/core/commons/utils/device/device_info_utils.dart';
@@ -32,9 +30,6 @@ Future<void> configureCoreServiceLocator(AppEnv env,
   sl.registerSingleton<INetworkClient>(
       DioNetworkClient(BaseNetworkOptions(baseUrl: env.apiBaseUrl)));
   sl.registerSingleton<ILocationService>(LocationService());
-
-  sl.registerSingleton<ICityApiProvider>(
-      CityApiProvider(client: sl.get<INetworkClient>(), appEnv: env));
   sl.registerFactory<IDeviceInfoUtils>(
       () => DeviceInfoUtils(DeviceInfoPlugin(), DeviceScreenHelper()));
   sl.registerSingleton<UserApiProvider>(
