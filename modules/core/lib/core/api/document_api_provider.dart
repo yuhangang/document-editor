@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:core/core/commons/app_env.dart';
 import 'package:core/core/commons/error/api_exception_handler.dart';
+import 'package:core/core/commons/error/exceptions.dart';
 import 'package:core/core/commons/utils/share_preferences/share_preferences_helper.dart';
 import 'package:core/core/model/document.dart';
 import 'package:core/network/http_response.dart';
@@ -13,6 +14,7 @@ abstract class DocumentApiProvider {
   Future<DocumentFile> getDocumentByid(String id);
   Future<List<DocumentFile>> getDocumentList();
   Future<DocumentFile> updateDocument(String id, Map<String, dynamic> json);
+  Future<void> deleteDocument(String id);
 }
 
 class DocumentApiProviderImpl
@@ -101,6 +103,26 @@ class DocumentApiProviderImpl
 
       final response = DocumentFile.fromJson(map);
       return response;
+    } on DioError catch (exception) {
+      throw apiExceptionHandler(exception);
+    } on Error catch (error) {
+      throw apiExceptionHandler(Exception(error.toString()), error: error);
+    } catch (e) {
+      throw apiExceptionHandler(e is Exception ? e : Exception(e.toString()),
+          error: Error());
+    }
+  }
+
+  @override
+  Future<void> deleteDocument(String id) async {
+    try {
+      final token = await getRefreshToken();
+      final HttpResponse<dynamic> res = await client.delete<dynamic>(
+          '${appEnv.apiBaseUrl}/api/documents/$id',
+          options: Options(headers: {'Authorization': "Bearer $token"}));
+
+      if (res.statusCode == 200) return;
+      throw UnknownException();
     } on DioError catch (exception) {
       throw apiExceptionHandler(exception);
     } on Error catch (error) {

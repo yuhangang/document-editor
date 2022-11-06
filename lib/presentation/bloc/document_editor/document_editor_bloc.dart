@@ -34,12 +34,12 @@ class DocumentEditorBloc
       }
     }, transformer: sequential());
 
-    stream.whereType<DocumentEditorChangeUpdated>().listen((state) {
+    stream.whereType<DocumentEditorFileUpdated>().listen((state) {
       _documentListBloc
           .add(OnDocumentListUpdate(document: state.updatedDocument));
     });
 
-    stream.whereType<DocumentEditorChangeCreated>().listen((state) {
+    stream.whereType<DocumentEditorFileCreated>().listen((state) {
       _documentListBloc
           .add(OnDocumentListAdd(documents: [state.createdDocument]));
     });
@@ -56,7 +56,7 @@ class DocumentEditorBloc
     emit(response.fold(
         (exception) => DocumentEditorChangeSavingError(exception: exception),
         (updatedDocument) =>
-            DocumentEditorChangeUpdated(updatedDocument: updatedDocument)));
+            DocumentEditorFileUpdated(updatedDocument: updatedDocument)));
   }
 
   Future<void> _handleCreateDocument(Emitter<DocumentEditorState> emit,
@@ -68,8 +68,7 @@ class DocumentEditorBloc
     emit(response.fold(
         (exception) => DocumentEditorChangeSavingError(exception: exception),
         (updatedDocument) => updatedDocument.isNotEmpty
-            ? DocumentEditorChangeCreated(
-                createdDocument: updatedDocument.first)
+            ? DocumentEditorFileCreated(createdDocument: updatedDocument.first)
             : DocumentEditorChangeSaved()));
   }
 }

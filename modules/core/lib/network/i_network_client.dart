@@ -25,5 +25,12 @@ abstract class INetworkClient {
     Options? options,
   });
 
+  Future<HttpResponse<T>> delete<T>(
+    String path, {
+    dynamic data,
+    Map<String, dynamic> queryParameters,
+    Options? options,
+  });
+
   Future<HttpResponse<T>> getUri<T>(String url);
 }

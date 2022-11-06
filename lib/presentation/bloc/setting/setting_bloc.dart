@@ -11,7 +11,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     this._settingRepository,
   ) : super(SettingInitial()) {
     on<InitSettingEvent>((event, emit) async {
-      final deviceInfoResponse = await _settingRepository.getDeviceInfo();
+      final deviceInfoResponse = await _settingRepository.submitDeviceInfo();
       if (deviceInfoResponse.isRight()) {
         emit(DoneSettingConfigureState());
       }

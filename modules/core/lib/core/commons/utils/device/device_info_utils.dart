@@ -35,6 +35,9 @@ class DeviceInfoUtils implements IDeviceInfoUtils {
         var iosDeviceInfo = await _deviceInfoPlugin.iosInfo;
         return iosDeviceInfo.identifierForVendor ??
             'Unknown iOS Device ${iosDeviceInfo.isPhysicalDevice}';
+      } else if (Platform.isMacOS) {
+        final macOsDeviceInfo = await _deviceInfoPlugin.macOsInfo;
+        return macOsDeviceInfo.systemGUID ?? "";
       } else {
         var androidDeviceInfo = await _deviceInfoPlugin.androidInfo;
         return androidDeviceInfo.id ??
@@ -58,6 +61,9 @@ class DeviceInfoUtils implements IDeviceInfoUtils {
     if (Platform.isIOS) {
       var iosDeviceInfo = await _deviceInfoPlugin.iosInfo;
       return getIosDeviceModel(iosDeviceInfo.utsname.machine ?? '');
+    } else if (Platform.isMacOS) {
+      final macOsDeviceInfo = await _deviceInfoPlugin.macOsInfo;
+      return macOsDeviceInfo.model;
     } else {
       var androidDeviceInfo = await _deviceInfoPlugin.androidInfo;
       return androidDeviceInfo.model ?? '';
@@ -69,6 +75,9 @@ class DeviceInfoUtils implements IDeviceInfoUtils {
     if (Platform.isIOS) {
       var iosDeviceInfo = await _deviceInfoPlugin.iosInfo;
       return 'iOS Version ${iosDeviceInfo.systemVersion}';
+    } else if (Platform.isMacOS) {
+      final macOsDeviceInfo = await _deviceInfoPlugin.macOsInfo;
+      return macOsDeviceInfo.osRelease;
     } else {
       var androidDeviceInfo = await _deviceInfoPlugin.androidInfo;
       return 'Android OS ${androidDeviceInfo.version.release} (SDK ${androidDeviceInfo.version.sdkInt})';
@@ -84,6 +93,8 @@ class DeviceInfoUtils implements IDeviceInfoUtils {
         return double.tryParse(iosDeviceInfo.systemVersion!) ?? 0;
       }
       return defOsVersion;
+    } else if (Platform.isMacOS) {
+      return -1;
     } else if (Platform.isAndroid) {
       var androidDeviceInfo = await _deviceInfoPlugin.androidInfo;
       if (androidDeviceInfo.version.sdkInt != null) {

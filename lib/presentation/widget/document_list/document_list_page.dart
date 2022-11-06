@@ -62,13 +62,13 @@ class _DocumentListPageState extends State<DocumentListPage> {
                               context: context,
                               document: document,
                               state: state,
-                              onClone: () {
-                                _documentListCubit.add(OnDocumentListAdd(
-                                    documents: [document.clone()]));
-                              },
+                              // onClone: () {
+                              //   _documentListCubit.add(OnDocumentListAdd(
+                              //       documents: [document.clone()]));
+                              // },
                               onDelete: () {
-                                _documentListCubit.add(OnDocumentListDelete(
-                                    documents: [document]));
+                                _documentListCubit.add(
+                                    OnDocumentListDelete(document: document));
                               });
                         },
                         separatorBuilder: (context, index) => const SizedBox(

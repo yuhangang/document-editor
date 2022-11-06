@@ -22,7 +22,7 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
 
     on<OnDocumentListDelete>((event, emit) async {
       final exception =
-          await _documentRepository.deleteDocuments(event.documents);
+          await _documentRepository.deleteDocuments(event.document);
       if (exception == null) {
         add(OnDocumentListLoadCached());
       }

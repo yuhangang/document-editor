@@ -6,7 +6,7 @@ import 'package:core/core/model/device_info.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class SettingRepository {
-  Future<Either<Exception, DeviceInfo>> getDeviceInfo();
+  Future<Either<Exception, void>> submitDeviceInfo();
   Future<Exception?> login();
 }
 
@@ -22,7 +22,7 @@ class SettingRepositoryImpl
       required this.locationService});
 
   @override
-  Future<Either<Exception, DeviceInfo>> getDeviceInfo() async {
+  Future<Either<Exception, void>> submitDeviceInfo() async {
     try {
       final locationData = await locationService.getLocation();
       final deviceInfo = DeviceInfo(
@@ -34,8 +34,19 @@ class SettingRepositoryImpl
               await deviceInfoUtils.getDeviceOsVersionNumber(),
           lat: locationData?.latitude,
           lng: locationData?.longitude);
-      final response = await userApiProvider.submitDeviceInfo(deviceInfo);
-      return right(response);
+
+      final savedIDeviceInfo = await getSavedDeviceInfo();
+      if (savedIDeviceInfo != null) {
+        if ((deviceInfo.deviceOsVersion == savedIDeviceInfo.deviceOsVersion) &&
+            (deviceInfo.deviceOsVersionNumber ==
+                deviceInfo.deviceOsVersionNumber)) {
+          return const Right(null);
+        }
+      }
+      await userApiProvider.submitDeviceInfo(deviceInfo);
+      await saveDeviceInfoToPref(deviceInfo);
+
+      return const Right(null);
     } on Exception catch (e) {
       return Left(e);
     } catch (e) {

@@ -69,10 +69,11 @@ class DocumentRepositoryImpl implements DocumentRepository {
   }
 
   @override
-  Future<Exception?> deleteDocuments(List<DocumentFile> documents) async {
+  Future<Exception?> deleteDocuments(DocumentFile document) async {
     try {
+      await documentApiProvider.deleteDocument(document.documentId!);
       await isar.writeTxn(() async {
-        await isar.documentFiles.deleteAll(documents.map((e) => e.id).toList());
+        await isar.documentFiles.delete(document.id);
       });
 
       return null;

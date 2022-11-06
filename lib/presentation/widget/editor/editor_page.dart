@@ -10,6 +10,7 @@ import 'package:documenteditor/presentation/bloc/document_list/document_list_blo
 import 'package:documenteditor/presentation/bloc/document_editor/document_editor_bloc.dart';
 import 'package:documenteditor/presentation/widget/editor/widgets/editor_page_desktop.dart';
 import 'package:documenteditor/presentation/widget/editor/widgets/editor_page_mobile.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class EditorPage extends StatefulWidget {
   final DocumentFile? document;
@@ -23,6 +24,7 @@ class EditorPage extends StatefulWidget {
 }
 
 class _EditorPageState extends State<EditorPage> with TickerProviderStateMixin {
+  DocumentFile? documentFile;
   late final Document document;
   final TextSelection _textSelection = const TextSelection.collapsed(offset: 0);
   late final QuillController _richTextController;
@@ -46,15 +48,16 @@ class _EditorPageState extends State<EditorPage> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    documentFile = widget.document;
     _editorBloc = BlocProvider.of<DocumentEditorBloc>(context);
     _documentListBloc = BlocProvider.of<DocumentListBloc>(context);
 
-    document = widget.document != null
-        ? Document.fromJson(List.from(jsonDecode(widget.document!.data)))
+    document = documentFile != null
+        ? Document.fromJson(List.from(jsonDecode(documentFile!.data)))
         : Document();
     _richTextController =
         QuillController(document: document, selection: _textSelection);
-    _titleController = TextEditingController(text: widget.document?.title);
+    _titleController = TextEditingController(text: documentFile?.title);
 
     // listen to editor changed by user
     document.changes
@@ -85,15 +88,24 @@ class _EditorPageState extends State<EditorPage> with TickerProviderStateMixin {
     final isMobileLayout = MediaQuery.of(context).size.width < 800;
     return BlocListener<DocumentEditorBloc, DocumentEditorState>(
       listener: (context, state) {
-        if (state is DocumentEditorChangeUpdated) {
+        if (state is DocumentEditorFileUpdated) {
+          documentFile = state.updatedDocument;
           _documentListBloc
               .add(OnDocumentListUpdate(document: state.updatedDocument));
-        } else if (state is DocumentEditorChangeCreated) {
+          Fluttertoast.showToast(msg: 'Document updated');
+        } else if (state is DocumentEditorFileCreated) {
+          documentFile = state.createdDocument;
           _documentListBloc
               .add(OnDocumentListAdd(documents: [state.createdDocument]));
+          Fluttertoast.showToast(msg: 'Document created');
+        } else if (state is DocumentEditorChangeDeleted) {
+          Fluttertoast.showToast(msg: 'Document deleted');
         }
       },
-      listenWhen: (p, c) => c is DocumentEditorChangeCreated,
+      listenWhen: (p, c) =>
+          c is DocumentEditorFileCreated ||
+          c is DocumentEditorFileUpdated ||
+          c is DocumentEditorChangeDeleted,
       child: WillPopScope(
         onWillPop: () async {
           if (_editorBloc.state is DocumentEditorChangeUnsaved) {
@@ -144,10 +156,9 @@ class _EditorPageState extends State<EditorPage> with TickerProviderStateMixin {
                   animation: _animation,
                   titleController: _titleController,
                   onSaved: () {
-                    if (widget.document != null &&
-                        widget.document!.fromServer) {
+                    if (documentFile != null && documentFile!.fromServer) {
                       _editorBloc.add(DocumentEditorUpdateEvent(
-                          documentFile: widget.document!,
+                          documentFile: documentFile!,
                           title: _titleController.text,
                           data: jsonEncode(document.toDelta().toJson())));
                     } else {

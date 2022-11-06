@@ -104,6 +104,27 @@ class DioNetworkClient implements INetworkClient {
   }
 
   @override
+  Future<HttpResponse<T>> delete<T>(String path,
+      {dynamic data,
+      Map<String, dynamic>? queryParameters,
+      Options? options,
+      String? contentType}) {
+    return _dio
+        .delete<T>(path,
+            data: data, queryParameters: queryParameters, options: options)
+        .then((Response<T> res) {
+      _throwIfNoSuccess(res);
+      var response = HttpResponse<T>(
+        data: res.data,
+        headers: res.headers.map,
+        statusCode: res.statusCode,
+        statusMessage: res.statusMessage,
+      );
+      return response;
+    });
+  }
+
+  @override
   Future<HttpResponse<T>> getUri<T>(String url) {
     return _dio.getUri<T>(Uri.parse(url)).then((Response<T> res) {
       _throwIfNoSuccess(res);

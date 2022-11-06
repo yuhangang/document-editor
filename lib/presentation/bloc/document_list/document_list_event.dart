@@ -26,8 +26,8 @@ class OnDocumentListUpdate extends DocumentListEvent {
 }
 
 class OnDocumentListDelete extends DocumentListEvent {
-  final List<DocumentFile> documents;
+  final DocumentFile document;
   const OnDocumentListDelete({
-    required this.documents,
+    required this.document,
   });
 }

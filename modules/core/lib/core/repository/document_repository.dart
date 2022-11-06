@@ -12,5 +12,5 @@ abstract class DocumentRepository {
       DocumentFile documentFile);
   Future<Either<Exception, List<DocumentFile>>> createDocuments(
       List<DocumentFile> documents);
-  Future<Exception?> deleteDocuments(List<DocumentFile> documents);
+  Future<Exception?> deleteDocuments(DocumentFile document);
 }

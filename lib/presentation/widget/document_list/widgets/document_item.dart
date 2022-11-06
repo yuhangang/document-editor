@@ -10,14 +10,14 @@ class DocumentItem extends StatelessWidget {
     required this.context,
     required this.document,
     required this.state,
-    required this.onClone,
+    //required this.onClone,
     required this.onDelete,
   }) : super(key: key);
 
   final BuildContext context;
   final DocumentFile document;
   final DocumentListLoaded state;
-  final void Function() onClone;
+  //final void Function() onClone;
   final void Function() onDelete;
 
   @override
@@ -49,10 +49,10 @@ class DocumentItem extends StatelessWidget {
             PopupMenuButton<String>(
               onSelected: (value) {
                 if (value == DocumentMenuItemAction.delete.name) {
-                  onClone.call();
-                } else if (value == DocumentMenuItemAction.clone.name) {
                   onDelete.call();
-                }
+                } // else if (value == DocumentMenuItemAction.clone.name) {
+                // onClone.call();
+                // }
               },
               padding: EdgeInsets.zero,
               itemBuilder: (BuildContext context) {
@@ -92,4 +92,8 @@ class DocumentItem extends StatelessWidget {
   }
 }
 
-enum DocumentMenuItemAction { delete, clone }
+enum DocumentMenuItemAction {
+  delete,
+  // TODO: implement clone document feature
+  clone
+}

@@ -1,6 +1,7 @@
+import 'package:documenteditor/presentation/widget/document_list/widgets/document_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_quill/flutter_quill.dart' hide Text;
 
 import 'package:documenteditor/presentation/bloc/document_editor/document_editor_bloc.dart';
 import 'package:documenteditor/presentation/widget/editor/widgets/rich_text_toolbar.dart';
@@ -70,6 +71,27 @@ class EditorPageMobile extends EditorPageBody {
                           }
                         },
                         icon: const Icon(Icons.redo)),
+                    PopupMenuButton<String>(
+                      icon: const Icon(Icons.more_vert),
+                      onSelected: (value) {
+                        if (value == DocumentMenuItemAction.delete.name) {
+                          // onDelete.call();
+                        } else if (value == DocumentMenuItemAction.clone.name) {
+                          //onClone.call();
+                        }
+                      },
+                      padding: EdgeInsets.zero,
+                      itemBuilder: (BuildContext context) {
+                        return DocumentMenuItemAction.values
+                            .map((e) => e.name)
+                            .map((String choice) {
+                          return PopupMenuItem<String>(
+                            value: choice,
+                            child: Text(choice),
+                          );
+                        }).toList();
+                      },
+                    ),
                   ],
                   bottom: PreferredSize(
                     preferredSize: const Size.fromHeight(30.0),

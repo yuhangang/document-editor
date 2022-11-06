@@ -22,16 +22,23 @@ class DocumentEditorChangeSaving extends DocumentEditorState {}
 
 class DocumentEditorChangeSaved extends DocumentEditorState {}
 
-class DocumentEditorChangeUpdated extends DocumentEditorChangeSaved {
+class DocumentEditorFileUpdated extends DocumentEditorChangeSaved {
   final DocumentFile updatedDocument;
-  DocumentEditorChangeUpdated({
+  DocumentEditorFileUpdated({
     required this.updatedDocument,
   });
 }
 
-class DocumentEditorChangeCreated extends DocumentEditorChangeSaved {
+class DocumentEditorFileCreated extends DocumentEditorChangeSaved {
   final DocumentFile createdDocument;
-  DocumentEditorChangeCreated({
+  DocumentEditorFileCreated({
+    required this.createdDocument,
+  });
+}
+
+class DocumentEditorChangeDeleted extends DocumentEditorState {
+  final DocumentFile createdDocument;
+  const DocumentEditorChangeDeleted({
     required this.createdDocument,
   });
 }
