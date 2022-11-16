@@ -30,6 +30,8 @@ dependencies:
   isar_flutter_libs: *isar_version
   http: ^0.13.5
   shared_preferences: ^2.0.15
+  jwt_decoder: ^2.0.1
+  flutter_image_compress: ^1.1.3
 
 
 dev_dependencies:

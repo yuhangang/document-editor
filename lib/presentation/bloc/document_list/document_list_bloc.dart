@@ -24,7 +24,16 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
       final exception =
           await _documentRepository.deleteDocuments(event.document);
       if (exception == null) {
-        add(OnDocumentListLoadCached());
+        if (state is DocumentListLoaded) {
+          DocumentListDeleted(
+              documents: (state as DocumentListLoaded).documents,
+              deleteDocuments: [event.document],
+              onDeleteAnimationDone: () {
+                add(OnDocumentListLoad());
+              });
+        } else {
+          add(OnDocumentListLoad());
+        }
       }
     });
 

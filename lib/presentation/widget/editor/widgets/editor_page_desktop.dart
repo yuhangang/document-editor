@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:documenteditor/presentation/widget/editor/widgets/rich_text_toolbar.dart';
+import 'package:documenteditor/presentation/widget/editor/widgets/my_quill_toolbar.dart';
 
 class EditorPageMobileTabletDesktop extends StatelessWidget {
   const EditorPageMobileTabletDesktop({
@@ -35,6 +35,7 @@ class EditorPageMobileTabletDesktop extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           RichTextToolbar.desktop(
+              focusNode: _focusNode,
               showFullToolBar: showFullToolBar,
               richTextController: _richTextController),
           Expanded(

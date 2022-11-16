@@ -1,3 +1,4 @@
+import 'package:core/core/model/document.dart';
 import 'package:documenteditor/presentation/bloc/setting/setting_bloc.dart';
 import 'package:documenteditor/presentation/widget/document_list/widgets/document_item.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class DocumentListPage extends StatefulWidget {
 
 class _DocumentListPageState extends State<DocumentListPage> {
   late final DocumentListBloc _documentListCubit;
+  final GlobalKey<AnimatedListState> _animatedListState = GlobalKey();
   @override
   void initState() {
     BlocProvider.of<SettingBloc>(context).add(InitSettingEvent());
@@ -33,7 +35,15 @@ class _DocumentListPageState extends State<DocumentListPage> {
           GoRouter.of(context).push(app_path.editorPage);
         },
       ),
-      body: BlocBuilder<DocumentListBloc, DocumentListState>(
+      body: BlocConsumer<DocumentListBloc, DocumentListState>(
+        listener: ((context, state) {
+          if (state is DocumentListDeleted) {
+            // TODO: implement animated list UI
+            //  _handleDeleteAnimation(_animatedListState, state.deleteDocuments,state.onDeleteAnimationDone, state.documents);
+            state.onDeleteAnimationDone();
+          }
+        }),
+        listenWhen: (p, c) => c is DocumentListDeleted,
         builder: (context, state) {
           if (state is DocumentListFailed) {
             return const Center(
@@ -50,31 +60,40 @@ class _DocumentListPageState extends State<DocumentListPage> {
               children: [
                 Expanded(
                   child: RefreshIndicator(
-                    onRefresh: () async =>
-                        _documentListCubit.add(OnDocumentListLoad()),
-                    child: ListView.separated(
+                      onRefresh: () async {
+                        _documentListCubit.add(OnDocumentListLoad());
+                      },
+                      child: ListView.builder(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        key: _animatedListState,
                         padding: const EdgeInsets.only(
                             top: 25, left: 16, right: 16, bottom: 35),
                         itemCount: state.documents.length,
                         itemBuilder: (context, index) {
                           final document = state.documents[index];
-                          return DocumentItem(
-                              context: context,
-                              document: document,
-                              state: state,
-                              // onClone: () {
-                              //   _documentListCubit.add(OnDocumentListAdd(
-                              //       documents: [document.clone()]));
-                              // },
-                              onDelete: () {
-                                _documentListCubit.add(
-                                    OnDocumentListDelete(document: document));
-                              });
+                          return Padding(
+                            padding: EdgeInsets.only(
+                                bottom:
+                                    index < state.documents.length - 1 ? 8 : 0),
+                            child: DocumentItem(
+                                title: document.title,
+                                timeStamp: getUpdateTimeDescription(
+                                    state.loadedAt, document.updatedAt),
+                                onTap: () {
+                                  GoRouter.of(context).push(app_path.editorPage,
+                                      extra: document);
+                                },
+                                // onClone: () {
+                                //   _documentListCubit.add(OnDocumentListAdd(
+                                //       documents: [document.clone()]));
+                                // },
+                                onDelete: () {
+                                  _documentListCubit.add(
+                                      OnDocumentListDelete(document: document));
+                                }),
+                          );
                         },
-                        separatorBuilder: (context, index) => const SizedBox(
-                              height: 8,
-                            )),
-                  ),
+                      )),
                 ),
               ],
             );
@@ -97,5 +116,63 @@ class _DocumentListPageState extends State<DocumentListPage> {
         },
       ),
     );
+  }
+
+  // ignore: unused_element
+  void _handleDeleteAnimation(
+      GlobalKey<AnimatedListState> animatedListKey,
+      List<DocumentFile> deletedDocuments,
+      VoidCallback animationCompleteCallback,
+      List<DocumentFile> messages) {
+    const Duration animationDuration = Duration(milliseconds: 500);
+    for (final message in deletedDocuments) {
+      final indexOfMsgToBeRemoved =
+          messages.indexWhere((soc) => soc == message);
+      if (indexOfMsgToBeRemoved != -1) {
+        final data = messages.removeAt(indexOfMsgToBeRemoved);
+        _appliedRemovalAnimation(
+            animatedListKey, indexOfMsgToBeRemoved, data, animationDuration);
+      }
+    }
+    Future.delayed(animationDuration, animationCompleteCallback);
+  }
+
+  void _appliedRemovalAnimation(GlobalKey<AnimatedListState> messageListKey,
+      int index, DocumentFile documentFile, Duration animationDuration) {
+    return messageListKey.currentState!.removeItem(index, (context, animation) {
+      final curvedAnimation = animation.drive(Tween<double>(begin: 0, end: 1)
+          .chain(CurveTween(curve: Curves.easeInCubic)));
+      return SizeTransition(
+        sizeFactor: curvedAnimation,
+        child: FadeTransition(
+          opacity: curvedAnimation,
+          child: DocumentItem(
+            title: documentFile.title,
+            timeStamp: getUpdateTimeDescription(
+                DateTime.now(), documentFile.updatedAt),
+            onDelete: () {},
+            onTap: () {},
+          ),
+        ),
+      );
+    }, duration: animationDuration);
+  }
+
+  String getUpdateTimeDescription(DateTime timeToCompare, DateTime time) {
+    final difference = timeToCompare.difference(time);
+    if (difference.inDays > 364) {
+      return "${(difference.inDays / 365).floor()} years ago";
+    } else if (difference.inDays > 27) {
+      return "${(difference.inDays / 28).floor()} months ago";
+    } else if (difference.inDays > 6) {
+      return "${(difference.inDays / 7).floor()} weeks ago";
+    } else if (difference.inDays > 0) {
+      return "${difference.inDays} days ago";
+    } else if (difference.inHours > 0) {
+      return "${difference.inHours} hours ago";
+    } else if (difference.inMinutes > 1) {
+      return "${difference.inMinutes} minutes ago";
+    }
+    return "just now";
   }
 }

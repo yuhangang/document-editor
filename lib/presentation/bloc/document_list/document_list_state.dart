@@ -32,3 +32,17 @@ class DocumentListFailed extends DocumentListState {
   @override
   List<Object> get props => [exception];
 }
+
+class DocumentListDeleted extends DocumentListLoaded {
+  final List<DocumentFile> deleteDocuments;
+  final void Function() onDeleteAnimationDone;
+
+  DocumentListDeleted({
+    required this.deleteDocuments,
+    required super.documents,
+    required this.onDeleteAnimationDone,
+  });
+
+  @override
+  List<Object> get props => [documents, deleteDocuments];
+}
