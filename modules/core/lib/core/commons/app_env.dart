@@ -1,3 +1,5 @@
+import 'dart:io';
+
 enum SystemOfUnit { metric, imperial }
 
 abstract class AppEnv {
@@ -11,10 +13,12 @@ abstract class AppEnv {
 }
 
 class AppEnvDev extends AppEnv {
-  const AppEnvDev()
+  AppEnvDev()
       : super(
           appName: "Document File",
-          apiBaseUrl: "http://localhost:1323",
+          apiBaseUrl: Platform.isAndroid
+              ? "http://192.168.0.6:1323"
+              : "http://localhost:1323",
           // apiBaseUrl: "http://10.0.2.2:1323",
         );
 }

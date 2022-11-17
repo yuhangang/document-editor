@@ -10,7 +10,7 @@ void main() async {
   await Future.wait([
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]),
-    configureCoreServiceLocator(const AppEnvDev(),
+    configureCoreServiceLocator(AppEnvDev(),
         initializeFunctions: [configureAppServiceLocator])
   ]);
 

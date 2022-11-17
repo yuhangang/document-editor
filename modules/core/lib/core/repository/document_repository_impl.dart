@@ -53,7 +53,7 @@ class DocumentRepositoryImpl implements DocumentRepository {
     try {
       final data = await documentApiProvider.addDocument(documents.first);
       await isar.writeTxn(() async {
-        await isar.documentFiles.putAll([data]);
+        await isar.documentFiles.put(data);
       });
 
       return right([data]);

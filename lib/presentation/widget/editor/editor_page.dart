@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:core/core/model/document.dart';
+import 'package:documenteditor/presentation/widget/editor/widgets/my_quill_editor.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -155,6 +156,10 @@ class _EditorPageState extends State<EditorPage> with TickerProviderStateMixin {
                   isMobileLayout: isMobileLayout,
                   animation: _animation,
                   titleController: _titleController,
+                  body: MyQuillEditor(
+                      focusNode: _focusNode,
+                      richTextController: _richTextController,
+                      scrollController: _scrollController),
                   onSaved: () {
                     if (documentFile != null && documentFile!.fromServer) {
                       _editorBloc.add(DocumentEditorUpdateEvent(
